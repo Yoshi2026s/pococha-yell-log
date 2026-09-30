@@ -367,9 +367,8 @@ body.cmode #p-rec .totals,body.cmode #p-rec > p.hint{display:none}
 .prow.crow .selmark{display:none}
 .prow.crow .tm output{min-width:56px}
 @media (max-width:560px){
-  #p-day > .row,#p-sum > .row{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center}
-  #p-day > .row label.hint,#p-sum > .row label.hint{grid-column:1/-1}
-  #p-sum > .row .btn{width:100%}
+  #p-day > .row,#sumCtl > .row{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center}
+  #p-day > .row label.hint,#sumCtl > .row label.hint{grid-column:1/-1}
 }
 .foot{display:flex;justify-content:center;align-items:center;gap:4px;color:var(--ink);text-align:center;font-size:.75rem;color:var(--muted);letter-spacing:.04em;margin:8px 0 0;font-variant-numeric:tabular-nums}
 .dhead,.phead{position:relative;min-height:40px;padding:8px 10px 6px;background:var(--surface2);font-size:.72rem;font-weight:800;color:var(--muted);letter-spacing:.02em;border-bottom:1px solid var(--line);line-height:1.25}
@@ -504,7 +503,7 @@ td.y small{display:block;font-size:.66rem;color:var(--accent);font-weight:800}
   .trend .tb{background:#ddd!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   html,body{background:#fff!important;background-image:none!important;color:#000!important;font-size:10.5pt}
   body *{box-shadow:none!important;text-shadow:none!important;backdrop-filter:none!important}
-  .wrap>header,.wrap>.banner,.wrap>.month,.wrap>nav,.wrap>.eom,.panel:not(#p-sum),.qpanel,.sheet,.toast,.tabbar,#p-sum .row,#p-sum .prow2,#p-sum .hint,#copyBox,.status{display:none!important}
+  .wrap>header,.wrap>.banner,.wrap>.month,.wrap>nav,.wrap>.eom,.panel:not(#p-sum),.qpanel,.sheet,.toast,.tabbar,#p-sum .row,#p-sum .prow2,#p-sum .hint,#copyBox,.status,.sumctl,.lb{display:none!important}
   #p-sum{display:block!important;padding:0!important}
   .jump,.ctog{display:none!important}
   .card.col>:not(h2){display:revert!important}
@@ -774,6 +773,7 @@ nav.tabs .tl2{line-height:1.2;text-align:center}nav.tabs .tl2>span{display:block
 .rinfo .rit span{font-size:.62rem;font-weight:700;color:var(--muted);white-space:nowrap}
 .rinfo .rit b{font-size:.8rem;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rinfo .rit.ok{background:var(--ok-soft)} .rinfo .rit.ok b{color:var(--ok)}
+.rinfo .rit.w{grid-column:span 2;background:var(--time-soft)}.rinfo .rit.w b{color:var(--time)}.rinfo .rit.w.ok b{color:var(--ok)}.rinfo .rit.w span{white-space:normal}
 #p-rec .totals{display:none}
 .cum{font-size:.62rem;font-weight:700;color:var(--muted);margin-left:3px;white-space:nowrap}
 /* ===== v2：全体をコンパクトに（機能・表示内容は同じ） ===== */
@@ -921,7 +921,7 @@ th,td{padding:5px 6px}
 
 /* ===== 改善 ===== */
 .ryell .rycoin{gap:1px 8px}.ryell .rycoin .rch{font-size:.64rem;color:var(--muted);background:var(--surface2);border-radius:6px;padding:0 5px}.ryell .rycoin b{font-size:.8rem}
-@media (max-width:560px){#p-sum > .row label.hint{grid-column:auto;flex-direction:column;align-items:stretch;gap:2px;font-size:.7rem}#p-sum > .row label.hint select{width:100%;padding:5px 8px}#p-sum > .row label.hint:nth-of-type(3){grid-column:1/-1;flex-direction:row;align-items:center}}
+@media (max-width:560px){#sumCtl > .row label.hint{grid-column:auto;flex-direction:column;align-items:stretch;gap:2px;font-size:.7rem}#sumCtl > .row label.hint select{width:100%;padding:5px 8px}#sumCtl > .row label.hint:nth-of-type(3){grid-column:1/-1;flex-direction:row;align-items:center}}
 .prow .pn .pin{min-width:22px;min-height:22px;font-size:.9rem;padding:0;margin-right:1px}.prow .pn{gap:2px 6px}.prow .pmeta{gap:4px}
 .eom{padding:4px 8px 4px 10px;gap:6px}.eom > span{flex:1 1 180px;min-width:0}.eom .btn.sm2{min-height:30px}
 .dline{cursor:pointer}
@@ -1034,6 +1034,78 @@ header.top{row-gap:4px}
 .pgrp.fold .ga{transform:rotate(-45deg);margin-bottom:0}
 .pgrp .gs{margin-left:auto;font-size:.72rem;color:var(--muted);font-weight:700;font-variant-numeric:tabular-nums}
 .pgrp.full .gs{color:var(--ok)}
+.pgrp .gcn{color:var(--time);font-weight:800}.pgrp .gcn.x{color:var(--muted);font-weight:700}
+.yctools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 6px}
+.yctools .hint{display:flex;align-items:center;gap:6px}
+tr.ycr td:first-child{cursor:pointer}
+.yca{display:inline-block;width:7px;height:7px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);margin:0 6px 1px 0;transition:transform .15s}
+tr.ycr[aria-expanded="true"] .yca{transform:rotate(45deg)}
+td.yrest{min-width:5.5em}
+#tYCoin td{white-space:normal}#tYCoin td.r{white-space:nowrap}#tYCoin td.r small{white-space:normal;max-width:8em;margin-left:auto}#tYCoin td:first-child{min-width:6.5em}
+#tYCoin tr.ycd td{white-space:normal}.ycp .yt,.ycp .yu2{white-space:normal;overflow-wrap:anywhere}
+@media (max-width:360px){#tYCoin th,#tYCoin td{padding-left:4px!important;padding-right:4px!important;font-size:.76rem}#tYCoin td:first-child{min-width:5em}td.yrest{min-width:4.6em}#tYCoin th{white-space:normal!important}}
+.ycb{display:block;height:6px;border-radius:999px;background:var(--surface2);overflow:hidden;margin-top:3px}
+.ycb i{display:block;height:100%;border-radius:999px;background:var(--time)}
+tr.ok .ycb i{background:var(--ok)}
+tr.ycd td{background:color-mix(in srgb,var(--time) 5%,var(--surface));padding:6px}
+.ycdl,.fcl{display:flex;flex-direction:column;gap:4px}
+.fcl{margin-top:6px}
+.ycdl .btn{align-self:flex-start;margin-top:2px}
+.ycp{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1px 10px;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:5px 9px;font:inherit;font-size:.78rem;min-height:40px;white-space:normal}
+.ycp .yn{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ycp .yt{color:var(--muted);font-weight:700;font-size:.72rem;text-align:right}
+.ycp .yt i{font-style:normal;margin-left:4px;font-size:.62rem;background:var(--surface2);border-radius:999px;padding:0 6px}
+.ycp .yv b{color:var(--time)}
+.ycp .yu2{color:var(--muted);font-size:.72rem;text-align:right}
+.ycp.ok{border-color:var(--ok);background:var(--ok-soft)} .ycp.ok .yu2{color:var(--ok);font-weight:800}
+.ycp.cur{box-shadow:inset 3px 0 0 var(--accent)}
+.rinfo .rit small{font-size:.62rem;font-weight:700;color:var(--muted);line-height:1.3}
+.rinfo .rit.fcb{cursor:pointer}.rinfo .rit.fcb:hover,.rinfo .rit.fcb:focus-visible{outline:2px solid var(--time);outline-offset:-2px}
+.ob.cn{background:var(--time-soft);color:var(--time)}
+.fch{display:flex;align-items:center;gap:6px;margin:0 0 8px;position:sticky;top:env(safe-area-inset-top,0px);z-index:4;background:var(--surface);padding:4px 0;border-bottom:1px solid var(--line-soft)}.fch select{flex:1;min-width:0;font-weight:800;min-height:40px}.fch .step{flex:none;border:1px solid var(--line);background:var(--surface2);border-radius:10px;min-width:40px;min-height:40px;font-size:1.2rem;font-weight:800;color:var(--ink)}.fch .step:disabled{opacity:.4}
+.fcpos{flex:none;font-size:.72rem;font-weight:800;color:var(--muted);white-space:nowrap;display:flex;flex-direction:column;align-items:flex-end;line-height:1.25}.fcpos b{color:var(--sun);font-size:.74rem}.fcpos b.ok{color:var(--ok)}
+.fcproj{font-size:.72rem;font-weight:800;color:var(--sun)}.fcproj.ok{color:var(--ok)}
+.fcbud{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font-size:.74rem;font-weight:800;color:var(--muted);border-top:1px dashed var(--line);padding-top:6px}
+.fcbud label{display:inline-flex;align-items:center;gap:4px}
+.fcbud input{width:6.5em;min-height:34px;padding:3px 8px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font-size:16px;font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
+.fcbud input.bad{border-color:var(--sun)}.fcok{color:var(--ok)}.fcng{color:var(--sun)}.fcnote{font-weight:600}
+.fcch{margin:8px 0 0}.fcch figcaption{font-size:.7rem;font-weight:800;color:var(--muted)}.fcch .ysvg{max-width:420px}.fcch0{margin:6px 0 0}
+.fcfl{margin:6px 0}
+.fcin .fcsb{border:1px solid var(--line);background:var(--surface2);color:var(--muted);border-radius:8px;min-width:30px;min-height:34px;padding:0;font-size:.7rem;font-weight:800}
+.fcin .fcsb:disabled{opacity:.35}.fcin label{display:inline-flex;align-items:center;gap:4px}
+.fcsrc i{font-style:normal;display:block;font-size:.64rem;color:var(--time);font-weight:700}
+.fcadd{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.76rem;font-weight:700;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:6px 8px;margin-top:8px}
+.fcadd select{flex:1 1 140px;min-width:0}.fcadd label{display:inline-flex;align-items:center;gap:4px}
+.fcadd input{width:5em;min-height:34px;padding:3px 8px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font-size:16px;font-weight:800;text-align:right}
+.fchero{border:1px solid color-mix(in srgb,var(--time) 35%,var(--line));background:color-mix(in srgb,var(--time) 7%,var(--surface));border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.fchero.ok{border-color:var(--ok);background:var(--ok-soft)}
+.fcbig{display:flex;flex-direction:column;gap:1px}.fcbig span{font-size:.72rem;font-weight:800;color:var(--muted)}
+.fcbig b{font-family:var(--fd);font-size:clamp(1.6rem,8vw,2.2rem);font-weight:800;color:var(--time);line-height:1.1;font-variant-numeric:tabular-nums}.fchero.ok .fcbig b{color:var(--ok)}
+.fcbig b small{font-size:.8rem;margin-left:3px;color:var(--muted)}.fcbig em{font-style:normal;font-size:.72rem;font-weight:700;color:var(--muted)}
+.fcst{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.fcst>div{background:var(--surface);border-radius:10px;padding:4px 8px;display:flex;flex-direction:column;min-width:0}
+.fcst span{font-size:.64rem;font-weight:800;color:var(--muted)}.fcst b{font-size:1rem;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}.fcst small{font-size:.6rem;color:var(--muted);font-weight:700}
+.ycb.big{height:10px;margin:0}.fcpct{font-size:.7rem;font-weight:800;color:var(--muted)}
+.fctier{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 6px}.fctier span{font-size:.72rem;font-weight:700;color:var(--muted);background:var(--surface2);border-radius:999px;padding:2px 9px}.fctier b{color:var(--time)}
+.fcrows{display:flex;flex-direction:column;gap:5px}
+.fcr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 8px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:6px 9px;background:var(--surface)}
+.fcr.ok{border-color:var(--ok);background:var(--ok-soft)}
+.fcn2{border:0;background:transparent;padding:0;font:inherit;font-weight:800;font-size:.85rem;color:var(--ink);text-align:left;min-height:32px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fcin{display:inline-flex;align-items:center;gap:4px;font-size:.72rem;font-weight:800;color:var(--muted);justify-self:end}
+.fcin input{width:4.4em;min-height:34px;padding:3px 8px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font-size:16px;font-weight:800;font-family:var(--fd);text-align:right;font-variant-numeric:tabular-nums}
+.fcin input::placeholder{color:var(--muted);opacity:.7;font-weight:600}.fcin input.bad{border-color:var(--sun)}.fcin input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.fcsrc{font-size:.7rem;font-weight:700;color:var(--muted)}.fcv{font-size:.8rem;text-align:right;white-space:nowrap}.fcv b{color:var(--time)}.fcv i{font-style:normal;display:block;font-size:.62rem;color:var(--muted);font-weight:700}
+.fcu{grid-column:1/-1;font-size:.72rem;font-weight:700;color:var(--muted)}.fcr.ok .fcu{color:var(--ok)}
+.fcbulk{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.76rem;font-weight:700;color:var(--muted);background:var(--surface2);border-radius:10px;padding:6px 8px;margin-top:8px}
+.fcbulk input[type=text]{width:5em;min-height:34px;padding:3px 8px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font-size:16px;font-weight:800;text-align:right}
+.fcx{margin-top:6px}
+.ycall>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px}.ycall>summary::-webkit-details-marker{display:none}
+.ycall>summary::before{content:"";width:7px;height:7px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;flex:none}
+.ycall[open]>summary::before{transform:rotate(45deg)}.ycall>summary h3{margin:8px 0}
+.ycbtns{display:flex;flex-wrap:wrap;gap:6px}
+.famday .fcn{cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+@media (max-width:400px){.fcr{grid-template-columns:minmax(0,1fr) auto}.fcr .fcn2{grid-column:1/-1}.fcr .fcin{grid-column:1/-1;justify-self:start}}
+@media (max-width:360px){.fcst b{font-size:.88rem}.fcin input{width:4em}}
+.famday .fcn{font-style:normal;color:var(--time);font-weight:800;margin-left:6px}
 .pgrp em{font-style:normal;color:var(--sun);margin-left:6px;font-weight:800}
 .pgrp.pin{cursor:default;background:var(--surface2)}
 .pgrp.pin b{color:var(--muted)}
@@ -1101,6 +1173,7 @@ button.ob:hover{filter:brightness(.96)}
 .condbox{display:flex;flex-direction:column;gap:6px;margin:0 0 8px}.condbox textarea{width:100%;font-size:16px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:8px}.condbox .btn{align-self:flex-start}
 @media (max-width:1000px){#famCard>h2>small{display:none}}
 #famCard>h2,#othCard>h2{white-space:nowrap}
+.lists>.card{min-width:0}@media (max-width:560px){.lists{grid-template-columns:minmax(0,1fr)}}@media (max-width:360px){#famCard>h2,#othCard>h2{white-space:normal;flex-wrap:wrap}}
 .obdg{grid-column:4/-1;display:flex;flex-wrap:wrap;gap:3px}
 .obdg[hidden]{display:none}
 .ob{font-size:.64rem;font-weight:800;border-radius:999px;padding:1px 7px;background:var(--surface2);color:var(--muted);white-space:nowrap}
@@ -1112,6 +1185,57 @@ button.ob:hover{filter:brightness(.96)}
 .nbact{gap:6px}
 :root.priv #nbTx,:root.priv .nbcopy{filter:blur(5px)}:root.priv #nbTx:focus{filter:none}
 #bgS{flex:1 1 100%}
+/* ===== v15：全体の見た目・操作性 ===== */
+.banner.lb{display:flex;align-items:center;gap:8px;padding:4px 6px 4px 10px;font-size:.72rem;line-height:1.35}
+.banner.lb[hidden]{display:none}.banner.lb span{flex:1;min-width:0}
+.lbx{flex:none;border:0;background:transparent;color:var(--muted);font-size:1rem;font-weight:800;min-width:32px;min-height:32px;border-radius:8px}
+.grand .tot[data-gj]{cursor:pointer}.grand .tot[data-gj]:hover,.grand .tot[data-gj]:focus-visible{border-color:var(--time)}
+.grand .tot span{display:block;line-height:1.3}.grand .tot span small{margin-left:4px;font-size:.62rem;font-weight:800;background:var(--surface2);border-radius:999px;padding:0 6px}
+@media (max-width:560px){.grand{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.sumctl{background:var(--surface);border:1px solid var(--line-soft);border-radius:14px;padding:4px 10px;box-shadow:var(--shadow)}
+.sumctl>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;min-height:36px;font-size:.84rem;font-weight:800}
+.sumctl>summary::-webkit-details-marker{display:none}
+.sumctl .sci{width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s}
+.sumctl[open] .sci{transform:rotate(45deg)}
+.sumctl>summary b{font-size:.68rem;color:var(--accent-ink);background:var(--accent);border-radius:999px;padding:1px 8px}
+.sumctl>.row,.sumctl>.dsearch{margin:6px 0}
+.prow2 .btn{min-height:40px}
+.skel{display:flex;flex-direction:column;gap:8px;padding:12px}
+.skel i{display:block;height:44px;border-radius:12px;background:linear-gradient(90deg,var(--surface2) 25%,color-mix(in srgb,var(--surface2) 55%,var(--surface)) 50%,var(--surface2) 75%);background-size:300% 100%}
+.skel i:nth-child(2){width:88%}.skel i:nth-child(3){width:94%}.skel i:nth-child(4){width:70%}
+@media (prefers-reduced-motion:no-preference){.skel i{animation:skel 1.2s ease-in-out infinite}}
+@keyframes skel{from{background-position:100% 0}to{background-position:0 0}}
+.gs{background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 10%,var(--surface)),color-mix(in srgb,var(--time) 10%,var(--surface)));border:1px solid var(--line-soft);border-radius:16px;padding:10px 12px;box-shadow:var(--shadow)}
+.gs[hidden]{display:none}.gsh{display:flex;align-items:center;justify-content:space-between;gap:8px;font-family:var(--fd);font-size:.95rem}
+.gs ol{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.gs ol button{width:100%;display:flex;align-items:center;gap:10px;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:8px 10px;font:inherit;font-size:.82rem;font-weight:700;min-height:44px}
+.gs ol button span{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-weight:800}
+#toastMsg{cursor:pointer}
+@media (prefers-reduced-motion:no-preference){
+  .panel:not([hidden]){animation:pfade .18s ease}
+  @keyframes pfade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .toast.tin{animation:tin .2s ease}
+  @keyframes tin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .btn:active,.chip:active,.dvc:active,.recent button:active,nav.tabs button:active{transform:scale(.97);transition:transform .06s}
+}
+/* ===== v16 ===== */
+.rq{position:relative}.rq .qres{margin:6px 0 0}.rq .qres button .to{color:var(--accent)}
+.cfx{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+.cfx i{position:absolute;top:-12px;width:8px;height:12px;border-radius:2px;opacity:.95;animation:cfx 1.5s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes cfx{to{transform:translate(var(--dx),78vh) rotate(var(--rt));opacity:0}}
+.grand .tot .rg{position:absolute;right:10px;top:50%;width:34px;height:34px;margin-top:-17px;border-radius:50%;background:conic-gradient(var(--ok) calc(var(--p,0)*1%),var(--surface2) 0);-webkit-mask:radial-gradient(circle,transparent 55%,#000 57%);mask:radial-gradient(circle,transparent 55%,#000 57%)}
+.grand .tot:has(.rg)::after{display:none}.grand .tot:has(.rg){padding-right:50px}
+.shh{font-size:.8rem;margin:4px 0 -4px;color:var(--muted);letter-spacing:.04em}
+.shd{background:var(--surface2);border-radius:10px;padding:4px 10px;margin:0 0 8px}.shd summary{cursor:pointer;font-weight:800;font-size:.84rem;min-height:32px;display:flex;align-items:center}
+.shd ul{margin:4px 0 6px}.kbl li{list-style:none;margin-left:-1.2em}
+kbd{display:inline-block;min-width:1.6em;text-align:center;font:inherit;font-size:.74rem;font-weight:800;padding:1px 6px;margin-right:3px;border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;background:var(--surface)}
+.qpop{position:fixed;z-index:70;transform:translate(-50%,-4px);font-family:var(--fd);font-weight:800;font-size:1rem;color:var(--time);pointer-events:none;animation:qpop .7s ease-out forwards;text-shadow:0 1px 0 var(--surface)}
+.qpop.neg{color:var(--sun)}
+@keyframes qpop{to{transform:translate(-50%,-40px);opacity:0}}
+.dsvg .dwk{fill:color-mix(in srgb,var(--sun) 6%,transparent)}
+.dsvg .davg{stroke:var(--ok);stroke-width:1.2;stroke-dasharray:4 3}.dsvg .davgt{fill:var(--ok)}
+.dsvg .dtd{stroke:var(--accent);stroke-width:1;stroke-dasharray:2 2;opacity:.7}
+.qpanel .qh2 .qminus{color:var(--sun);min-width:44px;font-size:.9rem}
 /* ===== v11：当月一覧表示・集計結果 ===== */
 .wsum{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:8px;padding:3px 10px;border-top:1px solid var(--line);background:color-mix(in srgb,var(--time) 6%,var(--surface2));font-size:.72rem;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
 .wsum b{color:var(--time);font-size:.8rem}.wsum em{font-style:normal;min-width:2.8em;text-align:right}
@@ -1168,7 +1292,7 @@ button.ob:hover{filter:brightness(.96)}
   </header>
   <div class="dline" id="dline" aria-live="off" role="button" tabindex="0" title="押すと締め時間・スケジュールの設定を開きます"></div>
 
-  <div class="banner" id="localBanner" hidden>共有データベースに接続できないため、この端末のブラウザにだけ保存しています。</div>
+  <div class="banner lb" id="localBanner" hidden><span>この端末だけに保存中（共有データベース未接続）</span><button type="button" class="lbx" id="lbX" aria-label="このお知らせを閉じる">×</button></div>
 
   <div class="month">
     <button id="prevM" aria-label="前の月">◀</button>
@@ -1189,7 +1313,9 @@ button.ob:hover{filter:brightness(.96)}
   <div class="eom" id="eom" hidden></div>
   <!-- 記録（組み合わせ別） -->
   <section class="panel" id="p-rec" role="tabpanel" aria-labelledby="tab-rec">
+    <div class="gs" id="gsCard" hidden><div class="gsh"><b>はじめての方へ：3ステップ</b><button type="button" class="btn sm2" id="gsX" aria-label="はじめての案内を閉じる">×</button></div><ol><li><button type="button" data-gs="list"><span>1</span>名前・条件設定で、自分垢と他人垢（稼ぎ先）に名前を付ける</button></li><li><button type="button" data-gs="rec"><span>2</span>当月一覧表示で自分垢→他人垢を選び、日付を押して時間を入れる</button></li><li><button type="button" data-gs="sum"><span>3</span>集計結果で達成状況と必要コインを確認する</button></li></ol></div>
     <div class="recent" id="recent" hidden></div>
+    <div class="rq"><input type="search" class="lsearch" id="recQ" placeholder="自分垢・他人垢を名前で探して切り替え（例：ゆき、12）" aria-label="自分垢・他人垢を名前・番号で探して切り替える" autocomplete="off" enterkeyhint="search"><div class="qres" id="recQRes" role="listbox" aria-label="見つかった組み合わせ" hidden></div></div>
     <div class="pickers">
       <label class="fam">自分垢<span class="pk"><button class="step" data-step="fam:-1" aria-label="前の自分垢">‹</button><select id="selFam"></select><button class="step" data-step="fam:1" aria-label="次の自分垢">›</button></span></label>
       <div class="arrow">→</div>
@@ -1270,13 +1396,15 @@ button.ob:hover{filter:brightness(.96)}
     <nav class="jump" id="jumpSum" aria-label="集計結果の見出しへ移動"></nav>
     <div class="phd" id="printHead"></div>
     <div class="grand">
-      <div class="tot"><span>記録した自分垢</span><b class="num" id="gFam">0</b></div>
-      <div class="tot d"><span>延べ日数</span><b class="num" id="gDays">0日</b></div>
-      <div class="tot t"><span>合計時間</span><b class="num" id="gTime">0分</b></div>
-      <div class="tot"><span>目標達成（組み合わせ）</span><b class="num" id="gAch" style="color:var(--ok)">0</b></div>
-      <div class="tot cn" id="gCoinT" hidden><span>使用コイン目安</span><b class="num" id="gCoin">0</b></div>
-      <div class="tot y" id="gYellT" hidden><span>エール目標 達成</span><b class="num" id="gYell">0</b></div>
+      <div class="tot" data-gj="famTot" role="button" tabindex="0"><span>記録した自分垢</span><b class="num" id="gFam">0</b></div>
+      <div class="tot d" data-gj="dayChartCard" role="button" tabindex="0"><span>延べ日数</span><b class="num" id="gDays">0日</b></div>
+      <div class="tot t" data-gj="dayChartCard" role="button" tabindex="0"><span>合計時間</span><b class="num" id="gTime">0分</b></div>
+      <div class="tot" data-gj="pairCard" role="button" tabindex="0"><span>目標達成（組み合わせ）</span><b class="num" id="gAch" style="color:var(--ok)">0</b><i class="rg" id="gAchR" aria-hidden="true"></i></div>
+      <div class="tot cn" id="gCoinT" data-gj="yChkCard" role="button" tabindex="0" hidden><span>使用コイン目安</span><b class="num" id="gCoin">0</b></div>
+      <div class="tot cn" id="gNeedT" data-gj="fcCard" role="button" tabindex="0" hidden><span>目標に必要なコイン<small>全員</small></span><b class="num" id="gNeed">0</b></div>
+      <div class="tot y" id="gYellT" data-gj="yChkCard" role="button" tabindex="0" hidden><span>エール目標 達成</span><b class="num" id="gYell">0</b><i class="rg" id="gYellR" aria-hidden="true"></i></div>
     </div>
+    <details class="sumctl" id="sumCtl"><summary><span class="sci" aria-hidden="true"></span>絞り込み・並び順<b id="sumCtlB" hidden></b></summary>
     <div class="row">
       <label class="hint">自分垢で絞り込み
         <select class="sm" id="sumFam"></select>
@@ -1286,20 +1414,24 @@ button.ob:hover{filter:brightness(.96)}
       <label class="hint">並び順
         <select class="sm" id="sumSort"><option value="num">番号順</option><option value="time">時間が多い順</option><option value="need">達成まで近い順</option><option value="reach">到達エールが高い順</option><option value="yell">現在のエールが多い順</option></select>
       </label>
-      <button class="btn" id="copyBtn">テキストでコピー</button>
-      <button class="btn" id="csvBtn" hidden>CSV出力</button>
     </div>
     <div class="dsearch"><input type="search" class="lsearch" id="sumQ" placeholder="名前・番号で絞り込み（例：ゆき、12）" aria-label="集計結果を名前・番号で絞り込み" autocomplete="off" enterkeyhint="search"></div>
+    </details>
     <div class="sfilt" id="sumFilt" hidden></div>
-    <div class="prow2"><button class="btn pbtn" id="printBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V3h10v6M7 18H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z"/></svg>印刷する</button><button class="btn" id="printFileBtn" hidden>印刷用ファイルを保存</button>
+    <div class="prow2"><button class="btn" id="copyBtn">テキストでコピー</button><button class="btn" id="shareBtn" hidden>共有</button><button class="btn" id="csvBtn" hidden>CSV出力</button><button class="btn pbtn" id="printBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V3h10v6M7 18H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M7 14h10v7H7z"/></svg>印刷する</button><button class="btn" id="printFileBtn" hidden>印刷用ファイルを保存</button>
 </div>
     <div class="card copybox" id="copyBox" hidden><h2>コピー用テキスト</h2><p class="hint">自動でコピーできなかったので、下の文字を長押しして「すべてを選択」→「コピー」してください。</p><textarea id="copyText" readonly></textarea></div>
+    <div class="card" id="fcCard">
+      <h2>自分垢1人ごとの必要コイン</h2>
+      <div id="fcBody"></div>
+      <p class="hint">選んだ自分垢1人の今月の組み合わせごとに、エール目標（入っていればその目標、なければ達成条件のエール段階）に届く段階の必要コイン（コアファン条件表）を合計した目安です。目標の欄はここで直接変えられます（空にすると達成条件の段階で計算）。</p>
+    </div>
     <div class="card" id="dayChartCard">
       <h2>日ごとの合計時間</h2>
       <div class="dchart" id="dayChart"></div>
       <p class="hint">絞り込み中の組み合わせを合計します。棒を押すと、その日の日付別実績入力を開きます。</p>
     </div>
-    <div class="card">
+    <div class="card" id="pairCard">
       <h2>自分垢 → 他人垢 の内訳</h2>
       <div class="tbl"><table id="tPairs"></table></div>
       <p class="hint">行をタップするとその組み合わせの当月一覧表示に移動します。</p>
@@ -1319,8 +1451,8 @@ button.ob:hover{filter:brightness(.96)}
       <div class="ysum" id="ySum"></div>
       <div class="ycopy" id="yCopy" hidden></div>
       <div class="tbl"><table id="tYell" class="ychk"></table></div>
-      <div id="yCoinWrap" hidden><h3 class="pah">自分垢ごとの目標エールと使用コイン（目安）</h3><div class="tbl"><table id="tYCoin" class="ychk ycoin2"></table></div>
-      <p class="hint">「目標に必要」＝各組み合わせのエール目標で届く段階の必要コイン（コアファン条件表）の合計。「使った目安」＝現在のエールで届いた段階の必要コイン（目標を上限）。</p></div>
+      <div id="yCoinWrap" hidden><details class="ycall" id="ycAllBox"><summary><h3 class="pah">全員の一覧（自分垢ごとの必要コイン）</h3></summary><div class="yctools" id="ycTools"></div><div class="tbl"><table id="tYCoin" class="ychk ycoin2"></table></div>
+      <p class="hint">「目標に必要」＝その自分垢の今月の組み合わせごとに、エール目標（入っていればその目標、なければ達成条件のエール段階）に届く段階の必要コイン（コアファン条件表）を合計した目安。「使った目安」＝現在のエールで届いた段階の必要コイン（目標を上限）。自分垢の行を押すと他人垢ごとの内訳が開き、内訳を押すとその組み合わせへ移動します。</p></details></div>
       <p class="hint">目標は日付別実績入力の各行のエール欄で組み合わせごとに設定します。目標が0（設定なし）の組み合わせはこの表に出しません。行をタップするとその組み合わせへ移動します。</p>
     </div>
     <div class="card" hidden>
@@ -1328,7 +1460,7 @@ button.ob:hover{filter:brightness(.96)}
       <div class="tbl"><table id="tTrend" class="trend"></table></div>
       <p class="hint">絞り込み中の自分垢だけで集計します。達成はそれぞれの月度の条件で判定します。</p>
     </div>
-    <div class="card">
+    <div class="card" id="famTot">
       <h2>自分垢ごとのトータル</h2>
       <div class="tbl"><table id="tFam"></table></div>
     </div>
@@ -1435,11 +1567,15 @@ button.ob:hover{filter:brightness(.96)}
 <button class="totop" id="toTop" hidden aria-label="いちばん上へ">▲</button>
 <div class="sheet" id="sheet" hidden><div class="sheetin" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
   <div class="sh"><b id="sheetTitle">設定と使い方</b><button class="btn sm2" id="sheetClose">閉じる</button></div>
+  <h3 class="shh">表示</h3>
   <div class="setrow"><button class="wakebtn" id="themeBtn">テーマ：自動</button><button class="wakebtn" id="bigBtn" aria-pressed="false">文字大</button><button class="wakebtn" id="privBtn" aria-pressed="false">名前を隠す</button></div>
   <p class="hint">「名前を隠す」をオンにすると、自分垢・他人垢の名前とメモを番号表示にします。画面を見せる時やスクショを撮る時に使えます（データは変わりません）。</p>
+  <h3 class="shh">データ</h3>
   <div class="meter" id="meter"></div>
   <div class="setrow"><button class="wakebtn rstbtn" id="rstOpen2" aria-haspopup="dialog">記録の全リセット</button></div>
   <div class="usage">
+    <details class="shd"><summary>ホーム画面に追加する（アプリのように使う）</summary><ul><li><b>iPhone</b>：Safariでこのページを開き、下の共有ボタン →「ホーム画面に追加」。</li><li><b>Android</b>：Chromeの︙メニュー →「ホーム画面に追加」。</li><li>オフライン版（GitHub）は、開いた端末のブラウザに記録を保存します。バックアップを書き出しておくと安心です。</li></ul></details>
+    <details class="shd"><summary>キー操作（パソコン）</summary><ul class="kbl"><li><kbd>/</kbd> 今のタブの検索欄へ</li><li><kbd>←</kbd><kbd>→</kbd>（タブの上で）タブを移動</li><li><kbd>←</kbd><kbd>→</kbd>（日付別実績入力）日付を移動</li><li><kbd>↑</kbd><kbd>↓</kbd> 組み合わせを移動</li><li><kbd>1</kbd>〜<kbd>5</kbd> +5〜+60分</li><li><kbd>Space</kbd> ✓（稼いだ日）</li><li><kbd>N</kbd> 次の未入力</li><li><kbd>B</kbd> 前日と同じ</li><li><kbd>Esc</kbd> 画面を閉じる</li></ul></details>
     <h3>よく使う操作</h3>
     <ul>
       <li><b>記録</b>：日付を押して、下のパネルの +5〜+60 で時間を足します。長押しで連続して足せます。</li>
@@ -1453,6 +1589,8 @@ button.ob:hover{filter:brightness(.96)}
       <li><b>達成条件</b>：エール数と条件1（日数＋時間）／条件2（時間のみ）を選びます。名前・条件設定で全員まとめて設定もできます。</li>
       <li><b>集計結果</b>：「テキストでコピー」でLINEなどに貼り付けできます。「印刷する」で印刷も。上の「移動：」で見出しへ、見出しを押すとたたむ／開くができます。</li>
       <li><b>エール</b>：日付別実績入力の各行のエール欄に「目標」と「現在」をk単位で入れます（15,230エール → 15.23）。現在のエールは、達成条件のエール数と並べて当月一覧表示・日付別実績入力・集計結果・名前・条件設定に表示します。集計結果の「エール目標チェック」で達成状況をまとめて確認できます。</li>
+      <li><b>自分垢1人ごとの必要コイン</b>：集計結果のいちばん上で自分垢を1人選ぶと（‹ › で切り替え）、その人の今月の目標エールに必要なコインの合計・使った目安・あと・1日あたり・段階ごとのまとめ・他人垢ごとの内訳を出します。内訳の「目標」欄でエール目標をその場で変えられ（空にすると達成条件の段階で計算・元に戻す可）、「まとめて入れる」でその人の組み合わせにまとめて目標を入れられます。「この自分垢をコピー」でその人の分だけ文章にできます。▼▲で目標を1段階ずつ上げ下げでき、目標欄は段階の候補からも選べます。今月の予算（コイン）を入れると必要コインと比べて「予算内／超えています」を出します（先月と同じ予算も1回で入ります）。日ごとの推移グラフ（日付別実績入力で入れたエールから）、このペースだと月末いくらになるかの見込み、「未達成」「エール未入力」だけの表示、稼ぎ先の追加、条件1と条件2の必要コインの比較もあります。画面を左右にスワイプすると自分垢を切り替えられます。当月一覧表示のまとめの内訳・名前・条件設定の「必要コイン」バッジ・日付別実績入力の自分垢ごとの必要コインから開けます。</li>
+      <li><b>自分垢ごとの必要コイン</b>：その自分垢の今月の組み合わせごとに、エール目標（入っていればその目標、なければ達成条件のエール段階）に届くための必要コイン（コアファン条件表）を合計して表示します。当月一覧表示のまとめ（押すと他人垢ごとの内訳）・日付別実績入力の自分垢の見出し・集計結果の「エール目標チェック」・名前・条件設定の自分垢の行に出ます。集計結果では行を押すと内訳が開き、並び順（必要コインが多い順・残りが多い順）、月末までの1日あたりの目安、先月との差、「コイン一覧をコピー」も使えます。達成条件がカスタム（エール段階なし）でエール目標もない組み合わせは計算に入りません（計算外）。</li>
       <li><b>使用コインの目安</b>：現在のエールで届いた段階の必要コイン（コアファン条件表）を目安として表示します。実際に使ったコイン数とは違うことがあります。</li>
       <li><b>条件パターン</b>：名前・条件設定で他人垢ごとにA〜J（最大10個）を作って「保存」し、自分垢に割り当てます。割り当てた組み合わせはそのパターンで判定します。</li>
       <li><b>並べ替え</b>：名前・条件設定の「⠿」を押したまま上下に動かします。記録は垢に付いたまま動きます。</li>
@@ -1488,6 +1626,8 @@ button.ob:hover{filter:brightness(.96)}
       <li><b>当月一覧表示の追加</b>：上のバーの「全日／記録日だけ」で、記録した日だけの一覧にできます。一覧には週ごとの合計が出ます。「9月度のまとめ」に月末予測・最長の日・連続記録を出し、「コピー」でこの組み合わせの月の実績を文章でコピーできます。</li>
       <li><b>集計結果の追加</b>：名前・番号で絞り込めます。「日ごとの合計時間」のグラフの棒を押すと、その日の日付別実績入力を開きます。合計の数字の下に先月との差を出します。自分垢別・他人垢別の表は見出しを押すと並べ替え、行を押すとその垢で絞り込みます。スマホの内訳には「日数・時間」などの見出しを付けました。</li>
       <li><b>名前・条件設定（追加）</b>：「移動」ボタンは検索欄と一緒に上に残ります。検索してEnterを押すと、見つかった垢の名前欄へ移ります。自分垢の条件を開くと「この条件を名前ありの全員にコピー」が使えます（2回押しで実行・元に戻す可）。条件パターンは「表示中の自分垢をまとめて割り当て」、締め時間は「表示中の全員を○○締めにする」でまとめて変えられます。バックアップの欄に最後に書き出した日を出します。</li>
+      <li><b>さらに追加</b>：当月一覧表示の上の検索欄で、自分垢・他人垢を名前や番号で探して切り替えられます。入力パネルの「−5」で5分減らせます。目標を達成すると小さなお祝いが出ます。集計結果の「日ごとの合計時間」に週末・今日・平均の線を出します。スマホでは「共有」でLINEなどに直接送れます。オフライン版（GitHub）でもバックアップ・CSVを書き出せます。</li>
+      <li><b>見た目と操作（追加）</b>：集計結果の数字のタイルを押すと関連する見出しへ移動します。絞り込み・並び順は「絞り込み・並び順」を押して開きます（絞り込み中は件数が出ます）。月のバーを左右にスワイプすると月を移動できます。パソコンでは「/」で検索欄へ、タブの上で ← → でタブを移動できます。お知らせは押すと閉じます。「この端末のブラウザだけに保存」の表示は×で閉じられます。</li>
       <li><b>全リセット</b>：当月一覧表示の下の「全リセット」から。範囲を選び「リセット」と入力して実行します。</li>
     </ul>
   </div>
@@ -1502,7 +1642,7 @@ button.ob:hover{filter:brightness(.96)}
   <label class="rstin"><span>確認入力：<b>リセット</b> と入力</span><input type="text" id="rstTx" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" placeholder="リセット"></label>
   <div class="row"><button class="btn rstgo" id="rstGo" disabled>リセットする</button><button class="btn" id="rstCancel">やめる</button></div>
 </div></div>
-<div class="toast" id="toast" role="status" hidden><span id="toastMsg"></span><button id="undoBtn">元に戻す</button></div>
+<div class="toast" id="toast" role="status" hidden><span id="toastMsg" title="押すと閉じます"></span><button id="undoBtn">元に戻す</button></div>
 
 <script>
 (function(){
@@ -1793,12 +1933,14 @@ function packMonth(mo){
   if(mo.notes){const n={};for(const k in mo.notes)if(parsePk(k)&&typeof mo.notes[k]==='string'&&mo.notes[k].trim())n[k]=mo.notes[k].slice(0,200);if(Object.keys(n).length)out.notes=n}
   if(mo.sch){const n={};for(const ok in mo.sch){if(!/^o\d+$/.test(ok)||!vIdx(+ok.slice(1)))continue;const r={};for(const d in mo.sch[ok]||{}){const v=schNorm(mo.sch[ok][d]);if(v&&/^([1-9]|[12]\d|3[01])$/.test(d))r[d]=v}if(Object.keys(r).length)n[ok]=r}if(Object.keys(n).length)out.sch=n}
   for(const lf of ['ylog','rylog']) if(mo[lf]){const n={};for(const k in mo[lf]){if(!parsePk(k))continue;const r={};for(const d in mo[lf][k]||{}){const v=mo[lf][k][d];if(Number.isInteger(v)&&v>=0)r[d]=Math.min(YMAX,v)}if(Object.keys(r).length)n[k]=r}if(Object.keys(n).length)out[lf]=n}
+  if(mo.fcb){const n={};for(const f in mo.fcb){const v=mo.fcb[f];if(/^f\d+$/.test(f)&&vIdx(+f.slice(1))&&Number.isInteger(v)&&v>0)n[f]=Math.min(YMAX,v)}if(Object.keys(n).length)out.fcb=n}
   if(mo.ryell){const n={};for(const k in mo.ryell){const v=mo.ryell[k];if(parsePk(k)&&Number.isInteger(v)&&v>=0)n[k]=Math.min(YMAX,v)}if(Object.keys(n).length)out.ryell=n}
   if(mo.box){const n={};for(const k in mo.box){if(!parsePk(k))continue;const r={};for(const d in mo.box[k]||{}){const v=mo.box[k][d];if(v===1||v===2||v===3)r[d]=v}if(Object.keys(r).length)n[k]=r}if(Object.keys(n).length)out.box=n}
   return out;
 }
 function unpackMonth(d){
-  const mo={records:{},notes:{},yell:{},yt:{},box:{},ryell:{},ylog:{},rylog:{},sch:{}}; if(!d) return mo;
+  const mo={records:{},notes:{},yell:{},yt:{},box:{},ryell:{},ylog:{},rylog:{},sch:{},fcb:{}}; if(!d) return mo;
+  if(d.fcb&&typeof d.fcb==='object') for(const f in d.fcb){const v=d.fcb[f]; if(/^f\d+$/.test(f)&&vIdx(+f.slice(1))&&typeof v==='number'&&Number.isFinite(v)&&v>0) mo.fcb[f]=Math.min(YMAX,Math.floor(v))}
   if(d.sch&&typeof d.sch==='object') for(const ok in d.sch){if(!/^o\d+$/.test(ok)||!vIdx(+ok.slice(1))||!d.sch[ok]||typeof d.sch[ok]!=='object')continue;const r={};for(const day in d.sch[ok]){const v=schNorm(d.sch[ok][day]);if(/^([1-9]|[12]\d|3[01])$/.test(day)&&v)r[day]=v}if(Object.keys(r).length)mo.sch[ok]=r}
   for(const lf of ['ylog','rylog']) if(d[lf]&&typeof d[lf]==='object') for(const k in d[lf]){if(!parsePk(k)||!d[lf][k]||typeof d[lf][k]!=='object')continue;const r={};for(const day in d[lf][k]){const v=d[lf][k][day];if(/^([1-9]|[12]\d|3[01])$/.test(day)&&typeof v==='number'&&Number.isFinite(v)&&v>=0)r[day]=Math.min(YMAX,Math.floor(v))}if(Object.keys(r).length)mo[lf][k]=r}
   if(d.ryell&&typeof d.ryell==='object') for(const k in d.ryell){const v=d.ryell[k]; if(parsePk(k)&&typeof v==='number'&&Number.isFinite(v)&&v>=0) mo.ryell[k]=Math.min(YMAX,Math.floor(v))}
@@ -1828,14 +1970,16 @@ function setStatus(cls,txt){const s=$('status');s.className='status '+cls;
   if(cls==='ok'&&/保存済み/.test(txt)){const d=new Date();txt+=` ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`}
   s.lastElementChild.textContent=txt}
 function schedule(){setStatus('busy',db&&navigator.onLine===false?'オフライン：つながったら保存します':'保存中…');clearTimeout(timer);timer=setTimeout(()=>{timer=null;flush()},500)}
-function queueWrite(path,obj){pend[path]={obj};schedule()}
+function queueWrite(path,obj){if(fcCache)fcCache.clear();pend[path]={obj};schedule()}
 function queueMonth(ym,patch,mo){
+  if(fcCache) fcCache.clear();
   const m=mo||(ym===S.ym?S.month:null), p='months/'+ym, cur=pend[p]||{month:m||S.month,patch:{}};
   if(m) cur.month=m; deepMerge(cur.patch,patch); pend[p]=cur; schedule();
 }
 // 入力欄の保存は「欄×組み合わせ」ごとに待つ（すぐ別の組み合わせに切り替えても消えない）
 const debq={};
 function debMonth(field,k,v,ms){
+  if(fcCache) fcCache.clear();
   const id=field+':'+k, ym=S.ym, mo=S.month; clearTimeout(debq[id]&&debq[id].t);
   const run=()=>{delete debq[id]; queueMonth(ym,{[field]:{[k]:v}},mo)};
   if(!ms) run(); else debq[id]={t:setTimeout(run,ms),run};
@@ -1970,7 +2114,7 @@ function doUndo(){
   let i=undoStack.length-1; while(i>=0&&undoStack[i].ym!==S.ym) i--;
   if(i<0){hideToast();return}
   const u=undoStack.splice(i,1)[0]; if(u.fn) u.fn(); for(const it of u.items) putE(it.f,it.o,it.d,it.prev);
-  if(u.extra){ const px={}; for(const fld of ['yell','notes','yt','box','ryell','ylog','rylog','sch']){ const src=u.extra[fld]||{}; if(!Object.keys(src).length) continue; S.month[fld]=S.month[fld]||{}; px[fld]={}; for(const k in src){if(src[k]==null)delete S.month[fld][k];else S.month[fld][k]=src[k];px[fld][k]=src[k]} } if(Object.keys(px).length) queueMonth(u.ym,px); if(S.month.sch) for(const ok in S.month.sch){const r=S.month.sch[ok]; for(const d in r){ if(r[d]==null) delete r[d]; else r[d]=schNorm(r[d])||{} } if(!Object.keys(r).length) delete S.month.sch[ok]} }
+  if(u.extra){ const px={}; for(const fld of ['yell','notes','yt','box','ryell','ylog','rylog','sch','fcb']){ const src=u.extra[fld]||{}; if(!Object.keys(src).length) continue; S.month[fld]=S.month[fld]||{}; px[fld]={}; for(const k in src){if(src[k]==null)delete S.month[fld][k];else S.month[fld][k]=src[k];px[fld][k]=src[k]} } if(Object.keys(px).length) queueMonth(u.ym,px); if(S.month.sch) for(const ok in S.month.sch){const r=S.month.sch[ok]; for(const d in r){ if(r[d]==null) delete r[d]; else r[d]=schNorm(r[d])||{} } if(!Object.keys(r).length) delete S.month.sch[ok]} }
   undo=null; updHist(); rerender();
   const n=undoStack.filter(x=>x.ym===S.ym).length;
   showToast(`元に戻しました${n?`（あと${n}回戻せます）`:''}`,false);
@@ -1991,18 +2135,22 @@ function edit(f,o,d,action){
   else if(action==='reset'){ if(!prev) return; putE(f,o,d,{c:1,m:0}); msg=`${d}日の時間を0分に戻しました` }
   else if(action==='copy'){ const pv=d>1?getE(f,o,d-1):null; if(!pv) return; if(prev&&prev.m===pv.m) return; putE(f,o,d,{c:1,m:pv.m}); msg=`${d}日を前日と同じ${clock(pv.m)}にしました` }
   else if(String(action).startsWith('set:')){ const m=Math.max(0,Math.min(1440,+action.slice(4)||0)); if(prev&&m===prev.m) return; if(!prev&&m===0){putE(f,o,d,{c:1,m:0});msg=`${d}日を稼いだ日にしました`} else {putE(f,o,d,{c:1,m});msg=`${d}日を${clock(m)}にしました`} }
-  else { const add=Number(action); const m=Math.max(0,Math.min(1440,e.m+add)); if(prev&&m===prev.m) return; putE(f,o,d,{c:1,m}); msg=`${d}日 +${add}分（${clock(m)}）` }
+  else { const add=Number(action); if(!Number.isFinite(add)||(add<0&&!prev)) return; const m=Math.max(0,Math.min(1440,e.m+add)); if(prev&&m===prev.m) return; putE(f,o,d,{c:1,m}); msg=`${d}日 ${add<0?'−':'+'}${Math.abs(add)}分（${clock(m)}）` }
   pushUndo({ym:S.ym,items:[{f,o,d,prev}]});
   if(famDayTotal(f,d)>1440) msg+=' ⚠ この日の自分垢の合計が24時間を超えています';
   { const now=new Date(), c=curYM(); if(S.ym>c||(S.ym===c&&d>now.getDate())) msg+='（明日以降の日付です）'; }
   const r0=Object.assign({},S.month.records[pk(f,o)]||{}); if(prev) r0[d]=prev; else delete r0[d];
   const wasAch=isAch(pairStats(r0,o),f), nowAch=isAch(pairStats(S.month.records[pk(f,o)],o),f);
-  if(!wasAch&&nowAch) msg+=' ― 目標達成しました';
+  if(!wasAch&&nowAch){ msg+=' ― 目標達成しました'; celebrate() }
   const rk=pk(f,o); S.recent=[rk,...S.recent.filter(k=>k!==rk)].slice(0,8); ls.set('pk:recent',S.recent);
   showToast(`${pad(PF(f)+1)}→${pad(PO(o)+1)}：${msg}`);
   rerender();
 }
-function showToast(msg,canUndo=true){$('toastMsg').textContent=msg;$('undoBtn').hidden=!canUndo;$('toast').hidden=false;clearTimeout(toastT);toastT=setTimeout(hideToast,6000)}
+function celebrate(){ try{ if(matchMedia('(prefers-reduced-motion: reduce)').matches) return }catch(e){} const old=document.querySelector('.cfx'); if(old) old.remove();
+  const box=document.createElement('div'); box.className='cfx'; box.setAttribute('aria-hidden','true'); const cols=['var(--accent)','var(--time)','var(--ok)','#f5a524','#b69cff'];
+  for(let i=0;i<28;i++){ const sp=document.createElement('i'); sp.style.cssText=`left:${5+Math.random()*90}%;background:${cols[i%cols.length]};animation-delay:${Math.random()*.25}s;--dx:${(Math.random()*2-1)*60}px;--rt:${Math.random()*720-360}deg`; box.appendChild(sp) }
+  document.body.appendChild(box); setTimeout(()=>box.remove(),1800) }
+function showToast(msg,canUndo=true){$('toastMsg').textContent=msg;$('undoBtn').hidden=!canUndo;const t=$('toast');t.hidden=false;t.classList.remove('tin');void t.offsetWidth;t.classList.add('tin');clearTimeout(toastT);toastT=setTimeout(hideToast,Math.max(canUndo?6000:3500,Math.min(9000,2500+String(msg).length*70)))}
 function hideToast(){$('toast').hidden=true;undo=null;clearTimeout(toastT)}
 $('undoBtn').onclick=()=>doUndo();
 function rerender(){updJump&&updJump();renderEom();if(S.tab==='rec')renderRec();else if(S.tab==='day')renderDay();else if(S.tab==='sum')renderSum();else if(S.tab==='list'&&typeof renderOiCal==='function')renderOiCal();alignHeads()}
@@ -2023,7 +2171,7 @@ function renderMonth(){
 }
 function renderTabs(){
   for(const t of TABS){
-    $('tab-'+t).setAttribute('aria-selected',S.tab===t);
+    $('tab-'+t).setAttribute('aria-selected',S.tab===t); $('tab-'+t).tabIndex=S.tab===t?0:-1;
     $('p-'+t).hidden=S.tab!==t;
   }
   if(S.tab!=='rec'&&S.tab!=='day'){ $('qpanel').hidden=true; document.body.classList.remove('haspanel'); }
@@ -2032,7 +2180,9 @@ function renderTabs(){
   if(S.tab!=='rec'&&$('days').childElementCount) $('days').innerHTML='';
 }
 const addBtns=()=>ADDS.map(n=>`<button class="plus" data-a="${n}" aria-label="${n}分増やす">+${n}</button>`).join('');
-const loadingHtml='<div class="loading">読み込み中…</div>';
+const loadingHtml='<div class="skel" role="status" aria-label="読み込み中"><i></i><i></i><i></i><i></i><span class="sr">読み込み中…</span></div>';
+function renderGs(){ const el=$('gsCard'); if(!el) return; const M=S.month, empty=S.mLoaded&&!Object.keys(M.records||{}).length&&!Object.keys(M.yt||{}).length&&!Object.keys(M.yell||{}).length&&S.lists.family.every((_,i)=>isDefName('family',i));
+  el.hidden=!empty||!!ls.get('pk:gsx') }
 function renderRec(){
   fillSelect($('selFam'),famName,S.fam);
   fillSelect($('selOth'),othName,S.oth);
@@ -2069,7 +2219,7 @@ function renderRec(){
 
   const sb=$('sbar'); sb.className='sbar'+(okD&&okM?' ach':'');
   sb.innerHTML=`<span class="nm">${esc(famName(F))} <span class="to">→</span> ${esc(othName(S.oth))}${patTag(F,S.oth)}</span><span class="st">${GD?st.days+'/'+GD+'日':st.days+'日'}・${clock(st.min)}/${clock(GM)}${(c=>c[0]||c[1]?`・BOX1 ${c[0]}回・BOX2 ${c[1]}回`:'')(boxCount(pk(F,S.oth)))}</span><button id="pinBtn" class="pin${S.pins.includes(pk(F,S.oth))?' on':''}" aria-pressed="${S.pins.includes(pk(F,S.oth))}" aria-label="この組み合わせを上に固定">${S.pins.includes(pk(F,S.oth))?'★':'☆'}</button><button id="recOnlyBtn" aria-pressed="${!!S.recOnly}" aria-label="記録した日だけ表示" title="記録した日だけ表示">${S.recOnly?'✓ ':''}記録日だけ</button>${S.ym===curYM()?'<button id="jumpToday" aria-label="今日の行へ">今日</button>':''}<button id="modeBtn" aria-label="表示の切り替え">${S.compact?'詳細':'かんたん'}</button>`;
-  renderRecent(); renderRInfo(); renderTodo(); renderYGraph(); renderSched(); renderCarry(); updDline();
+  renderGs(); renderRecent(); renderRInfo(); renderTodo(); renderYGraph(); renderSched(); renderCarry(); updDline();
   if(!S.mLoaded){$('days').innerHTML=loadingHtml;renderPanel();return}
   const {y,m,days}=ymParts(S.ym);
   const today=new Date(); const isCur=S.ym===curYM();
@@ -2140,7 +2290,7 @@ function renderPanel(){
       <button class="rst" data-a="reset"${e&&e.m?'':' disabled'}>リセット</button>
       <button class="qmin" id="qMin" aria-label="入力パネルを小さくする">▾</button></div>
     <div class="qh2"><select id="qsel" aria-label="${m}月${d}日の時間を選ぶ">${ex}${TOPTS}</select>
-      <button class="qcopy" data-a="copy"${pv&&!(e&&e.m===pv.m)?'':' disabled'} aria-label="前日と同じ時間にする">前日と同じ${pv?`<br><small>${clock(pv.m)}</small>`:''}</button>${(g=>g?`<button class="qcopy qguide${g.ok?' ok':''}" data-a="set:${g.per}"${cur===g.per?' disabled':''} aria-label="1日の目安${clock(g.per)}にする">目安に<br><small>${clock(g.per)}</small></button>`:'')(dayGuide(c.f,c.o,d))}</div>
+      <button class="qcopy" data-a="copy"${pv&&!(e&&e.m===pv.m)?'':' disabled'} aria-label="前日と同じ時間にする">前日と同じ${pv?`<br><small>${clock(pv.m)}</small>`:''}</button><button class="qcopy qminus" data-a="-5"${e&&e.m>=5?'':' disabled'} aria-label="5分減らす">−5</button>${(g=>g?`<button class="qcopy qguide${g.ok?' ok':''}" data-a="set:${g.per}"${cur===g.per?' disabled':''} aria-label="1日の目安${clock(g.per)}にする">目安に<br><small>${clock(g.per)}</small></button>`:'')(dayGuide(c.f,c.o,d))}</div>
     <div class="qb">${addBtns()}</div>
     <div class="qbox"><span>ボックス開封</span>${boxHtml(pk(c.f,c.o),d)}</div>
     <div class="qswipe"${S.swiped?' hidden':''}>パネルを左右にスワイプで日付移動</div>`;
@@ -2195,12 +2345,12 @@ function renderDay(){
   if(S.dayTodo){const R0=S.month.records;keys.sort((a,b)=>(!!(R0[a]&&R0[a][d]))-(!!(R0[b]&&R0[b][d])))}
   // 自分垢ごとの見出し（番号順・自分垢の絞り込みなしのとき）
   const group=S.daySort==='num'&&S.dayFam==='all'&&keys.length>1&&new Set(keys.map(k=>parsePk(k)[0])).size>1;
-  const allKeys=keys.slice(), fold=group?(S.dayFold||[]):[];
+  const allKeys=keys.slice(), fold=group?(S.dayFold||[]):[], FC=famCoinPlan(), FCX=FC.nx;
   if(fold.length) keys=keys.filter(k=>S.pins.includes(k)||!fold.includes(parsePk(k)[0]));
   { let n=0,min=0,bx=0; for(const k of allKeys){const e=(S.month.records[k]||{})[d];if(e){n++;min+=e.m||0} if(boxOf(k,d)) bx++}
     { const fs=[...new Set(allKeys.map(k=>parsePk(k)[0]))].sort((a,b)=>PF(a)-PF(b));
       $('famDay').hidden=group;
-      $('famDay').innerHTML=fs.map(f=>{const t=famDayTotal(f,d);return t?`<span class="${t>1440?'over':''}">${esc(famName(f))} ${clock(t)}${t>1440?' ⚠24時間超え':''}</span>`:''}).join(''); }
+      $('famDay').innerHTML=fs.map(f=>{const t=famDayTotal(f,d), c=FC[f];return t||c?`<span class="${t>1440?'over':''}">${esc(famName(f))}${t?' '+clock(t):''}${t>1440?' ⚠24時間超え':''}${c?`<em class="fcn" data-f="${f}" data-fcopen="${f}" role="button" tabindex="0" title="${c.n}組（${esc(fcSrc(c))}）の目標エールに必要なコインの合計">必要コイン ${cfmt(c.need)}${fcRest(c)?`（残り ${cfmt(fcRest(c))}）`:'（達成 ✓）'}</em>`:''}</span>`:''}).join(''); }
     const pct=allKeys.length?Math.round(n/allKeys.length*100):0;
     $('daySum').innerHTML=`<span>この日：<b>${n}</b>/${allKeys.length}組 記録</span><span>合計 <b>${hm(min)}</b></span><span class="todo">未入力 <b>${allKeys.length-n}</b>組</span>${bx?`<span>BOX開封 <b>${bx}</b>組</span>`:''}<button type="button" class="btn sm2" id="dayCopy"${n?'':' disabled'}>この日をコピー</button><span class="dsbar" role="progressbar" aria-label="この日の記録の進み具合" aria-valuemin="0" aria-valuemax="${allKeys.length}" aria-valuenow="${n}"><i style="width:${pct}%"></i></span>`;
     const dn=$('dnProg'); dn.style.setProperty('--p',pct+'%'); dn.classList.toggle('ok',pct===100&&n>0); dn.title=`この日 ${n}/${allKeys.length}組 記録`; }
@@ -2209,7 +2359,7 @@ function renderDay(){
   if(!S.dpk||!keys.includes(S.dpk)) S.dpk=keys[0]||null;
   let lastF=-1, inPin=false;
   const grpHead=f=>{const ks=allKeys.filter(k=>parsePk(k)[0]===f&&!S.pins.includes(k)), R=S.month.records, n=ks.filter(k=>(R[k]||{})[d]).length, mn=ks.reduce((a,k)=>a+(((R[k]||{})[d]||{}).m||0),0), t=famDayTotal(f,d), fo=fold.includes(f);
-    return `<button type="button" class="pgrp${fo?' fold':''}${n===ks.length?' full':''}" data-fold="${f}" aria-expanded="${!fo}"><span class="ga" aria-hidden="true"></span><b>${esc(famName(f))}</b><span class="gs">記録 ${n}/${ks.length}組・${clock(mn)}${t>1440?'<em>⚠この日24時間超え</em>':''}</span></button>`};
+    return `<button type="button" class="pgrp${fo?' fold':''}${n===ks.length?' full':''}" data-fold="${f}" aria-expanded="${!fo}"><span class="ga" aria-hidden="true"></span><b>${esc(famName(f))}</b><span class="gs">記録 ${n}/${ks.length}組・${clock(mn)}${FC[f]?`<span class="gcn" title="${FC[f].n}組（${esc(fcSrc(FC[f]))}）の目標エールに必要なコインの合計">・必要コイン ${cfmt(FC[f].need)}${fcRest(FC[f])?`（残り ${cfmt(fcRest(FC[f]))}）`:'（達成 ✓）'}</span>`:FCX[f]?'<span class="gcn x" title="達成条件がカスタム（エール段階なし）でエール目標もないため、必要コインを計算できません">・必要コイン 計算外</span>':''}${t>1440?'<em>⚠この日24時間超え</em>':''}</span></button>`};
   const dm=S.month.records;
   for(const k of (group?allKeys:keys)){ const [f,o]=parsePk(k), pinned=S.pins.includes(k);
     if(group){ if(pinned&&!inPin){h+='<div class="pgrp pin" role="presentation"><b>★ 固定した組み合わせ</b></div>';inPin=true}
@@ -2268,6 +2418,35 @@ function renderYProg(k,f){
 function coinEst(v,f,o){ if(v==null) return null; const t=yellTier(v).cur; if(!t) return {coin:0,t:null,c:1};
   const c=gC(f,undefined,o)===2&&t.c2?2:1; return {coin:c===2?t.c2:t.c1,t,c} }
 const cfmt=n=>n.toLocaleString('ja-JP');
+// 自分垢ごとの月の目標エールに対する必要コイン（目安）
+// 目標：組み合わせのエール目標が入っていればその目標、なければ達成条件のエール段階（条件パターンがあればその段階）
+function coinAt(v,f,o,mo){ const t=yellTier(v).cur; if(!t) return {coin:0,t:null,c:1}; const c=gC(f,mo,o)===2&&t.c2?2:1; return {coin:c===2?t.c2:t.c1,t,c} }
+// 計算は1回の描画の間だけ使い回す（同じ描画の中で何度呼んでも速い・次の操作では必ず計算し直す）
+var fcCache=new Map();
+function famCoinPlanAll(mo){
+  const hit=fcCache.get(mo); if(hit) return hit;
+  const cur=mo===S.month, by={}, nxo={};
+  const keys=new Set([...Object.keys(mo.records||{}),...Object.keys(mo.yell||{}),...Object.keys(mo.yt||{}),...Object.keys(mo.box||{}),...Object.keys(mo.ryell||{}),...(cur?(S.extra||[]):[])]);
+  for(const k of keys){ const p=parsePk(k); if(!p) continue; const [f,o]=p;
+    let tv=ytOf(k,mo), src='y'; if(tv==null){ const t=gT(f,mo,o); if(!t){ (nxo[f]=nxo[f]||[]).push(o); continue } tv=tierY(t.k); src='c' }
+    const te=coinAt(tv,f,o,mo), yv=(mo.yell||{})[k], v=Number.isInteger(yv)?yv:null, ce=v!=null?coinAt(v,f,o,mo):null, used=ce?Math.min(ce.coin,te.coin):0;
+    (by[f]=by[f]||[]).push({o,k,tv,src,t:te.t,c:te.c,need:te.coin,used,v,ok:v!=null&&v>=tv,na:!ce}) }
+  for(const f in by) by[f].sort((a,b)=>PO(a.o)-PO(b.o));
+  const res={by,nxo}; fcCache.set(mo,res); if(fcCache.size===1) queueMicrotask(()=>fcCache.clear()); return res }
+function famCoinPlan(filt,mo){
+  const {by:all,nxo}=famCoinPlanAll(mo||S.month), by={}, nx={};
+  for(const f in all){ const fi=+f, rows=filt?all[f].filter(r=>filt(fi,r.o)):all[f]; if(!rows.length) continue;
+    const b={n:0,ny:0,nc:0,need:0,used:0,na:0,rows}; for(const r of rows){ b.n++; if(r.src==='y') b.ny++; else b.nc++; b.need+=r.need; b.used+=r.used; if(r.na) b.na++ } by[f]=b }
+  for(const f in nxo){ const n=filt?nxo[f].filter(o=>filt(+f,o)).length:nxo[f].length; if(n) nx[f]=n }
+  Object.defineProperty(by,'nx',{value:nx,enumerable:false}); return by }
+// 月末までの残り日数（今日を含む）と、1日あたりの目安コイン
+function fcLeft(){ const {days}=ymParts(S.ym), c=curYM(); return S.ym===c?days-new Date().getDate()+1:S.ym>c?days:0 }
+const fcPer=rest=>{const l=fcLeft(); return l>0&&rest>0?Math.ceil(rest/l):0};
+const fcSrcS=b=>[b.ny?`目標${b.ny}`:'',b.nc?`条件${b.nc}`:''].filter(Boolean).join('・');
+const fcRest=b=>Math.max(0,b.need-b.used);
+const fcTgt=r=>r.src==='y'?`目標${yfmt(r.tv)}`:`エール${r.t?r.t.k:yfmt(r.tv)}・条件${r.c}`;
+const fcDiff=(a,b)=>{const d=a-b; return d?`${d>0?'+':'−'}${cfmt(Math.abs(d))}`:'±0'};
+const fcSrc=b=>[b.ny?`目標${b.ny}組`:'',b.nc?`条件${b.nc}組`:''].filter(Boolean).join('・');
 // 条件（エール段階）と実際に取ったエール数を並べて表示
 function condYell(f,o){const t=gT(f,undefined,o), v=yellOf(pk(f,o)), tv=t?tierY(t.k):null; return {t,v,tv,ok:t&&v!=null&&v>=tv}}
 function condYellTag(f,o,wide){
@@ -2285,7 +2464,7 @@ function ryTag(k){const t=rytOf(k), v=ryellOf(k); if(t==null&&v==null) return ''
   return ` <span class="cyt ry${ok?' ok':''}">相手 <b>${yfmt(vv)}</b>${t!=null?` / 目標 ${yfmt(t)}${ok?' ✓':`（あと${yfmt(t-vv)}）`}`:''}</span>`}
 function rybxHtml(k){return `<div class="rybx"><span class="ryh2" title="他人垢が自分垢の配信で取るエール">相手エール</span><label>現在<input type="text" data-ry="ryell" data-pkey="${k}" value="${ryVal(ryellOf(k))}" inputmode="decimal" enterkeyhint="done" autocomplete="off" maxlength="12" aria-label="他人垢が自分垢で取った現在のエール（k）"><span class="yu">k</span></label><span class="ryst">${ryStatus(k)}</span><span class="rymsg"></span></div>`}
 function renderRInfo(){
-  const el=$('rinfo'); if(!el) return; const F=S.fam,O=S.oth,k=pk(F,O),rec=S.month.records[k]||{},st=pairStats(rec,O),GD=gD(F,undefined,O),GM=gM(F,undefined,O);
+  const el=$('rinfo'); if(!el) return; if(!S.mLoaded){ el.innerHTML=loadingHtml; return } const F=S.fam,O=S.oth,k=pk(F,O),rec=S.month.records[k]||{},st=pairStats(rec,O),GD=gD(F,undefined,O),GM=gM(F,undefined,O);
   const {days}=ymParts(S.ym), cur=S.ym===curYM(), fut=S.ym>curYM(), t=new Date().getDate();
   const last=Object.keys(rec).map(Number).sort((a,b)=>b-a)[0];
   const yv=yellOf(k), tg=yTarget(k,F), c=condYell(F,O), te=tg?coinEst(tg.v,F,O):null, ce=coinEst(yv??0,F,O);
@@ -2307,14 +2486,22 @@ function renderRInfo(){
     ['エール目標',tg?yfmt(tg.v):'0',tg&&(yv??0)>=tg.v?'ok':''],
     ['必要コイン',te?cfmt(te.coin):'—',''],
     ['残りコイン',te?cfmt(Math.max(0,te.coin-ce.coin)):'—',te&&ce.coin>=te.coin?'ok':''],
+    ...(()=>{ const fc=famCoinPlan(f=>f===F)[F], pf=S.prevMonth?famCoinPlan(f=>f===F,S.prevMonth)[F]:null, r=fc?fcRest(fc):0, per=fcPer(r), op=!!S.fcOpen;
+      return [['自分垢の必要コイン計'+(fc?(op?' ▴':' ▾'):''),fc?cfmt(fc.need):'—','w fcb',fc?`${fc.n}組（${fcSrc(fc)}）の目標エールに必要なコインの合計。押すと内訳`:'この自分垢の今月の組み合わせがありません',fc?`${fc.n}組${pf?`・先月 ${cfmt(pf.need)}（${fcDiff(fc.need,pf.need)}）`:''}`:'',!!fc],
+        ['自分垢の残りコイン計',fc?(r?cfmt(r):'達成'):'—',fc&&!r?'ok w':'w',fc?`使った目安 ${cfmt(fc.used)}${fc.na?`（エール未入力${fc.na}組）`:''}`:'',fc?(r?(per?`1日あたり ${cfmt(per)}（残り${fcLeft()}日）`:'締め済み'):`使った目安 ${cfmt(fc.used)}`):'']] })(),
     ['相手エール',yfmt(rv),rt&&rv>=rt?'ok':''],
     ['相手目標',rt?yfmt(rt):'0',''],
     ['BOX開封',`①${bc[0]} ②${bc[1]}`,''],
     ...(()=>{const pm=S.prevMonth, pr=pm?(pm.records[k]||{}):{}, ps=pairStats(pr,O), py=pm?(pm.yell||{})[k]:undefined, dm=st.min-ps.min;
       return [['先月 日数・時間',pm?`${ps.days}日・${clock(ps.min)}`:'—',''],['先月エール',py!=null?yfmt(py):'—',''],['先月比 時間',pm?`${dm>=0?'+':'−'}${clock(Math.abs(dm))}`:'—',pm&&dm>=0?'ok':'']]})(),
   ];
-  el.innerHTML=`<div class="rih"><b>${ymParts(S.ym).m}月度のまとめ</b><span class="rihr">${badge(st,F)}<button type="button" class="btn sm2" id="recCopy"${st.days||yv!=null?"":" disabled"}>コピー</button></span></div><div class="rig">`+T.map(([l,v,c2])=>`<div class="rit ${c2}"><span>${l}</span><b>${String(v).replace(/\//g,'/<wbr>')}</b></div>`).join('')+'</div>';
+  el.innerHTML=`<div class="rih"><b>${ymParts(S.ym).m}月度のまとめ</b><span class="rihr">${badge(st,F)}<button type="button" class="btn sm2" id="recCopy"${st.days||yv!=null?"":" disabled"}>コピー</button></span></div><div class="rig">`+T.map(([l,v,c2,tt,sub,act])=>`<div class="rit ${c2}"${tt?` title="${esc(tt)}"`:''}${act?` role="button" tabindex="0" data-fco aria-expanded="${!!S.fcOpen}"`:''}><span>${l}</span><b>${String(v).replace(/\//g,'/<wbr>')}</b>${sub?`<small>${esc(sub)}</small>`:''}</div>`).join('')+'</div>'+fcListHtml(F,O);
 }
+function fcListHtml(F,O){ if(!S.fcOpen) return ''; const fc=famCoinPlan(f=>f===F)[F]; if(!fc) return '';
+  return `<div class="fcl" aria-label="${esc(famName(F))}の必要コインの内訳">${fc.rows.map(r=>`<button type="button" class="ycp${r.ok?' ok':''}${r.o===O?' cur':''}" data-fco-o="${r.o}"><span class="yn">${esc(othName(r.o))}</span><span class="yt">${fcTgt(r)}${r.src==='c'?'<i>達成条件</i>':''}</span><span class="yv">必要 <b>${cfmt(r.need)}</b></span><span class="yu2">${!r.t?'最初の段階（0.01k）より下のため0コイン':r.v==null?'エール未入力':`今 ${yfmt(r.v)}・${r.ok?'届いています ✓':'残り '+cfmt(r.need-r.used)}`}</span></button>`).join('')}<button type="button" class="btn sm2" data-fcopen="${F}">この自分垢の必要コインを詳しく見る・目標を変える</button></div>` }
+$('rinfo').addEventListener('click',ev=>{ const o=ev.target.closest('[data-fco-o]'); if(o){ S.oth=+o.dataset.fcoO; savePref(); renderRec(); return }
+  if(ev.target.closest('[data-fco]')){ S.fcOpen=!S.fcOpen; renderRInfo() } });
+$('rinfo').addEventListener('keydown',ev=>{ const t=ev.target.closest&&ev.target.closest('[data-fco]'); if(t&&(ev.key==='Enter'||ev.key===' ')){ ev.preventDefault(); S.fcOpen=!S.fcOpen; renderRInfo(); const n=$('rinfo').querySelector('[data-fco]'); if(n) n.focus() } });
 function rowYellHtml(k){
   const tv=ytOf(k), yv=yellOf(k);
   return `<div class="ryell" data-k="${k}"><span class="ryh">エール</span>
@@ -2375,15 +2562,146 @@ function yellHtml(v,f){
   return h;
 }
 // 自分垢ごと：エール目標に必要なコイン（目安）の合計と、実際のエールからのコイン目安
-function renderYCoin(rows){
-  const by={}; for(const r of rows){const t=by[r.f]||(by[r.f]={n:0,tc:0,ac:0,na:0}); t.n++; t.tc+=r.tc.coin; if(r.ac) t.ac+=Math.min(r.ac.coin,r.tc.coin); else t.na++}
-  const fs=Object.keys(by).map(Number).sort((a,b)=>PF(a)-PF(b)); const el=$('tYCoin'); $('yCoinWrap').hidden=!fs.length; if(!fs.length){el.innerHTML='';return}
-  const T={n:0,tc:0,ac:0,na:0}; let h='<tr><th>自分垢</th><th class="r">目標に必要</th><th class="r">使った目安</th><th class="r">あと</th></tr>';
-  for(const f of fs){const t=by[f]; for(const k in T) T[k]+=t[k];
-    h+=`<tr class="${t.ac>=t.tc?'ok':''}"><td>${esc(famName(f))}<small>${t.n}組</small></td><td class="r">${cfmt(t.tc)}</td><td class="r">${cfmt(t.ac)}${t.na?`<small>未入力${t.na}組</small>`:''}</td><td class="r">${t.ac>=t.tc?'<span class="ystat ok">達成 ✓</span>':cfmt(t.tc-t.ac)}</td></tr>`}
-  h+=`<tr class="trow"><td>合計<small>${T.n}組</small></td><td class="r">${cfmt(T.tc)}</td><td class="r">${cfmt(T.ac)}</td><td class="r">${T.ac>=T.tc?'達成 ✓':cfmt(T.tc-T.ac)}</td></tr>`;
-  el.innerHTML=h;
+{ const pr=ls.get('pk:pref')||{}; S.ycSort=['num','need','rest'].includes(pr.ycs)?pr.ycs:'num'; S.ycOpen=new Set(); }
+const ycFilt=()=>{const sq=dayKana(S.sumQ||''); return (f,o)=>(S.sumFam==='all'||f===+S.sumFam)&&(S.sumOth==='all'||o===+S.sumOth)&&(!sq||dayHit(sq,f,o))};
+function fcBar(b){const p=b.need?Math.min(100,Math.floor(b.used/b.need*100)):100; return `<span class="ycb" role="progressbar" aria-label="使った目安の割合" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${p}"><i style="width:${p}%"></i></span><small>${p}%</small>`}
+function renderYCoin(){
+  const filt=ycFilt(), by=famCoinPlan(filt), nx=by.nx, pv=S.prevMonth?famCoinPlan(filt,S.prevMonth):null, el=$('tYCoin');
+  const fs=Object.keys(by).map(Number), nxAll=Object.values(nx).reduce((a,b)=>a+b,0);
+  $('yCoinWrap').hidden=!fs.length&&!nxAll; $('gNeedT').hidden=!fs.length;
+  if(!fs.length){ el.innerHTML=nxAll?`<tr><td class="empty">達成条件がカスタム（エール段階なし）でエール目標もない組み合わせが${nxAll}組あるため、必要コインを計算できません</td></tr>`:''; $('ycTools').innerHTML=''; return }
+  const srt={need:(a,b)=>by[b].need-by[a].need,rest:(a,b)=>fcRest(by[b])-fcRest(by[a])}[S.ycSort]; fs.sort((a,b)=>(srt?srt(a,b):0)||PF(a)-PF(b));
+  const left=fcLeft(), T={n:0,ny:0,nc:0,need:0,used:0,na:0}, allOpen=fs.every(f=>S.ycOpen.has(f));
+  $('ycTools').innerHTML=`<label class="hint">並び順 <select class="sm" id="ycSort" aria-label="自分垢の並び順"><option value="num"${S.ycSort==='num'?' selected':''}>番号順</option><option value="need"${S.ycSort==='need'?' selected':''}>必要コインが多い順</option><option value="rest"${S.ycSort==='rest'?' selected':''}>残りが多い順</option></select></label><button type="button" class="btn sm2" id="ycAll">${allOpen?'内訳を全部たたむ':'内訳を全部開く'}</button><button type="button" class="btn sm2" id="ycCopy">コイン一覧をコピー</button>${left?`<span class="hint">月末まで残り${left}日</span>`:''}`;
+  let h='<tr><th>自分垢</th><th class="r">目標に必要</th><th class="r">使った目安</th><th class="r">あと</th></tr>';
+  for(const f of fs){ const t=by[f], ok=t.used>=t.need, open=S.ycOpen.has(f), rest=fcRest(t), per=fcPer(rest), p0=pv&&pv[f];
+    for(const k in T) if(typeof T[k]==='number') T[k]+=t[k];
+    h+=`<tr class="go ycr${ok?' ok':''}" data-yx="${f}" aria-expanded="${open}" tabindex="0"><td><span class="yca" aria-hidden="true"></span>${esc(famName(f))}<small>${t.n}組（${fcSrcS(t)}）</small>${nx[f]?`<small>計算外${nx[f]}組</small>`:''}</td><td class="r">${cfmt(t.need)}${p0?`<small>先月 ${cfmt(p0.need)}（${fcDiff(t.need,p0.need)}）</small>`:''}</td><td class="r">${cfmt(t.used)}${t.na?`<small>未入力${t.na}組</small>`:''}</td><td class="r yrest">${ok?'<span class="ystat ok">達成 ✓</span>':cfmt(rest)}${per?`<small>1日 ${cfmt(per)}</small>`:''}${fcBar(t)}</td></tr>`;
+    if(open) h+=`<tr class="ycd"><td colspan="4"><div class="ycdl">${t.rows.map(r=>`<button type="button" class="ycp${r.ok?' ok':''}" data-ycgo="${r.k}"><span class="yn">${esc(othName(r.o))}</span><span class="yt">${fcTgt(r)}${r.src==='c'?'<i>達成条件</i>':''}</span><span class="yv">必要 <b>${cfmt(r.need)}</b></span><span class="yu2">${!r.t?'最初の段階（0.01k）より下のため0コイン':r.v==null?'エール未入力':`今 ${yfmt(r.v)}・${r.ok?'届いています ✓':'残り '+cfmt(r.need-r.used)}`}</span></button>`).join('')}${nx[f]?`<p class="hint">ほかに${nx[f]}組は達成条件がカスタム（エール段階なし）でエール目標もないため計算していません。</p>`:''}<span class="ycbtns"><button type="button" class="btn sm2" data-fcpick="${f}">1人ごとの画面で見る</button><button type="button" class="btn sm2" data-ycf="${f}">${S.sumFam===String(f)?'絞り込みを外す':'この自分垢で絞り込む'}</button></span></div></td></tr>`;
+  }
+  const TT=Object.assign({},T), pT=pv?Object.keys(pv).reduce((a,f)=>a+pv[f].need,0):0;
+  h+=`<tr class="trow"><td>合計<small>${fs.length}人・${T.n}組</small><small>（${fcSrcS(T)}）</small>${nxAll?`<small>計算外${nxAll}組</small>`:''}</td><td class="r">${cfmt(T.need)}${pv&&Object.keys(pv).length?`<small>先月 ${cfmt(pT)}（${fcDiff(T.need,pT)}）</small>`:''}</td><td class="r">${cfmt(T.used)}</td><td class="r yrest">${T.used>=T.need?'達成 ✓':cfmt(fcRest(TT))}${fcPer(fcRest(TT))?`<small>1日 ${cfmt(fcPer(fcRest(TT)))}</small>`:''}${fcBar(TT)}</td></tr>`;
+  el.innerHTML=h; $('gNeed').textContent=cfmt(T.need);
 }
+function fcText(){ const by=famCoinPlan(ycFilt()), {m}=ymParts(S.ym), fs=Object.keys(by).map(Number).sort((a,b)=>PF(a)-PF(b)); if(!fs.length) return '';
+  let t=`【${m}月度 自分垢ごとの目標エールに必要なコイン（目安）】\n`, N2=0, U=0, n=0;
+  for(const f of fs){ const b=by[f], r=fcRest(b), per=fcPer(r); N2+=b.need; U+=b.used; n+=b.n;
+    t+=`\n■ ${famName(f)}　必要 ${cfmt(b.need)}／使った目安 ${cfmt(b.used)}／${r?`あと ${cfmt(r)}${per?`（1日 ${cfmt(per)}）`:''}`:'達成'}\n`;
+    for(const x of b.rows) t+=`・${othName(x.o)}　${fcTgt(x)} → ${cfmt(x.need)}コイン（${!x.t?'段階前':x.v==null?'エール未入力':`今 ${yfmt(x.v)}${x.ok?' ✓':'・残り '+cfmt(x.need-x.used)}`}）\n` }
+  return t+`\n合計 必要 ${cfmt(N2)}／使った目安 ${cfmt(U)}／あと ${cfmt(Math.max(0,N2-U))}（${fs.length}人・${n}組）\n※コアファン条件表の必要コインからの目安です\n\n© Yoshi1012 無断転載・転用・再配布禁止` }
+$('tYCoin').addEventListener('click',ev=>{
+  const g=ev.target.closest('[data-ycgo]'); if(g){ const p=parsePk(g.dataset.ycgo); if(!p) return; S.fam=p[0]; S.oth=p[1]; S.tab='rec'; savePref(); render(); window.scrollTo(0,0); return }
+  const fb=ev.target.closest('[data-ycf]'); if(fb){ const v=fb.dataset.ycf; S.sumFam=S.sumFam===v?'all':v; savePref(); renderSum(); undo=null; showToast(S.sumFam==='all'?'絞り込みを外しました':`${famName(+v)}で絞り込みました`,false); return }
+  const tr=ev.target.closest('tr[data-yx]'); if(!tr) return; const f=+tr.dataset.yx; if(S.ycOpen.has(f)) S.ycOpen.delete(f); else S.ycOpen.add(f); renderYCoin();
+  const nr=$('tYCoin').querySelector(`tr[data-yx="${f}"]`); if(nr) nr.focus({preventScroll:true}) });
+$('tYCoin').addEventListener('keydown',ev=>{ const tr=ev.target.closest&&ev.target.closest('tr[data-yx]'); if(tr&&ev.target===tr&&(ev.key==='Enter'||ev.key===' ')){ev.preventDefault(); tr.click()} });
+$('ycTools').addEventListener('change',ev=>{ if(ev.target.id!=='ycSort') return; S.ycSort=ev.target.value; savePref(); renderYCoin() });
+$('ycTools').addEventListener('click',ev=>{
+  if(ev.target.id==='ycAll'){ const fs=Object.keys(famCoinPlan(ycFilt())).map(Number), all=fs.every(f=>S.ycOpen.has(f)); S.ycOpen=all?new Set():new Set(fs); renderYCoin(); return }
+  if(ev.target.id==='ycCopy'){ const t=fcText(); if(!t) return; $('copyText').value=t;
+    const fb=()=>{ $('copyBox').hidden=false; const ta=$('copyText'); ta.focus(); ta.select(); ta.setSelectionRange(0,t.length) };
+    try{ navigator.clipboard.writeText(t).then(()=>{ $('copyBox').hidden=true; undo=null; showToast('自分垢ごとの必要コインをコピーしました',false) },fb) }catch(e){ fb() } } });
+/* ---------- 自分垢1人ごとの必要コイン ---------- */
+{ const pr=ls.get('pk:pref')||{}; S.fcF=vIdx(pr.fcf)?pr.fcf:null; S.fcSort=['oth','need','rest'].includes(pr.fcs)?pr.fcs:'oth'; }
+function fcKeys(f){ const M=S.month; return [...new Set([...Object.keys(M.records||{}),...Object.keys(M.yell||{}),...Object.keys(M.yt||{}),...Object.keys(M.box||{}),...Object.keys(M.ryell||{}),...(S.extra||[])])].filter(k=>{const p=parsePk(k); return p&&p[0]===f}) }
+function fcFams(){ const by=famCoinPlan(), st=new Set([...Object.keys(by),...Object.keys(by.nx)].map(Number)); return S.order.family.filter(f=>st.has(f)) }
+function fcCur(){ const fs=fcFams(); let f=S.fcF; if(f==null||!fs.includes(f)) f=S.sumFam!=='all'&&fs.includes(+S.sumFam)?+S.sumFam:fs.includes(S.fam)?S.fam:(fs.length?fs[0]:null); return {f,fs} }
+function fcOpenFor(f){ S.fcF=f; S.tab='sum'; savePref(); render(); requestAnimationFrame(()=>{ const c=$('fcCard'); if(!c) return; if(c.classList.contains('col')) toggleCard(c,false); jumpTo(c) }) }
+function fcTiers(rows){ const m=new Map(); for(const r of rows){ const key=fcTgt(r), x=m.get(key)||{n:0,c:0}; x.n++; x.c+=r.need; m.set(key,x) } return [...m].sort((a,b)=>b[1].c-a[1].c) }
+function fcRowsSorted(b){ const rs=r=>Math.max(0,r.need-r.used); return b.rows.slice().sort({need:(x,y)=>y.need-x.need,rest:(x,y)=>rs(y)-rs(x)}[S.fcSort]||(()=>0)).sort((x,y)=>S.fcSort==='oth'?PO(x.o)-PO(y.o):0) }
+{ const pr=ls.get('pk:pref')||{}; S.fcFl=['all','todo','na'].includes(pr.fcfl)?pr.fcfl:'all'; }
+const fcBud=f=>{const v=(S.month.fcb||{})['f'+f]; return Number.isInteger(v)&&v>0?v:null};
+function fcBudgetHtml(f,b){ const bd=fcBud(f), d=bd!=null?bd-b.need:0, pb=S.prevMonth&&S.prevMonth.fcb?S.prevMonth.fcb['f'+f]:null;
+  return `<div class="fcbud"><label>今月の予算<input type="text" id="fcBud" inputmode="numeric" enterkeyhint="done" autocomplete="off" maxlength="11" value="${bd!=null?cfmt(bd):''}" placeholder="なし" aria-label="${esc(famName(f))}の今月のコイン予算"><span class="yu">コイン</span></label>${bd!=null?(d>=0?`<span class="fcok">予算内（あと ${cfmt(d)} 余裕）</span>`:`<span class="fcng">予算を ${cfmt(-d)} 超えています</span>`):(pb?`<button type="button" class="btn sm2" data-fcbprev="${pb}">先月と同じ ${cfmt(pb)}</button>`:'<span class="fcnote">入れると必要コインと比べます</span>')}</div>` }
+function fcProj(b){ if(S.ym!==curYM()||!b.used) return null; const {days}=ymParts(S.ym), t=new Date().getDate(), p=Math.round(b.used/t*days); return {p,ok:p>=b.need} }
+function fcSeries(f,b){ const {days}=ymParts(S.ym), cur=S.ym===curYM(), fut=S.ym>curYM(), td=fut?0:cur?new Date().getDate():days, L=S.month.ylog||{};
+  const logs=b.rows.map(r=>{const lg=L[r.k]||{}; return {r,lg,ds:Object.keys(lg).map(Number).sort((a,c)=>a-c)}}); if(!logs.some(x=>x.ds.length)||!td) return null;
+  const pts=[]; for(let d=1;d<=td;d++){ let sm=0; for(const x of logs){ let v=null; for(const dd of x.ds){ if(dd<=d) v=x.lg[dd]; else break } if(v!=null) sm+=Math.min(coinAt(v,f,x.r.o).coin,x.r.need) } pts.push([d,sm]) }
+  if(cur&&pts.length) pts[pts.length-1][1]=Math.max(pts[pts.length-1][1],b.used); return {pts,days} }
+function fcChartHtml(f,b){ const s=fcSeries(f,b); if(!s) return `<p class="hint fcch0">日付別実績入力でエールの「現在」を入れると、日ごとの使った目安の推移がここに出ます。</p>`;
+  const W=320,H=96,L=40,R=8,T=8,B=16, mx=Math.max(1,b.need,...s.pts.map(p=>p[1]))*1.08, X=d=>L+(d-1)/Math.max(1,s.days-1)*(W-L-R), Y=v=>T+(1-v/mx)*(H-T-B), f1=n=>n.toFixed(1);
+  const line=s.pts.map(([d,v])=>f1(X(d))+','+f1(Y(v))).join(' '), last=s.pts[s.pts.length-1];
+  return `<figure class="fcch"><figcaption>日ごとの使った目安（エールの記録から）</figcaption><svg viewBox="0 0 ${W} ${H}" class="ysvg" role="img" aria-label="使った目安の推移。いま ${cfmt(last[1])}、必要 ${cfmt(b.need)}"><line class="gg" x1="${L}" x2="${W-R}" y1="${f1(Y(0))}" y2="${f1(Y(0))}"/><line class="gtr" x1="${L}" x2="${W-R}" y1="${f1(Y(b.need))}" y2="${f1(Y(b.need))}"/><text class="gt" x="${W-R}" y="${f1(Y(b.need)-3)}" text-anchor="end">必要 ${cfmt(b.need)}</text><text class="gx" x="${L-4}" y="${f1(Y(0)+3)}" text-anchor="end">0</text><text class="gx" x="${L}" y="${H-3}">1日</text><text class="gx" x="${W-R}" y="${H-3}" text-anchor="end">${s.days}日</text><polyline class="gr" points="${line}"/><circle class="gr" cx="${f1(X(last[0]))}" cy="${f1(Y(last[1]))}" r="3"><title>${last[0]}日 ${cfmt(last[1])}</title></circle></svg></figure>` }
+const fcRowPass=r=>S.fcFl==='todo'?!r.ok:S.fcFl==='na'?r.v==null:true;
+function fcStepTier(tv,dir){ const cur=yellTier(tv).cur, i=cur?TIERS.indexOf(cur):-1, exact=cur&&tierY(cur.k)===tv; const ni=dir<0?(exact?i-1:i):i+1; return ni>=0&&ni<TIERS.length?tierY(TIERS[ni].k):null }
+function renderFcCard(force){
+  const el=$('fcBody'); if(!el) return; const ae=document.activeElement;
+  if(!force&&ae&&el.contains(ae)&&ae.matches('input[type=text]')) return;
+  if(S._fcSF!==S.sumFam){ S._fcSF=S.sumFam; if(S.sumFam!=='all') S.fcF=+S.sumFam }
+  const {f,fs}=fcCur(), m=ymParts(S.ym).m;
+  if(f==null){ el.innerHTML='<p class="empty">この月度の組み合わせがまだありません。記録やエール目標を入れると、自分垢1人ごとの必要コインが出ます。</p>'; return }
+  const P=famCoinPlan(x=>x===f), b=P[f], nx=P.nx[f]||0, pv=S.prevMonth?famCoinPlan(x=>x===f,S.prevMonth)[f]:null, pvo={}; if(pv) for(const r of pv.rows) pvo[r.o]=r;
+  const i=fs.indexOf(f), one=fs.length<2;
+  let h=`<div class="fch"><button type="button" class="step" data-fcs="-1"${one?' disabled':''} aria-label="前の自分垢">‹</button><select class="sm" id="fcSel" aria-label="必要コインを見る自分垢">${fs.map(x=>`<option value="${x}"${x===f?' selected':''}>${esc(famName(x))}</option>`).join('')}</select><button type="button" class="step" data-fcs="1"${one?' disabled':''} aria-label="次の自分垢">›</button><span class="fcpos">${i+1} / ${fs.length}人${b?`<b class="${fcRest(b)?'':'ok'}">${fcRest(b)?'あと '+cfmt(fcRest(b)):'達成 ✓'}</b>`:''}</span></div>`;
+  const bulk=`<div class="fcbulk"><span>この自分垢の組み合わせに目標</span><input type="text" id="fcBV" inputmode="decimal" enterkeyhint="done" autocomplete="off" maxlength="12" placeholder="例:5" aria-label="まとめて入れるエール目標（k）"><span class="yu">k</span><label class="chkl"><input type="checkbox" id="fcBOnly"${S.fcBAll?'':' checked'}> 未設定だけ</label><button type="button" class="btn sm2" id="fcBGo">まとめて入れる</button></div>`;
+  if(!b){ el.innerHTML=h+`<p class="hint fcx">${esc(famName(f))}のこの月度の${nx}組は、達成条件がカスタム（エール段階なし）でエール目標もないため、必要コインを計算できません。エール目標を入れると計算します。</p>`+bulk; return }
+  const rest=fcRest(b), per=fcPer(rest), pct=b.need?Math.min(100,Math.floor(b.used/b.need*100)):100, ok=!rest, left=fcLeft();
+  h+=`<div class="fchero${ok?' ok':''}"><div class="fcbig"><span>${m}月の目標エールに必要なコイン</span><b>${cfmt(b.need)}<small>コイン</small></b><em>${b.n}組（${fcSrc(b)}）${nx?`・計算外${nx}組`:''}${pv?`・先月 ${cfmt(pv.need)}（${fcDiff(b.need,pv.need)}）`:''}</em></div>
+    <div class="fcst"><div><span>使った目安</span><b>${cfmt(b.used)}</b></div><div><span>あと</span><b>${ok?'達成 ✓':cfmt(rest)}</b></div><div><span>1日あたり</span><b>${per?cfmt(per):'—'}</b><small>${left?`残り${left}日`:'締め済み'}</small></div></div>
+    <span class="ycb big" role="progressbar" aria-label="使った目安の割合" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></span><small class="fcpct">${pct}%${b.na?`・エール未入力 ${b.na}組`:''}</small>${(pj=>pj?`<small class="fcproj${pj.ok?' ok':''}">このペースだと月末 約${cfmt(pj.p)}（${pj.ok?'必要に届く見込み ✓':'必要まで 約'+cfmt(b.need-pj.p)+' 足りない見込み'}）</small>`:'')(fcProj(b))}${fcBudgetHtml(f,b)}</div>`+fcChartHtml(f,b);
+  h+=`<div class="fctier" aria-label="段階ごとのまとめ">${fcTiers(b.rows).map(([k,x])=>`<span>${esc(k)} ×${x.n} = <b>${cfmt(x.c)}</b></span>`).join('')}</div>`;
+  h+=`<div class="yctools"><label class="hint">並び順 <select class="sm" id="fcSort" aria-label="組み合わせの並び順"><option value="oth"${S.fcSort==='oth'?' selected':''}>他人垢の番号順</option><option value="need"${S.fcSort==='need'?' selected':''}>必要コインが多い順</option><option value="rest"${S.fcSort==='rest'?' selected':''}>残りが多い順</option></select></label><button type="button" class="btn sm2" id="fcCopy">この自分垢をコピー</button>${navigator.share?'<button type="button" class="btn sm2" id="fcShare">共有</button>':''}</div>`;
+  { const cn={all:b.rows.length,todo:b.rows.filter(r=>!r.ok).length,na:b.rows.filter(r=>r.v==null).length};
+    h+=`<div class="dview fcfl" role="group" aria-label="表示する組み合わせ">${[['all','すべて'],['todo','未達成'],['na','エール未入力']].map(([k,l])=>`<button type="button" class="dvc${S.fcFl===k?' on':''}" data-fcfl="${k}" aria-pressed="${S.fcFl===k}">${l}<b>${cn[k]}</b></button>`).join('')}</div>`; }
+  const shown=fcRowsSorted(b).filter(fcRowPass);
+  h+=`<div class="fcrows">`+(shown.length?'':`<p class="empty">この表示に当てはまる組み合わせはありません（「すべて」で全部表示）</p>`)+shown.map(r=>{ const rs=Math.max(0,r.need-r.used), ya=r.v!=null&&r.v<r.tv?r.tv-r.v:0, p=pvo[r.o];
+    return `<div class="fcr${r.ok?' ok':''}"><button type="button" class="fcn2" data-fcgo="${r.k}" title="当月一覧表示で見る">${esc(othName(r.o))} ›</button>
+      <span class="fcin"><button type="button" class="fcsb" data-fcstep="-1" data-fck="${r.k}" aria-label="${esc(othName(r.o))}の目標を1段階下げる"${fcStepTier(r.tv,-1)==null?' disabled':''}>▼</button><label>目標<input type="text" inputmode="decimal" enterkeyhint="done" list="ytList" data-fct="${r.k}" value="${r.src==='y'?kn(r.tv):''}" placeholder="${r.src==='c'?kn(r.tv):''}" autocomplete="off" maxlength="12" aria-label="${esc(othName(r.o))}へのエール目標（k）。空にすると達成条件の段階"><span class="yu">k</span></label><button type="button" class="fcsb" data-fcstep="1" data-fck="${r.k}" aria-label="${esc(othName(r.o))}の目標を1段階上げる"${fcStepTier(r.tv,1)==null?' disabled':''}>▲</button></span>
+      <span class="fcsrc">${r.src==='y'?'エール目標で計算':`達成条件（${esc(fcTgt(r))}）で計算`}${r.t?`<i>条件${r.c===1?2:1}なら ${cfmt(r.c===1?r.t.c2:r.t.c1)}</i>`:''}</span>
+      <span class="fcv">必要 <b>${cfmt(r.need)}</b>${p?`<i>先月 ${cfmt(p.need)}</i>`:''}</span>
+      <span class="fcu">${!r.t?'最初の段階（0.01k）より下のため0コイン':r.v==null?'エール未入力':`今 ${yfmt(r.v)}（${cfmt(r.used)}）・${r.ok?'届いています ✓':`残り ${cfmt(rs)}・エールあと${yfmt(ya)}`}`}</span></div>` }).join('')+'</div>';
+  { const have=new Set(fcKeys(f).map(k=>parsePk(k)[1])), opts=S.order.others.filter(o=>!have.has(o));
+    if(opts.length) h+=`<div class="fcadd"><span>稼ぎ先を追加</span><select class="sm" id="fcAddO" aria-label="追加する他人垢">${opts.map(o=>`<option value="${o}">${esc(othName(o))}</option>`).join('')}</select><label>目標<input type="text" id="fcAddV" inputmode="decimal" list="ytList" autocomplete="off" maxlength="12" placeholder="なし" aria-label="追加する組み合わせのエール目標（k）。空なら達成条件の段階で計算"><span class="yu">k</span></label><button type="button" class="btn sm2" id="fcAddGo">追加</button></div>`; }
+  if(nx) h+=`<p class="hint fcx">ほかに${nx}組は、達成条件がカスタム（エール段階なし）でエール目標もないため計算していません。</p>`;
+  el.innerHTML=h+bulk;
+}
+function fcTextOne(f){ const b=famCoinPlan(x=>x===f)[f], {m}=ymParts(S.ym); if(!b) return ''; const r=fcRest(b), per=fcPer(r);
+  const bd=fcBud(f), pj=fcProj(b);
+  let t=`【${m}月度 ${famName(f)} 目標エールに必要なコイン（目安）】\n必要 ${cfmt(b.need)}／使った目安 ${cfmt(b.used)}／${r?`あと ${cfmt(r)}${per?`（1日 ${cfmt(per)}）`:''}`:'達成'}\n${bd!=null?`予算 ${cfmt(bd)}（${bd>=b.need?'予算内・余裕 '+cfmt(bd-b.need):'予算オーバー '+cfmt(b.need-bd)}）\n`:''}${pj?`このペースだと月末 約${cfmt(pj.p)}\n`:''}\n`;
+  for(const x of fcRowsSorted(b)) t+=`・${othName(x.o)}　${fcTgt(x)} → ${cfmt(x.need)}コイン（${!x.t?'段階前':x.v==null?'エール未入力':`今 ${yfmt(x.v)}${x.ok?' ✓':'・残り '+cfmt(x.need-x.used)}`}）\n`;
+  t+=`\n段階ごと：${fcTiers(b.rows).map(([k,x])=>`${k}×${x.n}=${cfmt(x.c)}`).join('／')}\n※コアファン条件表の必要コインからの目安です`;
+  return t+`\n\n© Yoshi1012 無断転載・転用・再配布禁止` }
+function fcSetBud(f,v){ const key='f'+f, old=fcBud(f); if(old===v) { renderFcCard(true); return } S.month.fcb=S.month.fcb||{}; if(v==null) delete S.month.fcb[key]; else S.month.fcb[key]=v;
+  queueMonth(S.ym,{fcb:{[key]:v}}); pushUndo({ym:S.ym,items:[],extra:{fcb:{[key]:old??null}}}); renderFcCard(true); showToast(`${famName(f)}：今月の予算を${v==null?'なし':cfmt(v)+'コイン'}にしました`) }
+function fcSetYt(k,v){ S.month.yt=S.month.yt||{}; if(v==null) delete S.month.yt[k]; else S.month.yt[k]=v; debMonth('yt',k,v,0) }
+function fcAfter(focusKey){ fcCache.clear(); renderFcCard(true); renderYCoin(); if(focusKey){ const n=$('fcBody').querySelector(`[data-fct="${focusKey}"]`); if(n){ n.focus({preventScroll:true}); try{n.select()}catch(e){} } } }
+$('fcBody').addEventListener('change',ev=>{ const t=ev.target;
+  if(t.id==='fcSel'){ S.fcF=+t.value; savePref(); renderFcCard(true); return }
+  if(t.id==='fcSort'){ S.fcSort=t.value; savePref(); renderFcCard(true); return }
+  if(t.id==='fcBOnly'){ S.fcBAll=!t.checked; return }
+  if(t.id==='fcBud'){ if(!S.mLoaded) return; const {f}=fcCur(); if(f==null) return; const raw=String(t.value).normalize('NFKC').replace(/[,，\s]|コイン/g,''); if(raw!==''&&!/^\d+$/.test(raw)){ t.classList.add('bad'); undo=null; showToast('予算はコインの数（例：5000）で入れてください',false); return }
+    fcSetBud(f,raw===''?null:Math.min(YMAX,+raw)||null); return }
+  if(t.dataset&&t.dataset.fct){ if(!S.mLoaded) return; const k=t.dataset.fct, v0=parseYell(t.value); if(Number.isNaN(v0)){ t.classList.add('bad'); undo=null; showToast('k単位の数字で入れてください（例：5 → 5,000エール）',false); return }
+    const v=v0===0?null:v0, old=ytOf(k); if(old===v) return; fcSetYt(k,v); pushUndo({ym:S.ym,items:[],extra:{yt:{[k]:old??null}}});
+    const p=parsePk(k); setTimeout(()=>{ const a=document.activeElement, fk=a&&a.dataset&&$('fcBody').contains(a)?a.dataset.fct:null; fcAfter(fk||null) },0); showToast(`${othName(p[1])}：エール目標を${v==null?'なし（達成条件の段階で計算）':yfmt(v)}にしました`) } });
+$('fcBody').addEventListener('keydown',ev=>{ const t=ev.target; if(ev.key!=='Enter'||ev.isComposing) return;
+  if(t.dataset&&t.dataset.fct){ ev.preventDefault(); const ins=[...$('fcBody').querySelectorAll('[data-fct]')], i=ins.indexOf(t); if(ins[i+1]) ins[i+1].focus(); else t.blur(); return }
+  if(t.id==='fcBV'){ ev.preventDefault(); $('fcBGo').click() }
+  if(t.id==='fcBud'){ ev.preventDefault(); t.blur() }
+  if(t.id==='fcAddV'){ ev.preventDefault(); $('fcAddGo').click() } });
+$('fcBody').addEventListener('focusout',ev=>{ if(ev.target.dataset&&ev.target.dataset.fct) setTimeout(()=>{ if(!$('fcBody').contains(document.activeElement)) renderFcCard() },0) });
+$('fcBody').addEventListener('click',ev=>{
+  const st=ev.target.closest('[data-fcs]'); if(st){ const {f,fs}=fcCur(); if(!fs.length) return; const i=(fs.indexOf(f)+ +st.dataset.fcs+fs.length)%fs.length; S.fcF=fs[i]; savePref(); renderFcCard(true); return }
+  const fl=ev.target.closest('[data-fcfl]'); if(fl){ S.fcFl=fl.dataset.fcfl; savePref(); renderFcCard(true); return }
+  const sb=ev.target.closest('[data-fcstep]'); if(sb){ if(!S.mLoaded||sb.disabled) return; const k=sb.dataset.fck, p=parsePk(k), r=(famCoinPlan(x=>x===p[0])[p[0]]||{rows:[]}).rows.find(x=>x.k===k); if(!r) return;
+    const v=fcStepTier(r.tv,+sb.dataset.fcstep); if(v==null) return; const old=ytOf(k); fcSetYt(k,v); pushUndo({ym:S.ym,items:[],extra:{yt:{[k]:old??null}}}); fcAfter();
+    const nb=$('fcBody').querySelector(`[data-fcstep="${sb.dataset.fcstep}"][data-fck="${k}"]`); if(nb&&!nb.disabled) nb.focus({preventScroll:true}); showToast(`${othName(p[1])}：エール目標を${yfmt(v)}にしました`); return }
+  const bp=ev.target.closest('[data-fcbprev]'); if(bp){ const {f}=fcCur(); if(f!=null) fcSetBud(f,+bp.dataset.fcbprev); return }
+  if(ev.target.id==='fcAddGo'){ if(!S.mLoaded) return; const {f}=fcCur(), o=+$('fcAddO').value, k=pk(f,o), v0=parseYell($('fcAddV').value);
+    if(Number.isNaN(v0)){ undo=null; showToast('目標はk単位の数字で（例：5）。空なら達成条件の段階で計算します',false); return }
+    if(v0){ fcSetYt(k,v0); pushUndo({ym:S.ym,items:[],extra:{yt:{[k]:null}}}) } else if(!S.extra.includes(k)) S.extra.push(k);
+    fcAfter(); showToast(`${famName(f)} → ${othName(o)} を追加しました${v0?`（目標 ${yfmt(v0)}）`:'（達成条件の段階で計算）'}`,!!v0); return }
+  const g=ev.target.closest('[data-fcgo]'); if(g){ const p=parsePk(g.dataset.fcgo); if(!p) return; S.fam=p[0]; S.oth=p[1]; S.tab='rec'; savePref(); render(); window.scrollTo(0,0); return }
+  if(ev.target.id==='fcCopy'){ const {f}=fcCur(); const t=fcTextOne(f); if(!t) return; $('copyText').value=t; const fb=()=>{ $('copyBox').hidden=false; const ta=$('copyText'); ta.focus(); ta.select(); ta.setSelectionRange(0,t.length) };
+    try{ navigator.clipboard.writeText(t).then(()=>{ $('copyBox').hidden=true; undo=null; showToast(`${famName(f)}の必要コインをコピーしました`,false) },fb) }catch(e){ fb() } return }
+  if(ev.target.id==='fcBGo'){ if(!S.mLoaded) return; const {f}=fcCur(); if(f==null) return; const v0=parseYell($('fcBV').value);
+    if(v0==null||Number.isNaN(v0)||v0===0){ undo=null; showToast('まとめて入れる目標をk単位で入れてください（例：5）',false); $('fcBV').focus(); return }
+    const only=$('fcBOnly').checked, ks=fcKeys(f).filter(k=>!(only&&ytOf(k)!=null)&&ytOf(k)!==v0); if(!ks.length){ undo=null; showToast(only?'目標が未設定の組み合わせはありません（「未設定だけ」を外すと上書きします）':'変わる組み合わせはありません',false); return }
+    const ex={}; S.month.yt=S.month.yt||{}; for(const k of ks){ ex[k]=ytOf(k)??null; S.month.yt[k]=v0 } queueMonth(S.ym,{yt:Object.fromEntries(ks.map(k=>[k,v0]))}); pushUndo({ym:S.ym,items:[],extra:{yt:ex}});
+    $('fcBV').value=''; fcAfter(); showToast(`${famName(f)}：${ks.length}組のエール目標を${yfmt(v0)}にしました`) } });
+onSwipe($('fcBody'),dir=>{ const {f,fs}=fcCur(); if(fs.length<2) return; S.fcF=fs[(fs.indexOf(f)+dir+fs.length)%fs.length]; savePref(); renderFcCard(true); undo=null; showToast(`自分垢：${famName(S.fcF)}`,false) });
+$(`tYCoin`).addEventListener('click',ev=>{ const b=ev.target.closest('[data-fcpick]'); if(b){ ev.stopPropagation(); fcOpenFor(+b.dataset.fcpick) } },true);
+document.addEventListener('click',ev=>{ const b=ev.target.closest('[data-fcopen]'); if(!b) return; fcOpenFor(+b.dataset.fcopen) });
 function renderYellCheck(){
   const R=S.month.records, keys=new Set([...Object.keys(R),...Object.keys(S.month.yell||{}),...Object.keys(S.month.yt||{})]), rows=[];
   for(const k of keys){const p=parsePk(k);if(!p)continue;if(S.sumFam!=='all'&&p[0]!==+S.sumFam)continue;if(S.sumOth!=='all'&&p[1]!==+S.sumOth)continue;
@@ -2391,13 +2709,13 @@ function renderYellCheck(){
     const v=yellOf(k), tg=ytOf(k)!=null?yTarget(k,p[0]):(v!=null?yTarget(k,p[0]):null); if(!tg) continue;
     const tc=coinEst(tg.v,p[0],p[1]), ac=v!=null?coinEst(v,p[0],p[1]):null;
     rows.push({f:p[0],o:p[1],v,tg,ok:v!=null&&v>=tg.v,rem:v==null?tg.v:Math.max(0,tg.v-v),tc,ac})}
-  renderYCoin(rows);
+  renderYCoin();
   const pr=S.sumNotAch?rows.filter(r=>!r.ok):rows;
   pr.sort((a,b)=>a.ok-b.ok||(a.v==null)-(b.v==null)||a.rem-b.rem||PF(a.f)-PF(b.f)||PO(a.o)-PO(b.o));
   const ok=rows.filter(r=>r.ok).length, na=rows.filter(r=>r.v==null).length;
   { const pm=S.prevMonth, miss=pm?Object.keys(pm.yt||{}).filter(kk=>ytOf(kk,pm)!=null&&ytOf(kk)==null&&parsePk(kk)):[];
     const el=$('yCopy'); el.hidden=!miss.length||!S.mLoaded; el.innerHTML=miss.length?`<button class="btn" id="yCopyBtn">先月の目標をまとめて使う（${miss.length}組）</button><span class="hint">今月まだ目標がない組み合わせだけに入れます</span>`:''; }
-  $('gYellT').hidden=!rows.length; $('gYell').textContent=ok+' / '+rows.length;
+  $('gYellT').hidden=!rows.length; $('gYell').textContent=ok+' / '+rows.length; $('gYellR').style.setProperty('--p',rows.length?Math.round(ok/rows.length*100):0);
   $('ySum').innerHTML=rows.length?`<span>達成 ${ok} / ${rows.length}組</span>${na?`<span>現在が未入力 ${na}組</span>`:''}`:'';
   if(!pr.length){$('tYell').innerHTML=`<tr><td class="empty">${rows.length?'未達成の組み合わせはありません':'エールの目標または現在の値が入った組み合わせはまだありません'}</td></tr>`;return}
   const LIM=S.yAll?pr.length:100, more=pr.length-LIM;
@@ -2415,11 +2733,12 @@ $('yCopy').addEventListener('click',ev=>{
 });
 $('tYell').addEventListener('click',ev=>{if(ev.target.id==='yMore'){S.yAll=true;renderYellCheck();return}const tr=ev.target.closest('tr.go');if(!tr)return;S.fam=+tr.dataset.f;S.oth=+tr.dataset.o;S.tab='rec';savePref();render();window.scrollTo(0,0)});
 function renderSumFilt(){ const el=$('sumFilt'); const f=[];
+  { const n=(S.sumFam!=='all')+(S.sumOth!=='all')+(!!S.sumNotAch)+(!!S.sumQ)+(S.sumSort!=='num'); const b=$('sumCtlB'); b.hidden=!n; b.textContent=n+'件'; }
   if(S.sumFam!=='all') f.push(famName(+S.sumFam)); if(S.sumOth!=='all') f.push(othName(+S.sumOth)); if(S.sumQ) f.push(`「${S.sumQ}」`); if(S.sumNotAch) f.push('未達成のみ');
   el.hidden=!f.length; el.innerHTML=f.length?`<span>絞り込み中：${esc(f.join('・'))}</span><button class="btn sm2" id="sumFiltClear">解除</button>`:''; }
 $('sumFilt').addEventListener('click',ev=>{if(ev.target.id!=='sumFiltClear')return;S.sumFam='all';S.sumOth='all';S.sumNotAch=false;S.sumQ='';$('sumQ').value='';savePref();renderSum()});
 function renderSum(){
-  const R=S.month.records; renderSumFilt(); renderYellCheck(); renderPatSum(); renderYgAll();
+  const R=S.month.records; renderSumFilt(); renderFcCard(); renderYellCheck(); renderPatSum(); renderYgAll();
   fillSelect($('sumFam'),famName,S.sumFam,true);
   $('sumNotAch').checked=S.sumNotAch; $('sumSort').value=S.sumSort;
   const rows=[];
@@ -2441,7 +2760,7 @@ function renderSum(){
   $('gFam').textContent=Object.keys(byF).length;
   $('gDays').textContent=fr.reduce((a,r)=>a+r.days,0)+'日';
   $('gTime').textContent=hm(fr.reduce((a,r)=>a+r.min,0));
-  $('gAch').textContent=fr.filter(r=>isAch(r,r.f)).length+' / '+fr.filter(r=>r.days).length;
+  { const a=fr.filter(r=>isAch(r,r.f)).length, t=fr.filter(r=>r.days).length; $('gAch').textContent=a+' / '+t; $('gAchR').style.setProperty('--p',t?Math.round(a/t*100):0) }
 
   const empty=t=>`<tr><td class="empty">${t}</td></tr>`;
   if(!fr.length){renderSumDelta([]);renderDayChart([]);$('gCoinT').hidden=true;$('tPairs').innerHTML=$('tFam').innerHTML=$('tOth').innerHTML=empty(S.mLoaded?'この月の記録はまだありません':'読み込み中…');return}
@@ -2578,7 +2897,7 @@ function render(){
   renderMonth(); renderTabs(); renderEom(); updHist();
   if(S.tab==='list') renderLists(); else rerender();
 }
-function savePref(){ls.set('pk:pref',{fam:S.fam,oth:S.oth,tab:S.tab,compact:S.compact,panelMin:S.panelMin,cal:S.cal,dayTodo:S.dayTodo,swiped:S.swiped,wake:S.wake,goalMin:S.goalMin,big:S.big,priv:S.priv,seenHelp:S.seenHelp,col:S.col,sf:S.sumFam,so:S.sumOth,ss:S.sumSort,sna:S.sumNotAch,pins:S.pins,dsort:S.daySort,theme:S.theme,df:S.dayFam,do:S.dayOth,yg:S.ygOpen,td:S.todoOpen,dv:S.dayView,ddt:S.dayDet,bso:S.bsOnly,dfold:S.dayFold,nmo:!!S.namedOnly,gxa:!!S.gxAll,ro:!!S.recOnly,ts:S.tsort})}
+function savePref(){ls.set('pk:pref',{fam:S.fam,oth:S.oth,tab:S.tab,compact:S.compact,panelMin:S.panelMin,cal:S.cal,dayTodo:S.dayTodo,swiped:S.swiped,wake:S.wake,goalMin:S.goalMin,big:S.big,priv:S.priv,seenHelp:S.seenHelp,col:S.col,sf:S.sumFam,so:S.sumOth,ss:S.sumSort,sna:S.sumNotAch,pins:S.pins,dsort:S.daySort,theme:S.theme,df:S.dayFam,do:S.dayOth,yg:S.ygOpen,td:S.todoOpen,dv:S.dayView,ddt:S.dayDet,bso:S.bsOnly,dfold:S.dayFold,ycs:S.ycSort,fcf:S.fcF,fcs:S.fcSort,fcfl:S.fcFl,nmo:!!S.namedOnly,gxa:!!S.gxAll,ro:!!S.recOnly,ts:S.tsort})}
 
 /* ---------- 操作 ---------- */
 $('days').addEventListener('click',ev=>{
@@ -2629,6 +2948,8 @@ $('qpanel').addEventListener('pointerdown',ev=>{
 });
 ['pointerup','pointercancel','pointerleave'].forEach(t=>document.addEventListener(t,lpStop));
 $('qpanel').addEventListener('contextmenu',ev=>ev.preventDefault());
+$('qpanel').addEventListener('click',ev=>{ const b=ev.target.closest('.qb button[data-a],.qminus'); if(!b||b.disabled) return; try{ if(matchMedia('(prefers-reduced-motion: reduce)').matches) return }catch(e){}
+  const r=b.getBoundingClientRect(), a=+b.dataset.a, sp=document.createElement('span'); sp.className='qpop'+(a<0?' neg':''); sp.textContent=(a>0?'+':'−')+Math.abs(a); sp.style.left=(r.left+r.width/2)+'px'; sp.style.top=(r.top)+'px'; document.body.appendChild(sp); setTimeout(()=>sp.remove(),700) });
 $('vList').onclick=()=>{S.cal=false;savePref();renderRec()};
 $('vCal').onclick=()=>{S.cal=true;savePref();scrollToday=true;renderRec()};
 $('dayTodo').addEventListener('change',e=>{S.dayTodo=e.target.checked;savePref();renderDay()});
@@ -2744,19 +3065,23 @@ $('csvBtn').onclick=async()=>{
   const R=S.month.records, {y,m}=ymParts(S.ym);
   // 表計算ソフトで式として実行されないよう、= + - @ で始まる値は先頭に ' を付ける
   const q=s=>{s=String(s);if(/^[=+\-@\t\r]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'};
-  let csv='﻿自分垢番号,自分垢,他人垢番号,他人垢,日付,稼いだ,時間(分),エール(k・月度・組み合わせ),エール目標(k),コイン目安,条件パターン,相手エール(k),相手エール目標(k)\n';
-  const Y=S.month.yell||{};
+  let csv='﻿自分垢番号,自分垢,他人垢番号,他人垢,日付,稼いだ,時間(分),エール(k・月度・組み合わせ),エール目標(k),コイン目安,条件パターン,相手エール(k),相手エール目標(k),目標の種類,目標に必要なコイン(目安)\n';
+  const Y=S.month.yell||{}, PL2={}; { const P=famCoinPlan(); for(const f in P) for(const r of P[f].rows) PL2[r.k]=r }
   const keys=[...new Set([...Object.keys(R),...Object.keys(Y),...Object.keys(S.month.yt||{}),...Object.keys(S.month.ryell||{})])].filter(k=>parsePk(k)).sort((a,b)=>{const A=parsePk(a),B=parsePk(b);return PF(A[0])-PF(B[0])||PO(A[1])-PO(B[1])});
   for(const k of keys){const [f,o]=parsePk(k);if(S.sumFam!=='all'&&f!==+S.sumFam)continue;if(S.sumOth!=='all'&&o!==+S.sumOth)continue;if(S.sumQ&&!dayHit(dayKana(S.sumQ),f,o))continue;
     const yv=yellOf(k), ds=Object.keys(R[k]||{}).map(Number).sort((a,b)=>a-b); let first=true;
-    const tv=ytOf(k), tk=tv!=null?+(tv/1000).toFixed(3):''; const ce=coinEst(yv,f,o), ck=ce?ce.coin:''; const pi=patIdx(f,o), pl=pi>=0?PL[pi]:''; const ra=ryellOf(k), rtv=rytOf(k), rak=ra!=null?+(ra/1000).toFixed(3):'', rtk=rtv!=null?+(rtv/1000).toFixed(3):'';
-    if(!ds.length&&(yv!=null||tv!=null||ra!=null)) csv+=[PF(f)+1,q(S.lists.family[f]),PO(o)+1,q(S.lists.others[o]),'',0,0,yv!=null?+(yv/1000).toFixed(3):'',tk,ck,pl,rak,rtk].join(',')+'\n';
+    const tv=ytOf(k), tk=tv!=null?+(tv/1000).toFixed(3):''; const ce=coinEst(yv,f,o), ck=ce?ce.coin:''; const pi=patIdx(f,o), pl=pi>=0?PL[pi]:''; const pr2=PL2[k], ptp=pr2?(pr2.src==='y'?'エール目標':'達成条件'):'', pnd=pr2?pr2.need:''; const ra=ryellOf(k), rtv=rytOf(k), rak=ra!=null?+(ra/1000).toFixed(3):'', rtk=rtv!=null?+(rtv/1000).toFixed(3):'';
+    if(!ds.length&&(yv!=null||tv!=null||ra!=null)) csv+=[PF(f)+1,q(S.lists.family[f]),PO(o)+1,q(S.lists.others[o]),'',0,0,yv!=null?+(yv/1000).toFixed(3):'',tk,ck,pl,rak,rtk,ptp,pnd].join(',')+'\n';
     for(const d of ds){const e=R[k][d];
-      csv+=[PF(f)+1,q(S.lists.family[f]),PO(o)+1,q(S.lists.others[o]),`${y}/${pad(m)}/${pad(d)}`,1,e.m||0,first&&yv!=null?+(yv/1000).toFixed(3):'',first?tk:'',first?ck:'',first?pl:'',first?rak:'',first?rtk:''].join(',')+'\n'; first=false}}
+      csv+=[PF(f)+1,q(S.lists.family[f]),PO(o)+1,q(S.lists.others[o]),`${y}/${pad(m)}/${pad(d)}`,1,e.m||0,first&&yv!=null?+(yv/1000).toFixed(3):'',first?tk:'',first?ck:'',first?pl:'',first?rak:'',first?rtk:'',first?ptp:'',first?pnd:''].join(',')+'\n'; first=false}}
   try{await dl.save({filename:`pococha_${S.ym}.csv`,data:csv})}catch(e){}
 };
 
 /* ---------- 日付別：行ごとのエール入力 ---------- */
+// 日付別実績入力：エール・目標を入れている間も、自分垢の見出しの必要コインをその場で更新
+function updDayCoin(){ const FC=famCoinPlan();
+  document.querySelectorAll('#dayList .pgrp[data-fold] .gcn').forEach(g=>{ const c=FC[+g.closest('.pgrp').dataset.fold]; if(!c) return; g.classList.remove('x'); g.textContent=`・必要コイン ${cfmt(c.need)}${fcRest(c)?`（残り ${cfmt(fcRest(c))}）`:'（達成 ✓）'}` });
+  document.querySelectorAll('#famDay .fcn').forEach(e=>{ const f=+e.dataset.f, c=FC[f]; if(c) e.textContent=`必要コイン ${cfmt(c.need)}${fcRest(c)?`（残り ${cfmt(fcRest(c))}）`:'（達成 ✓）'}` }) }
 function ryInput(inp,fromBlur){
   if(!S.mLoaded) return; const k=inp.dataset.pkey, fld=inp.dataset.ry, pp=parsePk(k); if(!pp) return;
   const msg=inp.closest('.ryell,.rybx').querySelector('.rymsg');
@@ -2772,7 +3097,8 @@ function ryInput(inp,fromBlur){
   if(old===v&&!(fromBlur&&debq[fld+':'+k])) return;
   { const rc=inp.closest('.ryell,.rybx').querySelector('.rycoin'); if(rc) rc.innerHTML=rowCoinHtml(k); const rs=inp.closest('.ryell,.rybx').querySelector('.ryst'); if(rs) rs.innerHTML=ryStatus(k); }
   debMonth(fld,k,v,fromBlur?0:700);
-  if(fromBlur&&fld==='yell'){const tg=yTarget(k,pp[0]); if(tg&&v!=null&&v>=tg.v&&!was) showToast(`${esc(othName(pp[1]))}：エール目標 ${yfmt(tg.v)} を達成しました`,false)}
+  if(fld==='yt'||fld==='yell') updDayCoin();
+  if(fromBlur&&fld==='yell'){const tg=yTarget(k,pp[0]); if(tg&&v!=null&&v>=tg.v&&!was){ showToast(`${othName(pp[1])}：エール目標 ${yfmt(tg.v)} を達成しました`,false); celebrate() }}
 }
 $('dayList').addEventListener('input',ev=>{const t=ev.target;if(t.dataset&&t.dataset.ry)ryInput(t,false)});
 $('dayList').addEventListener('change',ev=>{const t=ev.target;if(t.dataset&&t.dataset.ry)ryInput(t,true)});
@@ -2841,7 +3167,7 @@ function todoItems(){
   return items;
 }
 function renderTodo(){const box=$('todoBox'); if(!box) return; if(S.ym!==curYM()||!S.mLoaded){box.hidden=true;return} box.hidden=false; box.open=S.todoOpen;
-  const items=todoItems(), n=items.filter(i=>!i.done).length, LIM=S.todoAll?999:12; if(!items.length){box.hidden=true;return}
+  const items=todoItems(), n=items.filter(i=>!i.done).length, LIM=S.todoAll?999:(innerWidth<=560?3:8); if(!items.length){box.hidden=true;return}
   $('todoSum').innerHTML=`今日のやること <b>${n}</b>組<small>（今月未達成 ${items.length}組・今日記録済み ${items.length-n}組）</small>`;
   $('todoList').innerHTML=items.length?items.slice(0,LIM).map(i=>`<button type="button" class="tdi${i.done?' done':''}${i.ok?'':' ng'}" data-tk="${i.k}"><span class="tn">${esc(famName(i.f))} <i>→</i> ${esc(othName(i.o))}</span><span class="tv">${i.done?'今日✓':i.per?'今日 '+clock(i.per):'今日 ✓だけ'}</span><span class="tr">${S.pins.includes(i.k)?'★ ':''}${[i.needD?'あと'+i.needD+'日':'',i.needM?'あと'+hm(i.needM):''].filter(Boolean).join('・')}${i.ok?'':'・⚠日数が足りません'}${closeTag(i.o)}${schTag(i.o,new Date().getDate(),'今日')}</span></button>`).join('')+(items.length>LIM?`<button type="button" class="btn sm2" id="todoMore">残り${items.length-LIM}組も表示</button>`:'')
     :'<p class="hint">今月の未達成の組み合わせはありません</p>';
@@ -3203,13 +3529,15 @@ function summaryText(){
   for(const k of new Set([...Object.keys(R),...Object.keys(S.month.yell||{}),...Object.keys(S.month.ryell||{})])){const p=parsePk(k);if(!p)continue;if(S.sumFam!=='all'&&p[0]!==+S.sumFam)continue;if(S.sumOth!=='all'&&p[1]!==+S.sumOth)continue;if(S.sumQ&&!dayHit(dayKana(S.sumQ),p[0],p[1]))continue;const st=pairStats(R[k],p[1]);const y=yellOf(k);if(!st.days&&y==null&&ryellOf(k)==null)continue;rows.push({f:p[0],o:p[1],...st,y})}
   rows.sort((a,b)=>PF(a.f)-PF(b.f)||PO(a.o)-PO(b.o));
   let t=`【Pococha 時間稼ぎ ${y}年${m}月度】\n`, last=-1, ach=0;
-  for(const r of rows){ if(r.f!==last){t+=`\n■ ${famName(r.f)}（条件 ${goalName(r.f)}${dLabel(gD(r.f))}・${hm(gM(r.f))}）\n`;last=r.f}
+  const FCs=famCoinPlan((f,o)=>(S.sumFam==='all'||f===+S.sumFam)&&(S.sumOth==='all'||o===+S.sumOth)&&(!S.sumQ||dayHit(dayKana(S.sumQ),f,o)));
+  for(const r of rows){ if(r.f!==last){t+=`\n■ ${famName(r.f)}（条件 ${goalName(r.f)}${dLabel(gD(r.f))}・${hm(gM(r.f))}${FCs[r.f]?`・目標に必要なコイン ${cfmt(FCs[r.f].need)}${fcRest(FCs[r.f])?`・あと ${cfmt(fcRest(FCs[r.f]))}`:'・達成'}`:''}）\n`;last=r.f}
     const a=isAch(r,r.f); if(a)ach++;
     const need=[], D=gD(r.f,undefined,r.o), Mn=gM(r.f,undefined,r.o); if(r.days<D)need.push('あと'+(D-r.days)+'日'); if(r.min<Mn)need.push('あと'+hm(Mn-r.min));
     t+=`・${othName(r.o)}${patIdx(r.f,r.o)>=0?`［パターン${PL[patIdx(r.f,r.o)]}：${patDesc(patOf(r.f,r.o))}］`:''}　${r.days}日 ${clock(r.min)}　${a?'達成':need.join('・')}${(b=>b.t?`（目安${b.t.k}・条件${b.c}${b.next?`・次${b.next.k}：${needTxt(b.needD,b.needM)}`:''}）`:'')(reachBest(r,r.f))}${r.y!=null||ytOf(pk(r.f,r.o))!=null?`［エール ${r.y!=null?yfmt(r.y):'未入力'}${ytOf(pk(r.f,r.o))!=null?`／目標${yfmt(ytOf(pk(r.f,r.o)))}`:''}${r.y!=null?`／コイン目安${cfmt(coinEst(r.y,r.f,r.o).coin)}`:''}］`:''}${(()=>{const a=ryellOf(pk(r.f,r.o)),t=rytOf(pk(r.f,r.o));return a!=null||t!=null?`［相手エール ${yfmt(a??0)}${t!=null?`／目標${yfmt(t)}`:''}］`:''})()}${memoOf(pk(r.f,r.o))?`［メモ：${memoOf(pk(r.f,r.o))}］`:''}\n`; }
   t+=`\n達成 ${ach}/${rows.filter(r=>r.days).length}組`;
   { let yn=0,yo=0; for(const r of rows){const tv=ytOf(pk(r.f,r.o)); if(tv!=null){yn++; if(r.y!=null&&r.y>=tv) yo++}} if(yn) t+=`\nエール目標 達成 ${yo}/${yn}組`; }
   { let cs=0,cn=0; for(const r of rows){if(r.y!=null){cs+=coinEst(r.y,r.f,r.o).coin;cn++}} if(cn) t+=`\n使用コインの目安 合計 ${cfmt(cs)}コイン（${cn}組）`; }
+  { const v=Object.values(FCs); if(v.length){ const nd=v.reduce((a,b)=>a+b.need,0), n=v.reduce((a,b)=>a+b.n,0); t+=`\n目標に必要なコイン 合計 ${cfmt(nd)}コイン（${v.length}人・${n}組）` } }
   t+=`\n\n© Yoshi1012 無断転載・転用・再配布禁止`;
   return rows.length?t:`【Pococha 時間稼ぎ ${y}年${m}月度】\n記録はまだありません\n\n© Yoshi1012 無断転載・転用・再配布禁止`;
 }
@@ -3340,7 +3668,7 @@ function printHeadHtml(full){
 $('printBtn').onclick=()=>{
   if(S.tab!=='sum') return;
   S.yAll=true; renderSum(); $('printHead').innerHTML=printHeadHtml();
-  if(dl&&matchMedia('(pointer:coarse)').matches){ $('printFileBtn').onclick(); return }
+  if(dl&&!S.dlFb&&matchMedia('(pointer:coarse)').matches){ $('printFileBtn').onclick(); return }
   try{ window.print() }catch(e){ if(dl) $('printFileBtn').onclick(); else showToast('この画面では印刷を開けませんでした',false) }
 };
 $('printFileBtn').onclick=async()=>{
@@ -3401,7 +3729,7 @@ function saveYell(fromBlur){
   if(v==null) delete S.month.yell[k]; else S.month.yell[k]=v;
   $('yellRes').innerHTML=yellHtml(v,yc.f); renderYProg(k,yc.f); if(S.tab==='rec'){ const cy=$('goal').querySelector('.cyl'); if(cy) cy.innerHTML=condYellTag(S.fam,S.oth,true); }
   if(fromBlur) yi.value=v==null?'0':kn(v);
-  if(fromBlur&&tg0&&v!=null&&v>=tg0.v&&!was) showToast(`エール目標 ${yfmt(tg0.v)} を達成しました`,false);
+  if(fromBlur&&tg0&&v!=null&&v>=tg0.v&&!was){ showToast(`エール目標 ${yfmt(tg0.v)} を達成しました`,false); celebrate() }
   if(fromBlur) yi.dataset.y0=v==null?'':String(v);
   if(old===v&&!(fromBlur&&debq['yell:'+k])) return;
   debMonth('yell',k,v,fromBlur?0:700);
@@ -3569,7 +3897,7 @@ function setupCards(panelId,navId){
     const b=document.createElement('button'); b.type='button'; b.className='ctog'; b.setAttribute('aria-controls',c.id);
     b.innerHTML='<span class="ca" aria-hidden="true"></span><span class="sr">開閉</span>'; h2.appendChild(b);
     h2.classList.add('ch'); c.classList.toggle('col',S.col.includes(cid)); b.setAttribute('aria-expanded',String(!S.col.includes(cid)));
-    const short=name.replace(/（.*?）/g,'').replace('自分垢 → 他人垢 の内訳','内訳').replace('他人垢ごとの条件と達成状況','条件パターン').replace('エール目標チェック','エール目標').replace('月別推移','推移').replace('自分垢ごとのトータル','自分垢別').replace('他人垢ごとのトータル','他人垢別').replace('全員の条件をまとめて設定','まとめて設定').replace('他人垢ごとの条件パターン','条件パターン').replace('自分垢','自分垢').slice(0,8);
+    const short=name.replace(/（.*?）/g,'').replace('自分垢1人ごとの必要コイン','1人ごとコイン').replace('自分垢 → 他人垢 の内訳','内訳').replace('他人垢ごとの条件と達成状況','条件パターン').replace('エール目標チェック','エール目標').replace('月別推移','推移').replace('自分垢ごとのトータル','自分垢別').replace('他人垢ごとのトータル','他人垢別').replace('全員の条件をまとめて設定','まとめて設定').replace('他人垢ごとの条件パターン','条件パターン').replace('自分垢','自分垢').slice(0,8);
     h+=`<button type="button" data-jump="${c.id}">${esc(short)}</button>`;
   });
   nav.innerHTML='<span>移動：</span>'+h;
@@ -3769,12 +4097,15 @@ function renderDayChart(fr){ const el=$('dayChart'); if(!el) return; const {y,m,
   const mx=Math.max(...v), top=Math.max(60,Math.ceil(mx/60)*60), W=340,H=140,L=30,Rr=6,T=10,B=20, bw=(W-L-Rr)/days, X=d=>L+(d-1)*bw, Yv=val=>T+(1-val/top)*(H-T-B), f1=x=>x.toFixed(1);
   const cur=S.ym===curYM(), td=new Date().getDate();
   const gl=[0,top/2,top].map(val=>`<line class="gg" x1="${L}" x2="${W-Rr}" y1="${f1(Yv(val))}" y2="${f1(Yv(val))}"/><text class="gx" x="${L-4}" y="${f1(Yv(val)+3)}" text-anchor="end">${val?(val%60?clock(val):val/60+'h'):'0'}</text>`).join('');
+  let wk=''; for(let d=1;d<=days;d++){ const w=new Date(y,m-1,d).getDay(); if(w===0||w===6) wk+=`<rect class="dwk" x="${f1(X(d))}" y="${T}" width="${f1(bw)}" height="${H-T-B}"/>` }
+  const rdN=v.slice(1).filter(Boolean).length, avg=rdN?tot/rdN:0, avgL=avg?`<line class="davg" x1="${L}" x2="${W-Rr}" y1="${f1(Yv(avg))}" y2="${f1(Yv(avg))}"/><text class="gt davgt" x="${W-Rr}" y="${f1(Yv(avg)-3)}" text-anchor="end">平均 ${clock(Math.round(avg))}</text>`:'';
+  const tdL=cur&&td<=days?`<line class="dtd" x1="${f1(X(td)+bw/2)}" x2="${f1(X(td)+bw/2)}" y1="${T}" y2="${H-B}"/>`:'';
   let bars=''; for(let d=1;d<=days;d++){ const x=X(d)+1, w=Math.max(1,bw-2), yy=Yv(v[d]), h=H-B-yy, r=Math.min(3,w/2,h);
     const path=v[d]?`<path class="db${cur&&d===td?' td':''}" d="M${f1(x)},${f1(H-B)}V${f1(yy+r)}Q${f1(x)},${f1(yy)} ${f1(x+r)},${f1(yy)}H${f1(x+w-r)}Q${f1(x+w)},${f1(yy)} ${f1(x+w)},${f1(yy+r)}V${f1(H-B)}Z"/>`:'';
     bars+=`<g class="dbh" data-cd2="${d}" tabindex="0" role="button" aria-label="${m}月${d}日 ${clock(v[d])}（${n[d]}組）"><rect x="${f1(X(d))}" y="${T}" width="${f1(bw)}" height="${H-T-B}" fill="transparent"/>${path}<title>${m}/${d}(${dowOf(d)}) ${clock(v[d])}・${n[d]}組</title></g>` }
   const xt=[1,...[5,10,15,20,25].filter(d=>d<days-2),days].map(d=>`<text class="gx" x="${f1(X(d)+bw/2)}" y="${H-6}" text-anchor="middle">${d}</text>`).join('');
   const rd=v.map((x,i)=>[x,i]).slice(1).filter(a=>a[0]).length, best=v.indexOf(mx);
-  el.innerHTML=`<div class="dcs"><span>記録した日 <b>${rd}</b>日</span><span>最多 <b>${m}/${best}</b> ${clock(mx)}</span><span>1日平均 <b>${clock(Math.round(tot/Math.max(1,rd)))}</b></span></div><svg viewBox="0 0 ${W} ${H}" class="ysvg dsvg" role="group" aria-label="${m}月の日ごとの合計時間">${gl}${bars}${xt}<line class="gb" x1="${L}" x2="${W-Rr}" y1="${H-B}" y2="${H-B}"/></svg>` }
+  el.innerHTML=`<div class="dcs"><span>記録した日 <b>${rd}</b>日</span><span>最多 <b>${m}/${best}</b> ${clock(mx)}</span><span>1日平均 <b>${clock(Math.round(tot/Math.max(1,rd)))}</b></span></div><svg viewBox="0 0 ${W} ${H}" class="ysvg dsvg" role="group" aria-label="${m}月の日ごとの合計時間">${wk}${gl}${tdL}${bars}${avgL}${xt}<line class="gb" x1="${L}" x2="${W-Rr}" y1="${H-B}" y2="${H-B}"/></svg>` }
 function goDayFromChart(g){ S.dday=+g.dataset.cd2; S.tab='day'; savePref(); render(); window.scrollTo(0,0) }
 $('dayChart').addEventListener('click',ev=>{ const g=ev.target.closest('[data-cd2]'); if(g) goDayFromChart(g) });
 $('dayChart').addEventListener('keydown',ev=>{ const g=ev.target.closest('[data-cd2]'); if(g&&(ev.key==='Enter'||ev.key===' ')){ev.preventDefault();goDayFromChart(g)} });
@@ -3788,7 +4119,8 @@ $('listQ').addEventListener('keydown',ev=>{ if(ev.key!=='Enter'||ev.isComposing)
 $('listQRes').addEventListener('click',ev=>{ const b=ev.target.closest('[data-qi]'); if(!b) return; const h=($('listQRes')._hits||[])[+b.dataset.qi]; const inp=h&&h.r.querySelector('input[type=text]'); if(inp) setTimeout(()=>inp.focus({preventScroll:true}),350) });
 // 3 自分垢の行：今月の組数・時間・達成
 function updFamBadges(){ const R=S.month.records, by={}; for(const k in R){const p=parsePk(k); if(!p) continue; const st=pairStats(R[k],p[1]); if(!st.days) continue; const t=by[p[0]]||(by[p[0]]={n:0,min:0,a:0}); t.n++; t.min+=st.min; if(isAch(st,p[0])) t.a++}
-  document.querySelectorAll('#lstFam .fbdg').forEach(el=>{ const t=by[+el.dataset.fb]; const h=t?`<button type="button" class="ob n" data-fj="1" title="当月一覧表示で見る">今月 ${t.n}組 ›</button><span class="ob">${hm(t.min)}</span>${t.a?`<span class="ob p">達成 ${t.a}組</span>`:''}`:''; if(el.innerHTML!==h) el.innerHTML=h; el.hidden=!t }) }
+  const FC=famCoinPlan();
+  document.querySelectorAll('#lstFam .fbdg').forEach(el=>{ const t=by[+el.dataset.fb], c=FC[+el.dataset.fb]; const h=(t?`<button type="button" class="ob n" data-fj="1" title="当月一覧表示で見る">今月 ${t.n}組 ›</button><span class="ob">${hm(t.min)}</span>${t.a?`<span class="ob p">達成 ${t.a}組</span>`:''}`:'')+(c?`<button type="button" class="ob cn" data-fcopen="${+el.dataset.fb}" title="${c.n}組の目標エールに必要なコインの合計（目安）。押すと1人ごとの画面">必要コイン ${cfmt(c.need)}${fcRest(c)?'':' ✓'} ›</button>`:''); if(el.innerHTML!==h) el.innerHTML=h; el.hidden=!t&&!c }) }
 // 5 この自分垢の条件をほかの自分垢へ
 document.addEventListener('click',ev=>{ const b=ev.target.closest('[data-gcp]'); if(!b) return; const f=+b.closest('.lrow').dataset.id, mode=b.dataset.gcp;
   const ids=Array.from({length:N},(_,i)=>i).filter(i=>i!==f&&(mode==='all'||!isDefName('family',i)));
@@ -3872,6 +4204,50 @@ document.addEventListener('click',ev=>{ const b=ev.target.closest('[data-oj],[da
   const upd=()=>{ const anyOpen=cards().some(c=>!c.hidden&&!c.classList.contains('col')); b.textContent=anyOpen?'全部たたむ':'全部開く'; b.dataset.m=anyOpen?'c':'o' };
   b.onclick=()=>{ const col=b.dataset.m==='c'; cards().forEach(c=>toggleCard(c,col)); upd(); if(!col) scrollTo({top:$('p-list').getBoundingClientRect().top+scrollY-8}) };
   document.addEventListener('click',ev=>{ if(ev.target.closest('#p-list h2.ch,#jumpList [data-jump],#listSum [data-lj]')) setTimeout(upd,0) }); upd(); }
+/* ---------- 当月一覧：名前で探して切り替え ---------- */
+function recQRender(){ const inp=$('recQ'), el=$('recQRes'), q=dayKana(inp.value||''); if(!q){ el.hidden=true; el.innerHTML=''; return }
+  const M=S.month, ks=[...new Set([...S.pins,...S.recent,...Object.keys(M.records||{}),...Object.keys(M.yt||{}),...Object.keys(M.yell||{}),...S.prevKeys])].filter(k=>{const p=parsePk(k); return p&&dayHit(q,p[0],p[1])});
+  ks.sort((a,b)=>{const A=parsePk(a),B=parsePk(b); return PF(A[0])-PF(B[0])||PO(A[1])-PO(B[1])});
+  const fams=S.order.family.filter(f=>/^\d+$/.test(q)?PF(f)+1===+q:dayKana(S.priv?famName(f):(S.lists.family[f]||'')).includes(q)).slice(0,4);
+  const oths=S.order.others.filter(o=>/^\d+$/.test(q)?PO(o)+1===+q:dayKana(S.priv?othName(o):(S.lists.others[o]||'')).includes(q)).slice(0,4);
+  let h=ks.length?`<span class="qn">組み合わせ ${ks.length}件</span>`+ks.slice(0,8).map(k=>{const [f,o]=parsePk(k); return `<button type="button" role="option" data-rqk="${k}">${esc(famName(f))} <span class="to">→</span> ${esc(othName(o))}</button>`}).join(''):'';
+  if(fams.length) h+=`<span class="qn">自分垢だけ切り替え</span>`+fams.map(f=>`<button type="button" role="option" data-rqf="${f}"><small>自分</small>${esc(famName(f))}</button>`).join('');
+  if(oths.length) h+=`<span class="qn">他人垢だけ切り替え</span>`+oths.map(o=>`<button type="button" role="option" data-rqo="${o}"><small>他人</small>${esc(othName(o))}</button>`).join('');
+  el.innerHTML=h||'<span class="qn">見つかりません。名前の一部か番号で探してください。</span>'; el.hidden=false }
+let recQT=null; $('recQ').addEventListener('input',()=>{ clearTimeout(recQT); recQT=setTimeout(recQRender,120) });
+$('recQ').addEventListener('search',recQRender);
+$('recQ').addEventListener('keydown',ev=>{ if(ev.key==='Enter'){ ev.preventDefault(); const b=$('recQRes').querySelector('button'); if(b) b.click() } if(ev.key==='Escape'){ $('recQ').value=''; recQRender() } });
+$('recQRes').addEventListener('click',ev=>{ const b=ev.target.closest('button'); if(!b) return; const p=b.dataset.rqk?parsePk(b.dataset.rqk):null;
+  if(p){ S.fam=p[0]; S.oth=p[1] } else if(b.dataset.rqf!=null) S.fam=+b.dataset.rqf; else if(b.dataset.rqo!=null) S.oth=+b.dataset.rqo; else return;
+  $('recQ').value=''; recQRender(); savePref(); renderRec(); $('recQ').blur(); undo=null; showToast(`${famName(S.fam)} → ${othName(S.oth)} にしました`,false) });
+/* ---------- 共有（スマホの共有メニュー） ---------- */
+function shareText(t,title){ if(!navigator.share||!t) return; navigator.share({title,text:t}).catch(e=>{ if(e&&e.name!=='AbortError'){ undo=null; showToast('共有できませんでした。「コピー」をお使いください',false) } }) }
+$('shareBtn').hidden=!navigator.share; $('shareBtn').onclick=()=>shareText(summaryText(),'Pococha 時間稼ぎ・エール記録帳');
+$('fcBody').addEventListener('click',ev=>{ if(ev.target.id!=='fcShare') return; const {f}=fcCur(); shareText(fcTextOne(f),famName(f)+'の必要コイン') });
+/* ---------- 全体の操作性 ---------- */
+$('lbX').onclick=()=>{ ls.set('pk:lbx',1); $('localBanner').hidden=true };
+$('toastMsg').addEventListener('click',()=>hideToast());
+$('gsX').onclick=()=>{ ls.set('pk:gsx',1); $('gsCard').hidden=true };
+$('gsCard').addEventListener('click',ev=>{ const b=ev.target.closest('[data-gs]'); if(!b) return; const t=b.dataset.gs; if(t==='rec'){ const p=document.querySelector('#p-rec .pickers'); if(p) p.scrollIntoView({block:'start',behavior:'smooth'}); return } $('tab-'+t).click() });
+// 集計のタイルを押すと関連する見出しへ
+function gJump(el){ const c=$(el.dataset.gj); if(!c||c.hidden) return; if(c.classList.contains('col')) toggleCard(c,false); jumpTo(c) }
+document.querySelector('#p-sum .grand').addEventListener('click',ev=>{ const t=ev.target.closest('[data-gj]'); if(t) gJump(t) });
+document.querySelector('#p-sum .grand').addEventListener('keydown',ev=>{ const t=ev.target.closest('[data-gj]'); if(t&&(ev.key==='Enter'||ev.key===' ')){ ev.preventDefault(); gJump(t) } });
+// 絞り込み・並び順の開閉を覚える
+{ const d=$('sumCtl'); d.open=!!ls.get('pk:sumCtl'); d.addEventListener('toggle',()=>ls.set('pk:sumCtl',d.open?1:0)); }
+// 月のバーを左右スワイプで月を移動
+{ const el=document.querySelector('.month'); let sx=0,sy=0,t0=0,on=false;
+  el.addEventListener('touchstart',e=>{ if(e.touches.length!==1){on=false;return} on=true; sx=e.touches[0].clientX; sy=e.touches[0].clientY; t0=Date.now() },{passive:true});
+  el.addEventListener('touchend',e=>{ if(!on) return; on=false; const t=e.changedTouches[0], dx=t.clientX-sx, dy=t.clientY-sy; if(Date.now()-t0>800||Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*1.5) return;
+    e.preventDefault(); goMonth(shiftYM(S.ym,dx<0?1:-1)); const {y,m}=ymParts(S.ym); undo=null; showToast(`${y}年${m}月度に移動しました`,false) }); }
+// キー操作：「/」で検索欄へ・タブで← →
+document.addEventListener('keydown',ev=>{ if(ev.ctrlKey||ev.metaKey||ev.altKey||ev.isComposing) return; const t=ev.target;
+  if(ev.key==='/'&&!(t&&t.closest&&t.closest('input,select,textarea,[contenteditable]'))){ const id={day:'dayQ',sum:'sumQ',list:'listQ'}[S.tab]; if(!id) return; ev.preventDefault(); if(id==='sumQ') $('sumCtl').open=true; const q=$(id); q.focus(); q.select(); return }
+  if((ev.key==='ArrowLeft'||ev.key==='ArrowRight')&&t&&t.closest&&t.closest('nav.tabs [data-tab]')){ ev.preventDefault(); const i=TABS.indexOf(S.tab), n=TABS[(i+(ev.key==='ArrowRight'?1:-1)+TABS.length)%TABS.length]; $('tab-'+n).click(); $('tab-'+n).focus() } });
+// ブラウザの上の色をテーマに合わせる
+function applyThemeColor(){ let m=document.head.querySelector('meta[name="theme-color"]'); if(!m){ m=document.createElement('meta'); m.name='theme-color'; document.head.appendChild(m) }
+  const dark=S.theme==='dark'||(S.theme==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches); m.content=dark?'#12141c':'#f4f5fa' }
+{ const _at=applyTheme; applyTheme=function(){ _at(); applyThemeColor() }; try{ matchMedia('(prefers-color-scheme: dark)').addEventListener('change',applyThemeColor) }catch(e){} applyThemeColor(); }
 /* ---------- 起動 ---------- */
 try{history.scrollRestoration='manual'}catch(e){}
 render(); if(S.tab==='rec') window.scrollTo(0,0);
@@ -3881,7 +4257,9 @@ render(); if(S.tab==='rec') window.scrollTo(0,0);
     c&&c.use?c.use('db').catch(()=>null):null,
     c&&c.use?c.use('downloads').catch(()=>null):null
   ]);
-  db=d; dl=dw; $('csvBtn').hidden=!dl; $('printFileBtn').hidden=!dl; $('expBtn').hidden=!dl;
+  db=d; dl=dw;
+  if(!dl&&!(c&&c.use)){ S.dlFb=true; dl={save:async({filename,data})=>{ const tp=/\.csv$/.test(filename)?'text/csv':/\.html$/.test(filename)?'text/html':'application/json'; const bl=new Blob([data],{type:tp+';charset=utf-8'}), a=document.createElement('a'); a.href=URL.createObjectURL(bl); a.download=filename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),3000) }} }
+  $('csvBtn').hidden=!dl; $('printFileBtn').hidden=!dl; $('expBtn').hidden=!dl;
   if(db){
     setStatus('ok','同期中');
     db.doc('config/lists').onSnapshot(snap=>{
@@ -3905,7 +4283,7 @@ render(); if(S.tab==='rec') window.scrollTo(0,0);
       applyPats(snap.exists?snap.data():null); render();
     },()=>{});
   } else {
-    $('localBanner').hidden=false; setStatus('ok','この端末に保存');
+    $('localBanner').hidden=!!ls.get('pk:lbx'); setStatus('ok','この端末に保存');
     applyLists(ls.get('pk:config/lists'));
     applyGoals(ls.get('pk:config/goals'));
     applyPats(ls.get('pk:config/pats')); applyRyt(ls.get('pk:config/ryt')); applyOinfo(ls.get('pk:config/oinfo'));

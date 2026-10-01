@@ -1646,6 +1646,7 @@ kbd{display:inline-block;min-width:1.6em;text-align:center;font:inherit;font-siz
 
 <script>
 (function(){
+const BACKUP_MAX_BYTES=32*1024*1024;
 const N=50, WD=['日','月','火','水','木','金','土'], ADDS=[5,10,15,30,60];
 const pad=n=>String(n).padStart(2,'0');
 const defNames=p=>Array.from({length:N},(_,i)=>p+(i+1));
@@ -1954,8 +1955,8 @@ function unpackMonth(d){
   }
   for(const k in d.records||{}){if(!parsePk(k))continue;const r={};const src=d.records[k]||{};
     for(const day in src){const v=src[day];if(!/^([1-9]|[12]\d|3[01])$/.test(day))continue;
-      if(typeof v==='number'&&v>=0) r[day]={c:1,m:Math.min(1440,v)};
-      else if(v&&typeof v==='object'&&v.c) r[day]={c:1,m:Math.min(1440,+v.m||0)}}
+      if(typeof v==='number'&&Number.isFinite(v)&&v>=0) r[day]={c:1,m:Math.min(1440,Math.floor(v))};
+      else if(v&&typeof v==='object'&&v.c){const m=Number(v.m);r[day]={c:1,m:Number.isFinite(m)?Math.min(1440,Math.max(0,Math.floor(m))):0}}}
     if(Object.keys(r).length) mo.records[k]=r}
   return mo;
 }
@@ -2026,6 +2027,16 @@ function flush(){
   if(db&&navigator.onLine===false&&Object.keys(pend).length){setStatus('busy','オフライン：つながったら保存します');return chain}
   const items=Object.entries(pend); for(const [k] of items) delete pend[k];
   if(!items.length) return chain;
+  // 端末保存は同期実行し、月の再読込・画面終了より先に記録を確定する。
+  if(!db){
+    for(const [p,o] of items){
+      const data=p.startsWith('months/')?packMonth(o.month):JSON.parse(JSON.stringify(o.obj));
+      if(p.startsWith('months/')&&JSON.stringify(data).length>240000){requeue(p,o);setStatus('err','この月度のデータ量が上限に近いため保存できません');continue}
+      if(!ls.set('pk:'+p,data)){requeue(p,o);lsFail()}
+    }
+    if(!Object.keys(pend).length)setStatus('ok','この端末に保存済み');
+    return chain;
+  }
   chain=chain.then(async()=>{
     for(const [p,o] of items){
       inflight[p]=true; sending[p]=o;
@@ -2832,6 +2843,8 @@ async function allMonths(){
   const out={};
   if(db){ const q=await db.collection('months').limit(1000).get(); for(const d of q.docs) if(/^\d{4}-\d{2}$/.test(d.id)) out[d.id]=packMonth(unpackMonth(d.data())); }
   else { try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);const m=/^pk:months\/(\d{4}-\d{2})$/.exec(k);if(m)out[m[1]]=packMonth(unpackMonth(ls.get(k)))}}catch(e){} }
+  // 保存容量不足でも、画面に残っている未保存記録をバックアップへ含める。
+  if(!db)for(const p in pend){const m=/^months\/(\d{4}-\d{2})$/.exec(p);if(m&&pend[p].month)out[m[1]]=packMonth(pend[p].month)}
   return out;
 }
 $('expBtn').onclick=async()=>{
@@ -2839,7 +2852,9 @@ $('expBtn').onclick=async()=>{
   try{
     const data={app:'pococha-jikan-kasegi',version:1,exportedAt:new Date().toISOString(),lists:listsDoc(),goals:S.goals,pats:patsDoc(),ryt:JSON.parse(JSON.stringify(S.ryt||{})),oinfo:JSON.parse(JSON.stringify(S.oinfo||{})),oimg:await IMG.all(),months:await allMonths()};
     const t=new Date(), name=`pococha_backup_${t.getFullYear()}${pad(t.getMonth()+1)}${pad(t.getDate())}.json`;
-    await dl.save({filename:name,data:JSON.stringify(data,null,1)});
+    const text=JSON.stringify(data,null,1);
+    if(new Blob([text]).size>BACKUP_MAX_BYTES){setStatus('err','バックアップが32MBを超えるため書き出せません。配信予定の画像を減らしてから再度お試しください');return}
+    await dl.save({filename:name,data:text});
     ls.set('pk:lastBk',Date.now()); checkBk(); if(typeof renderBkInfo==='function'){renderBkInfo();renderGuide()}
   }catch(e){ if(e&&e.code!=='declined') setStatus('err','書き出しに失敗しました'); }
 };
@@ -2847,11 +2862,11 @@ let impData=null;
 $('impFile').addEventListener('change',async ev=>{
   const f=ev.target.files&&ev.target.files[0]; ev.target.value=''; if(!f) return;
   const box=$('impConfirm'); box.hidden=false;
-  if(f.size>5*1024*1024){impData=null;box.innerHTML='<div>ファイルが大きすぎます（5MBまで）。このツールで書き出したバックアップを選んでください。</div><div class="row"><button class="btn" id="impCancel">閉じる</button></div>';return}
+  if(f.size>BACKUP_MAX_BYTES){impData=null;box.innerHTML='<div>ファイルが大きすぎます（32MBまで）。このツールで書き出したバックアップを選んでください。</div><div class="row"><button class="btn" id="impCancel">閉じる</button></div>';return}
   try{
     const d=JSON.parse(await f.text());
     if(!d||d.app!=='pococha-jikan-kasegi'||typeof d.months!=='object') throw 0;
-    const yms=Object.keys(d.months).filter(k=>/^\d{4}-(0[1-9]|1[0-2])$/.test(k)).sort().slice(-240);
+    const yms=Object.keys(d.months).filter(k=>/^\d{4}-(0[1-9]|1[0-2])$/.test(k)).sort();
     impData={lists:d.lists,goals:d.goals,pats:d.pats,ryt:d.ryt,oinfo:d.oinfo,oimg:d.oimg,months:yms.map(k=>[k,packMonth(unpackMonth(d.months[k]))])};
     box.innerHTML=`<div>「${esc(f.name)}」（${yms.length}か月分${yms.length?`：${yms[0]}〜${yms[yms.length-1]}`:''}）で復元します。<b>ファイルに含まれる月度と名前・条件は上書きされます。</b></div>
       <div class="row"><button class="btn pri" id="impGo">上書きして復元</button><button class="btn" id="impCancel">やめる</button></div>`;
@@ -2861,6 +2876,7 @@ $('impConfirm').addEventListener('click',async ev=>{
   if(ev.target.id==='impCancel'){$('impConfirm').hidden=true;impData=null;return}
   if(ev.target.id!=='impGo'||!impData) return;
   ev.target.disabled=true; await flush();
+  if(!db&&Object.keys(pend).length){impData=null;$('impConfirm').innerHTML='<div>未保存の記録があるため、復元を中止しました。先に現在のバックアップを書き出し、保存エラーを解消してからやり直してください。</div><div class="row"><button class="btn" id="impCancel">閉じる</button></div>';return}
   const d=impData; impData=null; let okAll=true;
   const w=async(p,v)=>{ if(db){ if((await tryWrite(()=>db.doc(p).set(v)))!==true) okAll=false; else if(p.startsWith('months/')) mExists[p]=true } else if(!ls.set('pk:'+p,v)) okAll=false };
   if(d.lists){applyLists(d.lists); await w('config/lists',listsDoc())}
@@ -3038,7 +3054,7 @@ $('tPairs').addEventListener('click',ev=>{const tr=ev.target.closest('tr.go');if
 document.querySelector('nav.tabs').addEventListener('click',ev=>{const b=ev.target.closest('[data-tab]');if(!b)return;const to=b.dataset.tab;if(to===S.tab)return;
   S.scrollPos[S.tab]=window.scrollY; S.tab=to; savePref(); render();
   window.scrollTo(0,to==='rec'?0:(S.scrollPos[to]||0));});
-function goMonth(ym){flush();S.ym=ym;scrollToday=true;subscribeMonth()}
+function goMonth(ym){flush();if(!db&&Object.keys(pend).length){$('monthPick').value=S.ym;return false}S.ym=ym;scrollToday=true;subscribeMonth();return true}
 $('prevM').onclick=()=>goMonth(shiftYM(S.ym,-1));
 $('nextM').onclick=()=>goMonth(shiftYM(S.ym,1));
 $('thisM').onclick=()=>goMonth(curYM());
@@ -4239,7 +4255,7 @@ document.querySelector('#p-sum .grand').addEventListener('keydown',ev=>{ const t
 { const el=document.querySelector('.month'); let sx=0,sy=0,t0=0,on=false;
   el.addEventListener('touchstart',e=>{ if(e.touches.length!==1){on=false;return} on=true; sx=e.touches[0].clientX; sy=e.touches[0].clientY; t0=Date.now() },{passive:true});
   el.addEventListener('touchend',e=>{ if(!on) return; on=false; const t=e.changedTouches[0], dx=t.clientX-sx, dy=t.clientY-sy; if(Date.now()-t0>800||Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*1.5) return;
-    e.preventDefault(); goMonth(shiftYM(S.ym,dx<0?1:-1)); const {y,m}=ymParts(S.ym); undo=null; showToast(`${y}年${m}月度に移動しました`,false) }); }
+    e.preventDefault(); if(!goMonth(shiftYM(S.ym,dx<0?1:-1)))return; const {y,m}=ymParts(S.ym); undo=null; showToast(`${y}年${m}月度に移動しました`,false) }); }
 // キー操作：「/」で検索欄へ・タブで← →
 document.addEventListener('keydown',ev=>{ if(ev.ctrlKey||ev.metaKey||ev.altKey||ev.isComposing) return; const t=ev.target;
   if(ev.key==='/'&&!(t&&t.closest&&t.closest('input,select,textarea,[contenteditable]'))){ const id={day:'dayQ',sum:'sumQ',list:'listQ'}[S.tab]; if(!id) return; ev.preventDefault(); if(id==='sumQ') $('sumCtl').open=true; const q=$(id); q.focus(); q.select(); return }

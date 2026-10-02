@@ -1,1 +1,1 @@
-{"private":true,"scripts":{"test":"node tests/run.cjs"}}
+{"private":true,"scripts":{"test":"node tests/run.cjs","debug:10":"node tests/debug-ten.cjs"}}

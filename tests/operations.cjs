@@ -40,17 +40,19 @@ function nodesFactory() {
   return {nodes, $};
 }
 
-function bulkFixture() {
+function bulkFixture(searchScopes = {}) {
   const {nodes,$} = nodesFactory(), writes=[], records=new Map(), timers=[];
   const S={mLoaded:true,ym:'2026-10',dday:2,dayKeys:['f0_o0'],bsOnly:true,dayFam:'all',dayOth:'all',dayQ:'',dayView:'all'};
   const timerClock={now:1700000000000};
   class TestDate extends Date {static now(){return timerClock.now;}}
   const key=(f,o,d)=>`${S.ym}:${f}:${o}:${d}`;
-  const c=vm.createContext({console,$,S,Date:TestDate,setTimeout:fn=>{timers.push(fn);return timers.length;},savePref(){},pushUndo(){},showToast(){},renderDay(){},
+  const c=vm.createContext({console,$,S,Date:TestDate,setTimeout:fn=>{timers.push(fn);return timers.length;},clearTimeout(){},savePref(){},pushUndo(){},showToast(){},renderDay(){if(searchScopes[S.dayQ])S.dayKeys=searchScopes[S.dayQ].slice();},
     getE:(f,o,d)=>records.get(key(f,o,d))||null,
     putE:(f,o,d,e)=>{writes.push({ym:S.ym,f,o,d,e});records.set(key(f,o,d),e);}
   });
-  vm.runInContext(common+`const TOPTS='';`+take("$('bsT').innerHTML=TOPTS;",'// 機能6：バックアップのお知らせ')
+  $('dayQ');
+  vm.runInContext(common+`const TOPTS='';let dayQT=null;`+take('function dayFlushSearch(){',"$('dayQ').addEventListener('input'")
+    +take("$('bsT').innerHTML=TOPTS;",'// 機能6：バックアップのお知らせ')
     +take("$('bsOnly').addEventListener('change'", "$('bsChk').onclick"),c);
   return {S,nodes,writes,records,timers,timerClock,click:()=>nodes.bsGo.onclick(),key};
 }
@@ -98,7 +100,7 @@ async function run() {
     ['account keys',t=>{t.S.dayKeys=['f1_o1'];}],
     ['time',t=>{t.nodes.bsT.value='120';}],
     ['only-unentered setting',t=>{t.S.bsOnly=false;}],
-    ['search query',t=>{t.S.dayQ='ゆき';}],
+    ['search query',t=>{t.S.dayQ=t.nodes.dayQ.value='ゆき';}],
     ['self-account filter',t=>{t.S.dayFam='0';}],
     ['other-account filter',t=>{t.S.dayOth='0';}],
     ['display status',t=>{t.S.dayView='todo';}],
@@ -110,6 +112,17 @@ async function run() {
     t.click();assert.equal(t.writes.length,t.S.dayKeys.length);
     assert(t.writes.every(w=>w.ym===t.S.ym&&w.d===t.S.dday&&w.e.m===+t.nodes.bsT.value));
     pass(`bulk confirmation is renewed after changing ${label}`);
+  }
+  {
+    const t=bulkFixture({'ゆき':['f1_o1']});t.S.dayKeys=['f0_o0','f1_o1'];t.nodes.dayQ.value='ゆき';
+    t.click();assert.equal(t.S.dayQ,'ゆき');assert.deepEqual(t.S.dayKeys,['f1_o1']);assert.equal(t.writes.length,0);
+    t.click();assert.equal(t.writes.length,1);assert.equal(t.writes[0].f,1);assert.equal(t.writes[0].o,1);
+    pass('a pending search is committed before bulk confirmation so the previous visible scope is never written');
+  }
+  {
+    const t=bulkFixture();t.nodes.dayQ.dataset.dayComp='1';t.click();t.click();assert.equal(t.writes.length,0);
+    delete t.nodes.dayQ.dataset.dayComp;t.click();assert.equal(t.writes.length,0);t.click();assert.equal(t.writes.length,1);
+    pass('bulk waits for search composition to finish before arming or writing');
   }
   {
     const t=bulkFixture();t.S.dayKeys=['f0_o0','f0_o1'];t.click();

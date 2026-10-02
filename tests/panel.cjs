@@ -13,7 +13,7 @@ function take(start,end){
 // Execute the production preference initializer, renderer, and delegated handlers.
 // The DOM shim records focus and persistence without touching a user's browser data.
 function fixture(pref={},width=1024){
-  const nodes={},stored=new Map(),metrics={saved:0,rec:0,day:0,edit:0,focused:[]};
+  const nodes={},stored=new Map(),metrics={saved:0,rec:0,day:0,edit:0,dayCommits:0,focused:[]};
   const classes=()=>{
     const values=new Set();
     return {add:c=>values.add(c),remove:c=>values.delete(c),contains:c=>values.has(c),
@@ -48,7 +48,7 @@ function fixture(pref={},width=1024){
     renderRec(){metrics.rec++;vm.runInContext('renderPanel()',context)},
     renderDay(){metrics.day++;vm.runInContext('renderPanel()',context)},
     edit(){metrics.edit++},toggleBox(){},togglePin(){},shiftPanelDay(){},applyQMinutes(){},
-    queueMonth(){},defaultDay:()=>2,goToday(){},showToast(){}});
+    dayCommitFocused(){metrics.dayCommits++;return true;},queueMonth(){},defaultDay:()=>2,goToday(){},showToast(){}});
   const code=take('const S={','let db=null')
     +take('function savePref(){','/* ---------- 操作 ---------- */')
     +`let qMinuteDraft=null;const qMinuteKey=c=>S.ym+':'+c.f+':'+c.o+':'+c.d;let TOPTS='<option value="0">0:00</option>';`
@@ -57,6 +57,8 @@ function fixture(pref={},width=1024){
     +take("$('days').addEventListener('click',ev=>{",'let lpFired=false')
     +`let lpFired=false;`
     +take("$('qpanel').addEventListener('click',ev=>{",'// 3: +ボタン長押し')
+    +take("$('addPair').onclick=()=>{","document.addEventListener('change',ev=>{")
+    +`$('addFam');$('addOth');$('dayQ');`
     +`S.mLoaded=true;S.month={records:{}};S.sel=2;S.dday=2;globalThis.api={S,renderPanel,savePref};renderPanel();`;
   new vm.Script(code,{filename:file}).runInContext(context);
   function target(matches,dataset={}){
@@ -131,6 +133,18 @@ test('daily row Enter and Space expand editing without intercepting nested input
   const t=fixture();t.api.S.tab='day';const row=t.row('day',{f:'4',o:'5'});
   const nested={closest:s=>s==='.prow.crow'?row:null};
   assert.equal(t.nodes.dayList.dispatch('keydown',nested,'Enter'),0);assert.equal(t.api.S.panelMin,true);
+});
+test('adding a daily pair selects and opens it, clears hiding filters and preserves records and date',()=>{
+  const t=fixture();t.api.S.tab='day';t.api.S.dday=12;t.api.S.dpk='f0_o0';
+  t.api.S.month.records={f0_o0:{12:{c:1,m:17}}};const before=JSON.stringify(t.api.S.month.records);
+  t.api.S.dayFam='4';t.api.S.dayOth='5';t.api.S.dayView='todo';t.api.S.dayQ='検索外';t.api.S.dayHideAch=true;t.api.S.dayFold=[2,4];
+  t.nodes.addFam.value='2';t.nodes.addOth.value='3';t.nodes.addPair.onclick();
+  assert.equal(t.api.S.dpk,'f2_o3');assert.equal(t.api.S.panelMin,false);assert.equal(t.api.S.dday,12);
+  assert(t.api.S.extra.includes('f2_o3'));assert.equal(t.api.S.dayFam,'all');assert.equal(t.api.S.dayOth,'all');
+  assert.equal(t.api.S.dayView,'all');assert.equal(t.api.S.dayQ,'');assert.equal(t.nodes.dayQ.value,'');assert.equal(t.api.S.dayHideAch,false);
+  assert.deepEqual(Array.from(t.api.S.dayFold),[4]);assert.equal(t.metrics.dayCommits,1);assert.equal(t.metrics.edit,0);
+  assert.equal(JSON.stringify(t.api.S.month.records),before);assert.match(t.nodes.qpanel.innerHTML,/自分垢3.*他人垢4/);
+  assert.equal(t.stored.get('pk:pref').daily.k,'f2_o3');assert.equal(t.stored.get('pk:pref').daily.d,12);
 });
 test('explicit collapse and expand persist and survive a reload',()=>{
   const t=fixture({panelMin:false});

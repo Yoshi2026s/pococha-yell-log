@@ -15,12 +15,13 @@ function fixture(){
     click(){if(id.startsWith('tab-'))S.tab=id.slice(4);},
     focus(){focused.push(id);},select(){}
   });
-  const document={addEventListener(type,fn){assert.equal(type,'keydown');handlers.push(fn);},querySelector(){return null;}};
+  const document={activeElement:null,addEventListener(type,fn){assert.equal(type,'keydown');handlers.push(fn);},querySelector(){return null;}};
   const c=vm.createContext({console,S,$,document,TABS:['rec','day','sum','list'],ADDS:[5,10,30,60,120],
     ymParts:()=>({days:31}),parsePk:k=>{const m=/^f(\d+)_o(\d+)$/.exec(k);return m?[+m[1],+m[2]]:null;},
-    renderDay:()=>renders.push(S.dday),edit:(...args)=>edits.push(args)
+    dayCommitFocused(){return true;},savePref(){},renderDay:()=>renders.push(S.dday),edit:(...args)=>edits.push(args)
   });
-  vm.runInContext(take('// PCのキー操作（日付別実績入力）','/* ---------- 追加の便利機能 ---------- */')
+  vm.runInContext(take('function daySelectDate(d){','function dayNextMissing(')
+    +take('// PCのキー操作（日付別実績入力）','/* ---------- 追加の便利機能 ---------- */')
     +take('// キー操作：「/」で検索欄へ・タブで← →','// ブラウザの上の色をテーマに合わせる'),c);
   function dispatch(key,location='body',mods={}){
     let prevented=0;

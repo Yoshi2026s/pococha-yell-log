@@ -92,8 +92,9 @@ test('day tab binding targets selected pair and day; leaving panel clears draft'
  t.input('89');t.api.S.tab='sum';t.api.renderPanel();assert.equal(t.api.draft,null);assert.equal(t.nodes.qpanel.hidden,true);
  t.api.S.tab='day';t.api.renderPanel();assert.equal(t.nodes.qMinutes.value,'23');
 });
-test('IME composition Enter does not commit; completed Enter does',()=>{
+test('IME composition and keyCode 229 Enter do not commit; completed Enter does',()=>{
  const t=boot();t.input('29');assert.equal(t.enter(true),false);assert.equal(t.api.getE(0,0,2),null);assert.equal(t.enter(false),true);assert.equal(t.api.getE(0,0,2).m,29);
+ const legacy=boot();legacy.input('41');let prevented=false;legacy.nodes.qpanel.dispatch('keydown',{target:legacy.nodes.qMinutes,key:'Enter',keyCode:229,isComposing:false,preventDefault(){prevented=true}});assert.equal(prevented,false);assert.equal(legacy.api.getE(0,0,2),null);assert.equal(legacy.enter(false),true);assert.equal(legacy.api.getE(0,0,2).m,41);
 });
 test('other time controls discard dirty buffer and preserve normal undo',()=>{
  const t=boot();t.input('17');t.apply();t.input('55');const button={disabled:false,dataset:{a:'5'},tagName:'BUTTON',closest(s){if(s==='button[data-a]')return this;return null}};t.nodes.qpanel.dispatch('click',{target:button});assert.equal(t.api.getE(0,0,2).m,22);assert.equal(t.nodes.qMinutes.value,'22');t.api.doUndo();assert.equal(t.api.getE(0,0,2).m,17);

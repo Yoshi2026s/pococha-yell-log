@@ -4002,7 +4002,7 @@ function ytFormParse(raw,unit,commit){
   const v=unit==='k'?Math.round(Number(x)*1000):Number(x);return Number.isSafeInteger(v)&&v>=0&&v<=YMAX?(v||null):NaN;
 }
 function ytFormCandidates(){
-  const kind=ytFormRowKind(),M=S.month,ids=S.order[kind];let out=S.ytFormAll?ids.slice():ids.filter(id=>{const k=ytFormPair(id);return S.active[kind][id]||!isDefName(kind,id)||ytOf(k)!=null||yellOf(k)!=null||Object.keys((M.records||{})[k]||{}).length});
+  const kind=ytFormRowKind(),M=S.month,ids=S.order[kind];let out=S.ytFormAll?ids.slice():ids.filter(id=>{const k=ytFormPair(id);return k===S.ytFormLastKey||S.active[kind][id]||!isDefName(kind,id)||ytOf(k)!=null||yellOf(k)!=null||Object.keys((M.records||{})[k]||{}).length});
   if(!out.length&&!S.ytFormAll)out=ids.slice(0,5);return out;
 }
 function ytFormOthers(){
@@ -4108,7 +4108,7 @@ $('ytFormBulk').addEventListener('input',ev=>{ytFormResetArm();if(!ev.isComposin
 $('ytFormBulk').addEventListener('compositionstart',ev=>{ev.target.dataset.numComp='1';ytFormResetArm();ytFormUpdateMeta()});
 $('ytFormBulk').addEventListener('compositionend',ev=>{delete ev.target.dataset.numComp;ytFormUpdateMeta()});
 $('ytFormEmpty').addEventListener('change',()=>{ytFormResetArm();ytFormUpdateMeta()});$('ytFormApply').onclick=ytFormBulkApply;
-function ytFormOpenFor(k,f){const p=k?parsePk(k):null;if(k&&!p||!k&&!vIdx(f)||!settingsPrepareNavigation()||!dayPrepareNavigation())return false;S.tab='list';S.ytFormQ='';S.ytFormFilter='all';S.ytFormAll=true;S.ytFormLastKey=k||null;if(p){S.ytFormAxis='others';S.ytFormFam=p[0];S.ytFormOth=p[1]}else{S.ytFormAxis='family';S.ytFormFam=f}ytFormResetArm();savePref();render();const card=$('ytFormCard');if(card.classList.contains('col'))toggleCard(card,false);jumpTo(card);if(k)ytFormFocusPair(k);return true}
+function ytFormOpenFor(k,f){const p=k?parsePk(k):null;if(k&&!p||!k&&!vIdx(f)||!settingsPrepareNavigation()||!dayPrepareNavigation())return false;S.tab='list';S.ytFormQ='';S.ytFormFilter='all';S.ytFormAll=false;S.ytFormLastKey=k||null;if(p){S.ytFormAxis='others';S.ytFormFam=p[0];S.ytFormOth=p[1]}else{S.ytFormAxis='family';S.ytFormFam=f}ytFormResetArm();savePref();render();const card=$('ytFormCard');if(card.classList.contains('col'))toggleCard(card,false);jumpTo(card);if(k)ytFormFocusPair(k);return true}
 /* ---------- 月別目標フォームここまで ---------- */
 $('settingsAdvanced').querySelector(':scope > summary').addEventListener('click',ev=>{if(!settingsPrepareNavigation())ev.preventDefault()});
 
@@ -5761,7 +5761,7 @@ S.chlog=[];
 const _st=showToast; showToast=function(msg,canUndo=true){ _st(msg,canUndo); if(canUndo&&S.tab==='list'&&undoStack.length){const u=undoStack[undoStack.length-1]; if(!S.chlog.length||S.chlog[0].u!==u){S.chlog.unshift({msg,u,t:new Date()}); S.chlog=S.chlog.slice(0,10)} else S.chlog[0].msg=msg} renderChg() };
 function renderChg(){ const el=$('chgLog'); if(!el) return;
   const h=S.chlog.length?S.chlog.map(c=>`<li class="${c.done?'done':''}"><time>${c.t.getHours()}:${pad(c.t.getMinutes())}</time><span>${esc(c.msg)}</span>${c.done?'<em>戻し済み</em>':''}</li>`).join(''):'<li class="none">まだ変更はありません</li>';
-  if(el.innerHTML!==h) el.innerHTML=h; const b=$('chgUndo'); if(b){ b.disabled=!undoStack.some(u=>u.ym===S.ym); b.hidden=b.disabled } }
+  if(el.innerHTML!==h) el.innerHTML=h; const b=$('chgUndo'); if(b){ b.disabled=!undoStack.some(u=>u.ym===S.ym); b.hidden=true } }
 $('chgUndo').onclick=()=>{ doUndo(); renderChg() };
 { const _pu=pushUndo; pushUndo=function(u){ _pu(u); renderChg() }; }
 { const _du=doUndo; doUndo=function(){ const before=undoStack.slice(); _du(); const now=new Set(undoStack); before.forEach(u=>{if(!now.has(u)){const c=S.chlog.find(x=>x.u===u); if(c) c.done=true}}); renderChg() }; }

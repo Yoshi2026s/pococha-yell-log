@@ -44,12 +44,12 @@ function setup(){
   line("document.addEventListener('input',ev=>{const t=ev.target;if(!accountNameField")+
   take('/* ---------- 自分垢ごとの月別目標フォーム ---------- */','/* ---------- 月別目標フォームここまで ---------- */')+
   take('function flushNumericInputs(){','/* ---------- 名前・条件設定：名前をまとめて入力')+
-  line('function fcOpenFor(')+line('function goDayFromChart(')+line('function jumpTo(')+
+  line('function ytFormOpenFor(')+line('function fcOpenFor(')+line('function goDayFromChart(')+line('function jumpTo(')+
   take("document.querySelector('nav.tabs').addEventListener('click',ev=>{const b=ev.target.closest('[data-tab]');",'function goMonth(')+
   line('function goMonth(ym){')+
   line("window.addEventListener('pagehide',()=>{flushDeb();stashPending();flush()});")+
   take("document.addEventListener('visibilitychange',()=>{\n  if(document.visibilityState==='hidden')",'\n})();')+
-  `globalThis.api={S,nodes,toasts,undoStack,axis:ytFormAxis,anchor:ytFormAnchor,rowKind:ytFormRowKind,pair:ytFormPair,context:ytFormContext,candidates:ytFormCandidates,rows:ytFormOthers,prepare:ytFormPrepareNavigation,setAxis:ytFormSetAxis,settingsPrepare:settingsPrepareNavigation,parse:ytFormParse,sync:ytFormSyncInput,commitFocused:ytFormCommitFocused,bulk:ytFormBulkApply,plan:ytFormBulkPlan,applyQuery:ytFormApplyQuery,render:renderYtForm,meta:ytFormUpdateMeta,clear:ytFormClear,changeAnchor:ytFormChangeAnchor,cancel:ytFormCancel,mirror:ytFormSaveMirror,status:setStatus,writeGoal:fcSetYt,fields:ytFormFields,field,nameField,button,fireDocument,dispatch,focused:()=>document.activeElement,undo:doUndo,goMonth,openCard:fcOpenFor,chart:goDayFromChart,jump:jumpTo,flush,pack:packMonth,unpack:unpackMonth,read:k=>ls.get(k),focus:t=>document.activeElement=t,pagehide:()=>{for(const fn of events.pagehide||[])fn()},hidden:()=>{document.visibilityState='hidden';for(const fn of document.handlers.visibilitychange||[])fn()},runTimers:ms=>{for(const [id,v] of [...callbacks])if(v.ms===ms){callbacks.delete(id);v.f()}}};`;
+  `globalThis.api={S,nodes,toasts,undoStack,axis:ytFormAxis,anchor:ytFormAnchor,rowKind:ytFormRowKind,pair:ytFormPair,context:ytFormContext,candidates:ytFormCandidates,rows:ytFormOthers,prepare:ytFormPrepareNavigation,setAxis:ytFormSetAxis,settingsPrepare:settingsPrepareNavigation,parse:ytFormParse,sync:ytFormSyncInput,commitFocused:ytFormCommitFocused,bulk:ytFormBulkApply,plan:ytFormBulkPlan,applyQuery:ytFormApplyQuery,render:renderYtForm,meta:ytFormUpdateMeta,clear:ytFormClear,changeAnchor:ytFormChangeAnchor,cancel:ytFormCancel,mirror:ytFormSaveMirror,status:setStatus,writeGoal:fcSetYt,fields:ytFormFields,field,nameField,button,fireDocument,dispatch,focused:()=>document.activeElement,undo:doUndo,goMonth,openCard:fcOpenFor,openGoal:ytFormOpenFor,chart:goDayFromChart,jump:jumpTo,flush,pack:packMonth,unpack:unpackMonth,read:k=>ls.get(k),focus:t=>document.activeElement=t,pagehide:()=>{for(const fn of events.pagehide||[])fn()},hidden:()=>{document.visibilityState='hidden';for(const fn of document.handlers.visibilitychange||[])fn()},runTimers:ms=>{for(const [id,v] of [...callbacks])if(v.ms===ms){callbacks.delete(id);v.f()}}};`;
  vm.runInContext(code,c,{filename:target});return c.api;
 }
 let passed=0;function pass(s){passed++;console.log('PASS '+s)}
@@ -323,6 +323,23 @@ if(selected('bulk-navigation')){
  const t=setup();t.render(true);t.nodes.ytFormRows.inputs=[t.field('f0_o0','2000'),t.field('f1_o0','7000')];const query=t.nodes.ytFormQuery,previous=t.nodes.ytFormRows.innerHTML;query.value='サブ';t.focus(query);t.dispatch('ytFormQuery','compositionstart',query);t.dispatch('ytFormQuery','input',query,{isComposing:true});assert.equal(query.value,'サブ');assert.equal(t.S.ytFormQ,'');assert.equal(t.nodes.ytFormRows.innerHTML,previous);
  t.dispatch('ytFormQuery','compositionend',query);assert.equal(query.dataset.numComp,undefined);assert.equal(t.S.ytFormQ,'サブ');assert.match(t.nodes.ytFormRows.innerHTML,/data-ytfk="f1_o0"/);assert(!t.nodes.ytFormRows.innerHTML.includes('data-ytfk="f0_o0"'));
  pass('composing search text stays in the input without changing scope until the final Japanese text is confirmed');
+}
+}
+if(selected('orientation')){
+{
+ const t=setup();t.S.ytFormOth=21;t.S.ytFormLastKey='f20_o21';assert.deepEqual(Array.from(t.rows()),[0,1,20]);t.render(true);assert.match(t.nodes.ytFormRows.innerHTML,/data-ytfk="f20_o21"/);assert.equal(t.S.month.yt.f20_o21,undefined);
+ t.S.ytFormOth=22;assert.deepEqual(Array.from(t.rows()),[0,1]);t.render(true);assert(!t.nodes.ytFormRows.innerHTML.includes('data-ytfk="f20_o22"'));
+ pass('an otherwise unregistered selected route pair remains visible in the other-account view only for its matching anchor');
+}
+{
+ const t=setup();t.S.ytFormAxis='family';t.S.ytFormFam=20;t.S.ytFormLastKey='f20_o21';assert.deepEqual(Array.from(t.rows()),[0,1,21]);t.render(true);assert.match(t.nodes.ytFormRows.innerHTML,/data-ytfk="f20_o21"/);assert.equal(t.S.month.yt.f20_o21,undefined);
+ t.S.ytFormFam=19;assert.deepEqual(Array.from(t.rows()),[0,1]);t.render(true);assert(!t.nodes.ytFormRows.innerHTML.includes('data-ytfk="f19_o21"'));
+ pass('an unregistered selected route pair remains visible in the own-account view without leaking its row into another anchor');
+}
+{
+ const t=setup();t.S.ytFormAll=true;t.S.ytFormQ='残った検索';t.S.ytFormFilter='set';assert.equal(t.openGoal('f20_o21'),true);assert.equal(t.S.ytFormAll,false);assert.equal(t.S.ytFormAxis,'others');assert.equal(t.S.ytFormOth,21);assert.equal(t.S.ytFormLastKey,'f20_o21');assert.equal(t.S.ytFormQ,'');assert.equal(t.S.ytFormFilter,'all');assert.deepEqual(Array.from(t.rows()),[0,1,20]);assert.match(t.nodes.ytFormRows.innerHTML,/data-ytfk="f20_o21"/);
+ assert.equal(t.openGoal(null,1),true);assert.equal(t.S.ytFormAll,false);assert.equal(t.S.ytFormAxis,'family');assert.equal(t.S.ytFormFam,1);assert.equal(t.S.ytFormLastKey,null);assert.deepEqual(Array.from(t.rows()),[0,1]);
+ pass('goal-editor routes show registered accounts plus the selected pair instead of all fifty slots, and reset stale search and filter state');
 }
 }
 assert(passed>0,'TEST_GROUP selected no scenarios');

@@ -1911,7 +1911,7 @@ const S={
   goals:{d:Array(N).fill(DEF_D),m:Array(N).fill(DEF_M),t:Array(N).fill(DEF_T),c:Array(N).fill(1)},
   tab:TABS.includes(pref.tab)?pref.tab:'rec', sumFam:(pref.sf==='all'||vIdx(+pref.sf))&&pref.sf!=null?String(pref.sf):'all', sumNotAch:!!pref.sna,
   dday:1, dayFam:(pref.df==='all'||vIdx(+pref.df))&&pref.df!=null?String(pref.df):'all', dayOth:(pref.do==='all'||vIdx(+pref.do))&&pref.do!=null?String(pref.do):'all', theme:['light','dark'].includes(pref.theme)?pref.theme:'auto', ygOpen:!!pref.yg, todoOpen:pref.td!==false, dayHideAch:false, sumSort:['num','time','need','reach','yell'].includes(pref.ss)?pref.ss:'num',
-  compact:true, sel:1, dpk:null, goalMin:typeof pref.goalMin==='boolean'?pref.goalMin:(window.innerWidth<=560), big:!!pref.big, priv:!!pref.priv, seenHelp:!!pref.seenHelp, sumOth:(pref.so==='all'||vIdx(+pref.so))&&pref.so!=null?String(pref.so):'all', panelMin:!!pref.panelMin, cal:false, dayTodo:false, swiped:!!pref.swiped,
+  compact:true, sel:1, dpk:null, goalMin:typeof pref.goalMin==='boolean'?pref.goalMin:(window.innerWidth<=560), big:!!pref.big, priv:!!pref.priv, seenHelp:!!pref.seenHelp, sumOth:(pref.so==='all'||vIdx(+pref.so))&&pref.so!=null?String(pref.so):'all', panelMin:typeof pref.panelMin==='boolean'?pref.panelMin:true, cal:false, dayTodo:false, swiped:!!pref.swiped,
   col:Array.isArray(pref.col)?pref.col.filter(x=>typeof x==='string').slice(0,30):[],
   recent:Array.isArray(ls.get('pk:recent'))?ls.get('pk:recent').filter(k=>typeof k==='string'&&parsePk0(k)).slice(0,8):[],
   active:{family:Array(N).fill(false),others:Array(N).fill(false)}, onlyActive:false,
@@ -3115,9 +3115,9 @@ function savePref(){ls.set('pk:pref',{fam:S.fam,oth:S.oth,tab:S.tab,compact:S.co
 /* ---------- 操作 ---------- */
 $('days').addEventListener('click',ev=>{
   const bx=ev.target.closest('[data-bx]'); if(bx){const d=+bx.closest('.day').dataset.d; if(S.compact) S.sel=d; toggleBox(S.fam,S.oth,d,+bx.dataset.bx); return}
-  const cc=ev.target.closest('.cc[data-cd]'); if(cc){S.sel=+cc.dataset.cd;renderRec();return}
+  const cc=ev.target.closest('.cc[data-cd]'); if(cc){S.sel=+cc.dataset.cd;S.panelMin=false;renderRec();return}
   const b=ev.target.closest('button[data-a]');
-  if(!b){const row=ev.target.closest('.day.crow');if(row){S.sel=+row.dataset.d;renderRec()}return}
+  if(!b){const row=ev.target.closest('.day.crow');if(row){S.sel=+row.dataset.d;S.panelMin=false;renderRec()}return}
   if(S.compact) S.sel=+b.closest('.day').dataset.d;
   edit(S.fam,S.oth,+b.closest('.day').dataset.d,b.dataset.a);
 });
@@ -3127,11 +3127,11 @@ $('dayList').addEventListener('click',ev=>{
   { const pb=ev.target.closest('[data-pin]'); if(pb){togglePin(pb.dataset.pin); return} }
   { const bx=ev.target.closest('[data-bx]'); if(bx){const r=bx.closest('.prow'); S.dpk=pk(+r.dataset.f,+r.dataset.o); toggleBox(+r.dataset.f,+r.dataset.o,S.dday,+bx.dataset.bx); return} }
   const b=ev.target.closest('button[data-a]');
-  if(!b){const row=ev.target.closest('.prow');if(row){S.dpk=pk(+row.dataset.f,+row.dataset.o);renderDay()}return}
+  if(!b){const row=ev.target.closest('.prow');if(row){S.dpk=pk(+row.dataset.f,+row.dataset.o);S.panelMin=false;renderDay()}return}
   const r=b.closest('.prow'); S.dpk=pk(+r.dataset.f,+r.dataset.o);
   edit(+r.dataset.f,+r.dataset.o,S.dday,b.dataset.a);
 });
-$('dayList').addEventListener('keydown',ev=>{const row=ev.target.closest&&ev.target.closest('.prow.crow');if(row&&ev.target===row&&(ev.key==='Enter'||ev.key===' ')){ev.preventDefault();S.dpk=pk(+row.dataset.f,+row.dataset.o);renderDay()}});
+$('dayList').addEventListener('keydown',ev=>{const row=ev.target.closest&&ev.target.closest('.prow.crow');if(row&&ev.target===row&&(ev.key==='Enter'||ev.key===' ')){ev.preventDefault();S.dpk=pk(+row.dataset.f,+row.dataset.o);S.panelMin=false;renderDay()}});
 $('goal').addEventListener('click',ev=>{
   if(ev.target.closest('#goalToggle')){S.goalMin=!S.goalMin;savePref();renderRec();return}
   if(!ev.target.closest('#goalReset')||!S.mLoaded) return;
@@ -3144,13 +3144,13 @@ $('sbar').addEventListener('click',ev=>{
   if(ev.target.id==='jumpToday'){ if(S.compact) S.sel=defaultDay(); renderRec(); goToday(); }
   if(ev.target.id==='modeBtn'){ S.compact=!S.compact; savePref(); document.body.classList.toggle('cmode',S.compact); renderRec(); goToday(); }
 });
-$('days').addEventListener('keydown',ev=>{const row=ev.target.closest&&ev.target.closest('.day.crow');if(row&&(ev.key==='Enter'||ev.key===' ')&&ev.target===row){ev.preventDefault();S.sel=+row.dataset.d;renderRec();const n=document.querySelector('#days .day.sel');if(n){n.focus({preventScroll:true});n.scrollIntoView({block:'nearest'})}}});
+$('days').addEventListener('keydown',ev=>{const row=ev.target.closest&&ev.target.closest('.day.crow');if(row&&(ev.key==='Enter'||ev.key===' ')&&ev.target===row){ev.preventDefault();S.sel=+row.dataset.d;S.panelMin=false;renderRec();const n=document.querySelector('#days .day.sel');if(n){n.focus({preventScroll:true});n.scrollIntoView({block:'nearest'})}}});
 let lpFired=false, lpT=null, lpI=null;
 $('qpanel').addEventListener('click',ev=>{
   const nav=ev.target.closest('[data-qshift]'); if(nav&&!nav.disabled){const dir=+nav.dataset.qshift;shiftPanelDay(dir);const next=$('qpanel').querySelector(`[data-qshift="${dir}"]`);if(next&&!next.disabled)next.focus({preventScroll:true});return}
   if(ev.target.closest('#qMinutesApply')){applyQMinutes();return}
-  if(ev.target.closest('#qMin')){S.panelMin=true;savePref();renderPanel();return}
-  if(ev.target.closest('#qExpand')){S.panelMin=false;savePref();renderPanel();return}
+  if(ev.target.closest('#qMin')){S.panelMin=true;savePref();renderPanel();$('qExpand').focus({preventScroll:true});return}
+  if(ev.target.closest('#qExpand')){S.panelMin=false;savePref();renderPanel();$('qMin').focus({preventScroll:true});return}
   { const bx=ev.target.closest('[data-bx]'); if(bx){const c=panelCtx(); if(c) toggleBox(c.f,c.o,c.d,+bx.dataset.bx); return} }
   const b=ev.target.closest('button[data-a]');if(!b||b.disabled)return;
   if(lpFired){lpFired=false;if(b.closest('.qb'))return}

@@ -281,6 +281,17 @@ body.haspanel .toast{bottom:calc(var(--ph,180px) + 26px)}
 /* 1: パネルをコンパクトに */
 .qpanel .qh2{display:flex;gap:6px;align-items:stretch}
 .qpanel .qh2 select{flex:1;min-width:0}
+.qpanel .qmanual{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.qpanel .qmanual label{font-size:.78rem;font-weight:800}
+.qpanel .qmanual input{flex:1;width:84px;min-width:60px;max-width:130px;min-height:38px;padding:5px 8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--time);font-size:16px;font-weight:700}
+.qpanel .qmanual input[aria-invalid="true"]{border-color:var(--sun)}
+.qpanel .qmanual span{font-size:.78rem}
+.qpanel .qmanual .qapply{min-height:38px;padding:0 12px;border:1px solid var(--time);border-radius:10px;background:var(--time-soft);color:var(--time);font-weight:800}
+.qpanel .qmanualHelp,.qpanel .qmanualError{font-size:.68rem;line-height:1.4;margin:0}
+.qpanel .qmanualHelp{color:var(--muted)}
+.qpanel .qmanualError{color:var(--sun);font-weight:700}
+@media(max-width:560px){body.kb .qpanel.manualFocus{display:flex!important;bottom:calc(var(--qkeyboard,0px) + 8px)}}
+
 .qpanel .qmin{margin-left:auto;border:0!important;background:transparent!important;min-width:44px;font-size:1.1rem;color:var(--muted)}
 /* 2: 最小化 */
 .qpanel.min{padding:6px 12px;gap:0}
@@ -1281,13 +1292,144 @@ kbd{display:inline-block;min-width:1.6em;text-align:center;font:inherit;font-siz
 .pabulk select{flex:1 1 160px;min-width:0}
 .bkinfo{font-size:.78rem;color:var(--muted);margin:0 0 6px}
 .bkinfo b{color:var(--ink)}.bkinfo b.w{color:var(--sun)}
+
+/* 改善1：主要4指標と必要なときに開く詳細。 */
+.rinfo .ri-main{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.rinfo .ri-main .rit{padding:8px}.rinfo .ri-main .rit span{font-size:12px;white-space:normal}.rinfo .ri-main .rit b{font-size:1rem}
+#riDetails{margin-top:8px}#riDetails>summary{cursor:pointer;min-height:36px;display:list-item;font-size:.8rem;font-weight:700;color:var(--time)}
+#riDetails[open]>.rig{margin-top:6px}.gs-steps{flex:1;min-width:0}.gs-steps>summary{cursor:pointer;min-height:36px;font-size:.8rem;font-weight:700;display:list-item}
+@media(max-width:560px){.rinfo .ri-main{grid-template-columns:repeat(2,minmax(0,1fr))}#riDetails>summary,.gs-steps>summary{min-height:44px;align-content:center}}
+/* 改善第2巡：スマホの主要操作と読み取り文字。既存の集計表は維持する。 */
+@media (max-width:560px){
+  :root{--mobile-nav-height:68px}
+  body{font-size:15px;line-height:1.5}
+
+  /* 月・日付・アカウント・記録操作は、実際のボタン全体を44pxにする。 */
+  .month button,.dnav button,.pickers .step,
+  .tm button,.adds button,.qpanel .qh button,.qpanel .qb button,
+  .qpanel .qh2 .qcopy,.qpanel .qnext,.qpanel .qbox .bx,
+  .bxy .bx,.bxrow .bx,.dvc,.dvdet,.sbar button,
+  .topr .wakebtn,.sheetin .sh .btn,.recent button,.chip{
+    min-height:44px;
+  }
+  .month button:not(.thism),.dnav button,.pickers .step,
+  .qpanel .qmin,.sbar .pin{min-width:44px}
+  .chk{width:44px;height:44px;min-width:44px;min-height:44px}
+  .pickers select,.dsearch .lsearch,.ryell input,
+  .rybx input,.rytrow input,.rytall input,.fcbud input,
+  .fcadd input,.oirow input,.oirow select{min-height:44px}
+  .pickers label,.row label.hint,#p-day > .row label.hint,
+  #sumCtl > .row label.hint,.qpanel .qswipe,.swipehint,
+  .rinfo .rit span,.rinfo .rit small,.rinfo .rih .btn,
+  .dhead,.phead,.dhead small,.phead small,.dhead .hc,.phead .hc,
+  .prow .pmeta,.prow .tm .pv,.ryell .rycoin,.ryell .rycoin i,
+  .ryell .rymsg,.rybx .rymsg,.bxy,.rybx,.ryell,
+  .goal .head,.goal .g,.goal .head .gtoggle span,
+  .ysrc,.yhd small,.yline,.hint,.daysum,.daysum small,
+  .cyt,.rtag,.rtag i,.stag,.ctag,.wsum,.wsum .wl,.cum,
+  .sched summary small,.tdbox summary small,.ygbox summary,
+  .dvc b,.dsd small,.drel,.dsd i,.grand .tot .dlt,
+  #tPairs tr.go td[data-l]::before,#tPairs tr.grp td[data-l]::before,#tPairs td.gl,
+  .memo summary,.memo summary .pv,.meter,.bkinfo{
+    font-size:max(.75rem,12px);
+  }
+  .rinfo .rig{grid-template-columns:repeat(auto-fill,minmax(88px,1fr))}
+  .rinfo .rit{padding:5px 7px}
+  .rinfo .rit span{white-space:normal;line-height:1.35}
+
+  /* 2行ラベルを保ちながら、小さな端末でも文字を読み取れる高さに。 */
+  nav.tabs{
+    padding:4px 6px calc(4px + env(safe-area-inset-bottom,0px));
+  }
+  nav.tabs button{height:60px!important;min-height:60px;font-size:12px!important}
+  nav.tabs .tl2{font-size:max(.75rem,12px);letter-spacing:0;line-height:1.2}
+  .qpanel{bottom:calc(var(--mobile-nav-height) + 8px + env(safe-area-inset-bottom,0px))}
+  .qpanel .qh{flex-wrap:wrap}
+  .qpanel .qd{flex:1 1 auto}
+  .qpanel .qbox{flex-wrap:wrap}
+  .qpanel .qh2{flex-wrap:wrap}
+  .qpanel .qh2 select{flex:1 1 80px;min-height:44px}
+  .qpanel .qmin{flex:0 0 44px}
+  body:not(.haspanel) .toast,body:not(.haspanel) .totop{
+    bottom:calc(var(--mobile-nav-height) + 12px + env(safe-area-inset-bottom,0px));
+  }
+}
+
+/* 横向きのiPhoneや短いウィンドウでも、設定の閉じる操作を見失わない。 */
+@media (max-width:560px),(max-height:560px){
+  .sheetin{
+    max-height:calc(100vh - env(safe-area-inset-top,0px) - 12px);
+    max-height:calc(100dvh - env(safe-area-inset-top,0px) - 12px);
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+  .sheetin .sh{
+    position:sticky;top:0;z-index:3;background:var(--surface);
+    min-height:44px;flex-shrink:0;padding:4px 0;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .sheetin .sh .btn{min-height:44px}
+}
+
+
+/* 改善3：対象を常に表示し、入力パネルと記録を行き来しやすく。 */
+.qpanel{max-height:60vh;max-height:60dvh;overflow-y:auto;overscroll-behavior:contain}
+.qpanel .qpair{display:flex;align-items:center;gap:8px;white-space:normal;font-size:12px}.qpanel .qpair>span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qpanel .qdate{min-width:44px;min-height:44px;padding:0;font-size:1.25rem;color:var(--time)}
+html:has(body.haspanel){scroll-padding-bottom:calc(var(--ph,240px) + 32px)}
+@media(min-width:561px){nav.tabs{position:sticky;top:0;z-index:18;background:var(--surface);padding:6px;border-radius:12px}}
+@media(max-width:560px){body.haspanel .wrap{padding-bottom:calc(var(--ph,240px) + var(--mobile-nav-height,68px) + 32px + env(safe-area-inset-bottom,0px))}html:has(body.haspanel){scroll-padding-bottom:calc(var(--ph,240px) + var(--mobile-nav-height,68px) + 24px)}.qpanel{max-height:56vh;max-height:56dvh}.qpanel .qh{gap:5px}.qpanel .qd{flex:1 1 auto}}
+
+/* 改善5：全画面から保存・復元へ到達できる。 */
+#backupQuick{color:var(--time);font-weight:700}#bkCard{scroll-margin-top:84px}#bkCard:focus-visible{outline:3px solid var(--time);outline-offset:4px}
+#status{max-width:100%}#status span{white-space:normal}.topr{flex-wrap:wrap;justify-content:flex-end}
+@media(max-width:560px){#bkCard{scroll-margin-top:16px}.topr{gap:6px}.topr .wakebtn{min-height:44px;font-size:12px;padding:6px 9px}#backupQuick{min-width:100px}}
+/* 第2・3・4・5巡の最終調整。元CSSと各巡CSSのあとへ配置する。 */
+/* 「文字大」では rem の増加をそのまま使い、固定12pxへ縮めない。 */
+.rinfo .ri-main .rit span{font-size:max(.75rem,12px)}
+.qpanel .qpair{font-size:max(.78rem,12px)}
+
+@media(max-width:560px){
+  .topr .wakebtn,nav.tabs button{font-size:max(.75rem,12px)!important}
+  .qpanel .qmanual input,.qpanel .qmanual .qapply{min-height:44px}
+  .qpanel .qmanual input{font-size:max(1rem,16px)}
+  .qpanel .qmanual label,.qpanel .qmanual span,
+  .qpanel .qmanualHelp,.qpanel .qmanualError{font-size:max(.75rem,12px)}
+
+  /* 日付の前後ボタンが増えたため、6要素を2行に明確に分ける。 */
+  #qpanel .qh{
+    display:grid;grid-template-columns:44px minmax(0,1fr) 44px 44px;
+    gap:5px;align-items:center;
+  }
+  #qpanel .qh [data-qshift="-1"]{grid-row:1;grid-column:1}
+  #qpanel .qh .qd{
+    grid-row:1;grid-column:2;min-width:0;text-align:center;
+  }
+  #qpanel .qh [data-qshift="1"]{grid-row:1;grid-column:3}
+  #qpanel .qh .qmin{
+    grid-row:1;grid-column:4;margin-left:0;min-width:44px;width:44px;
+  }
+  #qpanel .qh .qchk{grid-row:2;grid-column:1/3}
+  #qpanel .qh .rst{grid-row:2;grid-column:3/5}
+  #qpanel .qh .qchk,#qpanel .qh .rst{font-size:max(.8rem,12px)}
+}
+
+/* PCでは固定タブの下に各タブの追従バーを並べる。 */
+@media(min-width:561px){
+  :root{--desktop-nav-height:52px}
+  .sbar,#p-day .dnav,.lqwrap,.fch{
+    top:calc(var(--desktop-nav-height) + env(safe-area-inset-top,0px));
+  }
+  [id^="p-"] .card{scroll-margin-top:calc(var(--desktop-nav-height) + 12px)}
+}
+.qminiPair{display:block;max-width:55vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:max(.75rem,12px);color:var(--muted)}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="ylogoD" viewBox="0 0 267.0 48"><defs><linearGradient id="bdRs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset=".5" stop-color="#6366f1"/><stop offset="1" stop-color="#ec4899"/></linearGradient></defs><circle cx="24" cy="24" r="23" fill="#141827"/><circle cx="24" cy="24" r="20.5" fill="none" stroke="url(#bdRs)" stroke-width="4"/><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"><path d="M15.5 13 24 24 32.5 13"/><path d="M24 24v12"/></g><path d="M65.31 37.5H71.362V28.558L79.012 12.169999999999998H72.654L70.546 17.814C69.832 19.718 69.152 21.485999999999997 68.438 23.458H68.302C67.588 21.485999999999997 66.94200000000001 19.718 66.262 17.814L64.154 12.169999999999998H57.694L65.31 28.558ZM93.234 37.976C100.136 37.976 104.828 33.012 104.828 24.716C104.828 16.453999999999997 100.136 11.727999999999998 93.234 11.727999999999998C86.332 11.727999999999998 81.64 16.419999999999998 81.64 24.716C81.64 33.012 86.332 37.976 93.234 37.976ZM93.234 32.74C89.902 32.74 87.862 29.612 87.862 24.716C87.862 19.82 89.902 16.93 93.234 16.93C96.566 16.93 98.64 19.82 98.64 24.716C98.64 29.612 96.566 32.74 93.234 32.74ZM118.574 37.976C124.69399999999999 37.976 128.23 34.269999999999996 128.23 30.054C128.23 26.484 126.35999999999999 24.375999999999998 123.232 23.118L120.07 21.86C117.826 20.976 116.262 20.432 116.262 19.003999999999998C116.262 17.677999999999997 117.38399999999999 16.93 119.25399999999999 16.93C121.226 16.93 122.78999999999999 17.61 124.45599999999999 18.868L127.482 15.059999999999999C125.27199999999999 12.849999999999998 122.178 11.727999999999998 119.25399999999999 11.727999999999998C113.88199999999999 11.727999999999998 110.074 15.128 110.074 19.378C110.074 23.049999999999997 112.556 25.259999999999998 115.208 26.314L118.43799999999999 27.674C120.61399999999999 28.592 122.008 29.067999999999998 122.008 30.53C122.008 31.89 120.954 32.74 118.71 32.74C116.704 32.74 114.35799999999999 31.686 112.58999999999999 30.156L109.12199999999999 34.338C111.74 36.752 115.276 37.976 118.574 37.976ZM133.646 37.5H139.73199999999997V27.096H148.06199999999998V37.5H154.11399999999998V12.169999999999998H148.06199999999998V21.826H139.73199999999997V12.169999999999998H133.646ZM161.16199999999998 37.5H167.24799999999996V12.169999999999998H161.16199999999998Z" fill="#ffffff"/><path d="M179.98999999999995 37.5H195.96999999999997V32.604H191.41399999999996V12.169999999999998H186.95999999999998C185.19199999999998 13.291999999999998 183.42399999999998 13.971999999999998 180.70399999999998 14.482V18.221999999999998H185.36199999999997V32.604H179.98999999999995ZM209.61399999999998 37.976C214.95199999999997 37.976 218.55599999999998 33.42 218.55599999999998 24.716C218.55599999999998 16.046 214.95199999999997 11.727999999999998 209.61399999999998 11.727999999999998C204.27599999999998 11.727999999999998 200.63799999999998 16.011999999999997 200.63799999999998 24.716C200.63799999999998 33.42 204.27599999999998 37.976 209.61399999999998 37.976ZM209.61399999999998 33.284C207.81199999999998 33.284 206.34999999999997 31.652 206.34999999999997 24.716C206.34999999999997 17.814 207.81199999999998 16.351999999999997 209.61399999999998 16.351999999999997C211.41599999999997 16.351999999999997 212.84399999999997 17.814 212.84399999999997 24.716C212.84399999999997 31.652 211.41599999999997 33.284 209.61399999999998 33.284ZM223.80199999999996 37.5H239.78199999999998V32.604H235.22599999999997V12.169999999999998H230.772C229.004 13.291999999999998 227.236 13.971999999999998 224.516 14.482V18.221999999999998H229.17399999999998V32.604H223.80199999999996ZM244.48399999999998 37.5H262.02799999999996V32.4H257.404C256.248 32.4 254.51399999999998 32.57 253.25599999999997 32.74C257.132 28.83 260.87199999999996 24.036 260.87199999999996 19.683999999999997C260.87199999999996 14.855999999999998 257.472 11.727999999999998 252.576 11.727999999999998C248.97199999999998 11.727999999999998 246.66 12.985999999999997 244.178 15.637999999999998L247.47599999999997 18.901999999999997C248.7 17.61 250.02599999999998 16.453999999999997 251.76 16.453999999999997C253.79999999999998 16.453999999999997 255.058 17.712 255.058 20.023999999999997C255.058 23.695999999999998 250.808 28.286 244.48399999999998 34.032Z" fill="#a5b4fc"/></symbol><symbol id="ylogo" viewBox="0 0 267.0 48"><defs><linearGradient id="baRs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset=".5" stop-color="#6366f1"/><stop offset="1" stop-color="#ec4899"/></linearGradient></defs><circle cx="24" cy="24" r="23" fill="#141827"/><circle cx="24" cy="24" r="20.5" fill="none" stroke="url(#baRs)" stroke-width="4"/><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"><path d="M15.5 13 24 24 32.5 13"/><path d="M24 24v12"/></g><path d="M65.31 37.5H71.362V28.558L79.012 12.169999999999998H72.654L70.546 17.814C69.832 19.718 69.152 21.485999999999997 68.438 23.458H68.302C67.588 21.485999999999997 66.94200000000001 19.718 66.262 17.814L64.154 12.169999999999998H57.694L65.31 28.558ZM93.234 37.976C100.136 37.976 104.828 33.012 104.828 24.716C104.828 16.453999999999997 100.136 11.727999999999998 93.234 11.727999999999998C86.332 11.727999999999998 81.64 16.419999999999998 81.64 24.716C81.64 33.012 86.332 37.976 93.234 37.976ZM93.234 32.74C89.902 32.74 87.862 29.612 87.862 24.716C87.862 19.82 89.902 16.93 93.234 16.93C96.566 16.93 98.64 19.82 98.64 24.716C98.64 29.612 96.566 32.74 93.234 32.74ZM118.574 37.976C124.69399999999999 37.976 128.23 34.269999999999996 128.23 30.054C128.23 26.484 126.35999999999999 24.375999999999998 123.232 23.118L120.07 21.86C117.826 20.976 116.262 20.432 116.262 19.003999999999998C116.262 17.677999999999997 117.38399999999999 16.93 119.25399999999999 16.93C121.226 16.93 122.78999999999999 17.61 124.45599999999999 18.868L127.482 15.059999999999999C125.27199999999999 12.849999999999998 122.178 11.727999999999998 119.25399999999999 11.727999999999998C113.88199999999999 11.727999999999998 110.074 15.128 110.074 19.378C110.074 23.049999999999997 112.556 25.259999999999998 115.208 26.314L118.43799999999999 27.674C120.61399999999999 28.592 122.008 29.067999999999998 122.008 30.53C122.008 31.89 120.954 32.74 118.71 32.74C116.704 32.74 114.35799999999999 31.686 112.58999999999999 30.156L109.12199999999999 34.338C111.74 36.752 115.276 37.976 118.574 37.976ZM133.646 37.5H139.73199999999997V27.096H148.06199999999998V37.5H154.11399999999998V12.169999999999998H148.06199999999998V21.826H139.73199999999997V12.169999999999998H133.646ZM161.16199999999998 37.5H167.24799999999996V12.169999999999998H161.16199999999998Z" fill="currentColor"/><path d="M179.98999999999995 37.5H195.96999999999997V32.604H191.41399999999996V12.169999999999998H186.95999999999998C185.19199999999998 13.291999999999998 183.42399999999998 13.971999999999998 180.70399999999998 14.482V18.221999999999998H185.36199999999997V32.604H179.98999999999995ZM209.61399999999998 37.976C214.95199999999997 37.976 218.55599999999998 33.42 218.55599999999998 24.716C218.55599999999998 16.046 214.95199999999997 11.727999999999998 209.61399999999998 11.727999999999998C204.27599999999998 11.727999999999998 200.63799999999998 16.011999999999997 200.63799999999998 24.716C200.63799999999998 33.42 204.27599999999998 37.976 209.61399999999998 37.976ZM209.61399999999998 33.284C207.81199999999998 33.284 206.34999999999997 31.652 206.34999999999997 24.716C206.34999999999997 17.814 207.81199999999998 16.351999999999997 209.61399999999998 16.351999999999997C211.41599999999997 16.351999999999997 212.84399999999997 17.814 212.84399999999997 24.716C212.84399999999997 31.652 211.41599999999997 33.284 209.61399999999998 33.284ZM223.80199999999996 37.5H239.78199999999998V32.604H235.22599999999997V12.169999999999998H230.772C229.004 13.291999999999998 227.236 13.971999999999998 224.516 14.482V18.221999999999998H229.17399999999998V32.604H223.80199999999996ZM244.48399999999998 37.5H262.02799999999996V32.4H257.404C256.248 32.4 254.51399999999998 32.57 253.25599999999997 32.74C257.132 28.83 260.87199999999996 24.036 260.87199999999996 19.683999999999997C260.87199999999996 14.855999999999998 257.472 11.727999999999998 252.576 11.727999999999998C248.97199999999998 11.727999999999998 246.66 12.985999999999997 244.178 15.637999999999998L247.47599999999997 18.901999999999997C248.7 17.61 250.02599999999998 16.453999999999997 251.76 16.453999999999997C253.79999999999998 16.453999999999997 255.058 17.712 255.058 20.023999999999997C255.058 23.695999999999998 250.808 28.286 244.48399999999998 34.032Z" style="fill:var(--ylogo-n,#4338ca)"/></symbol></svg>
 <div class="wrap">
   <header class="top">
     <h1 class="brandmark"><span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M9.5 2.5h5"/><path d="M19 5.5l1.5-1.5"/></svg></span><span class="tt"><span class="eyebrow">Pococha<span class="copy" title="©Yoshi1012"><span class="ycc">©</span><svg class="ylogo" viewBox="0 0 267.0 48" aria-hidden="true" focusable="false"><use href="#ylogoD"/></svg><span class="sr">Yoshi1012</span></span></span><span class="main"><em>時間稼ぎ</em><span class="dot">・</span><em>エール</em>記録帳</span></span></h1>
-    <div class="topr"><button class="wakebtn" id="histBtn" hidden>↶ 戻す</button><button class="wakebtn setbtn" id="setBtn" aria-label="設定と使い方" aria-haspopup="dialog">⚙ 設定</button>
+    <div class="topr"><button class="wakebtn" id="histBtn" hidden>↶ 戻す</button><button type="button" class="wakebtn" id="backupQuick" aria-controls="bkCard">バックアップ</button><button class="wakebtn setbtn" id="setBtn" aria-label="設定と使い方" aria-haspopup="dialog">⚙ 設定</button>
     <div class="status" id="status"><i></i><span>接続中…</span></div></div>
   </header>
   <div class="dline" id="dline" aria-live="off" role="button" tabindex="0" title="押すと締め時間・スケジュールの設定を開きます"></div>
@@ -1313,7 +1455,7 @@ kbd{display:inline-block;min-width:1.6em;text-align:center;font:inherit;font-siz
   <div class="eom" id="eom" hidden></div>
   <!-- 記録（組み合わせ別） -->
   <section class="panel" id="p-rec" role="tabpanel" aria-labelledby="tab-rec">
-    <div class="gs" id="gsCard" hidden><div class="gsh"><b>はじめての方へ：3ステップ</b><button type="button" class="btn sm2" id="gsX" aria-label="はじめての案内を閉じる">×</button></div><ol><li><button type="button" data-gs="list"><span>1</span>名前・条件設定で、自分垢と他人垢（稼ぎ先）に名前を付ける</button></li><li><button type="button" data-gs="rec"><span>2</span>当月一覧表示で自分垢→他人垢を選び、日付を押して時間を入れる</button></li><li><button type="button" data-gs="sum"><span>3</span>集計結果で達成状況と必要コインを確認する</button></li></ol></div>
+    <div class="gs" id="gsCard" hidden><div class="gsh"><details class="gs-steps"><summary>はじめての方へ：3ステップを見る</summary><ol><li><button type="button" data-gs="list"><span>1</span>名前・条件設定で、自分垢と他人垢（稼ぎ先）に名前を付ける</button></li><li><button type="button" data-gs="rec"><span>2</span>当月一覧表示で自分垢→他人垢を選び、日付を押して時間を入れる</button></li><li><button type="button" data-gs="sum"><span>3</span>集計結果で達成状況と必要コインを確認する</button></li></ol></details><button type="button" class="btn sm2" id="gsX" aria-label="はじめての案内を閉じる">×</button></div></div>
     <div class="recent" id="recent" hidden></div>
     <div class="rq"><input type="search" class="lsearch" id="recQ" placeholder="自分垢・他人垢を名前で探して切り替え（例：ゆき、12）" aria-label="自分垢・他人垢を名前・番号で探して切り替える" autocomplete="off" enterkeyhint="search"><div class="qres" id="recQRes" role="listbox" aria-label="見つかった組み合わせ" hidden></div></div>
     <div class="pickers">
@@ -1541,7 +1683,7 @@ kbd{display:inline-block;min-width:1.6em;text-align:center;font:inherit;font-siz
       <ol class="chglog" id="chgLog"></ol>
       <div class="row" style="justify-content:flex-start"><button type="button" class="btn sm2" id="chgUndo" disabled hidden>直前の変更を元に戻す</button></div>
     </div>
-    <div class="card" id="bkCard">
+    <div class="card" id="bkCard" tabindex="-1">
       <h2>バックアップ</h2>
       <p class="hint">名前・条件・全月の記録を1ファイルに保存。復元するとファイルの内容で上書きします。</p>
       <p class="bkinfo" id="bkInfo"></p>
@@ -2043,7 +2185,7 @@ function flush(){
       try{
         if(p.startsWith('months/')){
           const full=packMonth(o.month);
-          if(JSON.stringify(full).length>240000){setStatus('err','この月度のデータ量が上限に近いため保存できません');continue}
+          if(JSON.stringify(full).length>240000){requeue(p,o);setStatus('err','この月度のデータ量が上限に近いため保存できません。未保存の記録はバックアップに含まれます');continue}
           if(!db){if(!ls.set('pk:'+p,full))lsFail();continue}
           const r=mExists[p]?await tryWrite(()=>db.doc(p).update(o.patch)):await tryWrite(()=>db.doc(p).set(full));
           if(r===true){mExists[p]=true} else if(r==='net'){requeue(p,o)}
@@ -2053,7 +2195,7 @@ function flush(){
         }
       } finally { delete inflight[p]; if(sending[p]===o) delete sending[p]; }
     }
-    if(Object.keys(pend).length&&!timer){clearTimeout(retryT);setStatus('busy','通信待ち：つながったら保存します');retryT=setTimeout(flush,10000)}
+    if(Object.keys(pend).length&&!timer){clearTimeout(retryT);if(!$('status').classList.contains('err')){setStatus('busy','通信待ち：つながったら保存します');retryT=setTimeout(flush,10000)}}
     else if(!Object.keys(pend).length&&!$('status').classList.contains('err')) setStatus('ok',db?'保存済み':'この端末に保存済み');
     if(!Object.keys(pend).length&&!Object.keys(sending).length){ try{localStorage.removeItem('pk:pending')}catch(e){} }
   });
@@ -2283,29 +2425,69 @@ function panelCtx(){
   if(S.tab==='day'&&S.dpk){const p=parsePk(S.dpk);if(p)return {f:p[0],o:p[1],d:S.dday}}
   return null;
 }
+// 任意分入力は「反映」または Enter でだけ確定する。入力中は対象を変えずに再描画しない。
+const qMinuteKey=c=>`${S.ym}:${c.f}:${c.o}:${c.d}`;
+let qMinuteDraft=null;
+function parseQMinutes(value){
+  const text=String(value).trim();
+  if(!text)return {error:'分数を入力してください。0分も記録できます。'};
+  if(!/^\d+$/.test(text))return {error:'整数で入力してください。小数・負数・指数表記は使えません。'};
+  const n=Number(text);
+  if(!Number.isSafeInteger(n)||n>1440)return {error:'0〜1,440分の範囲で入力してください。'};
+  return {n};
+}
+function syncQMinutesKeyboard(){
+  const qp=$('qpanel'), a=document.activeElement, focused=!!(a&&a.id==='qMinutes'&&qp.contains(a));
+  qp.classList.toggle('manualFocus',focused);
+  const v=window.visualViewport, offset=focused&&v?Math.max(0,window.innerHeight-v.height-v.offsetTop):0;
+  qp.style.setProperty('--qkeyboard',offset+'px');
+}
+function showQMinuteError(field,text){
+  const msg=$('qMinutesError'); msg.textContent=text;msg.hidden=!text;
+  field.setAttribute('aria-invalid',text?'true':'false');
+}
+function applyQMinutes(){
+  const field=$('qMinutes'), c=panelCtx();
+  if(!field||!c||!S.mLoaded)return;
+  if(field.dataset.qctx!==qMinuteKey(c)){showQMinuteError(field,'入力する日付・組み合わせを選び直してください。');return}
+  const result=parseQMinutes(field.value);
+  if(result.error){
+    qMinuteDraft={key:qMinuteKey(c),value:field.value,saved:(getE(c.f,c.o,c.d)||{m:0}).m,error:result.error};
+    showQMinuteError(field,result.error);field.focus();return;
+  }
+  qMinuteDraft=null;showQMinuteError(field,'');field.value=String(result.n);field.blur();
+  // 時間変更・Undo・保存・条件判定は既存の操作経路を使う。
+  edit(c.f,c.o,c.d,'set:'+result.n);syncQMinutesKeyboard();
+}
 function renderPanel(){
   const qp=$('qpanel'), c=panelCtx(), show=S.compact&&S.mLoaded&&!!c&&(S.tab==='rec'||S.tab==='day');
   qp.hidden=!show; document.body.classList.toggle('haspanel',show);
-  if(!show) return;
+  if(!show){qMinuteDraft=null;syncQMinutesKeyboard();return}
   const rec=S.month.records[pk(c.f,c.o)]||{};
   const {y,m}=ymParts(S.ym), d=c.d, w=new Date(y,m-1,d).getDay(), e=rec[d], cur=e?e.m:0;
+  const key=qMinuteKey(c), active=document.activeElement;
+  if(!S.panelMin&&active&&active.id==='qMinutes'&&active.dataset.qctx===key)return;
+  if(!qMinuteDraft||qMinuteDraft.key!==key||qMinuteDraft.saved!==cur)qMinuteDraft={key,value:String(cur),saved:cur,error:''};
   const pv=d>1?rec[d-1]:null;
   const ex=cur%5?`<option value="${cur}">${clock(cur)}</option>`:'';
   qp.classList.toggle('min',S.panelMin);
   if(S.panelMin){
-    qp.innerHTML=`<button class="qmini" id="qExpand" aria-label="入力パネルを開く"><span>${m}月${d}日${S.tab==='day'?` ${pad(PF(c.f)+1)}→${pad(PO(c.o)+1)}`:''}</span><span class="v">${e?'✓ '+clock(cur):'未入力'}</span><span class="ex">▴ 開く</span></button>`;
+    qp.innerHTML=`<button class="qmini" id="qExpand" aria-label="${m}月${d}日 ${esc(famName(c.f))}から${esc(othName(c.o))}の入力パネルを開く"><span>${m}月${d}日<small class="qminiPair">${esc(famName(c.f))} → ${esc(othName(c.o))}</small></span><span class="v">${e?'✓ '+clock(cur):'未入力'}</span><span class="ex">▴ 開く</span></button>`;
     return;
   }
-  qp.innerHTML=`${S.tab==='day'?`<div class="qpair"><span>${esc(famName(c.f))} → ${esc(othName(c.o))}</span><button type="button" class="qnext" data-qn>次の未入力 ▶</button></div>`:''}<div class="qh"><span class="qd">${m}月${d}日<small style="font-size:.75rem;color:${w===0?'var(--sun)':w===6?'var(--sat)':'var(--muted)'}">(${WD[w]})</small></span>
+  qp.innerHTML=`<div class="qpair"><span title="${esc(famName(c.f))} → ${esc(othName(c.o))}">${esc(famName(c.f))} → ${esc(othName(c.o))}</span>${S.tab==='day'?'<button type="button" class="qnext" data-qn>次の未入力 ▶</button>':''}</div><div class="qh"><button type="button" class="qdate" data-qshift="-1" aria-label="前の日を入力"${d<=1?' disabled':''}>‹</button><span class="qd">${m}月${d}日<small style="font-size:.75rem;color:${w===0?'var(--sun)':w===6?'var(--sat)':'var(--muted)'}">(${WD[w]})</small></span><button type="button" class="qdate" data-qshift="1" aria-label="次の日を入力"${d>=ymParts(S.ym).days?' disabled':''}>›</button>
       <button class="qchk${e?' on':''}" data-a="chk" aria-pressed="${!!e}">${e?'✓ 稼いだ':'✓ 稼いだ日'}</button>
       <button class="rst" data-a="reset"${e&&e.m?'':' disabled'}>リセット</button>
       <button class="qmin" id="qMin" aria-label="入力パネルを小さくする">▾</button></div>
     <div class="qh2"><select id="qsel" aria-label="${m}月${d}日の時間を選ぶ">${ex}${TOPTS}</select>
       <button class="qcopy" data-a="copy"${pv&&!(e&&e.m===pv.m)?'':' disabled'} aria-label="前日と同じ時間にする">前日と同じ${pv?`<br><small>${clock(pv.m)}</small>`:''}</button><button class="qcopy qminus" data-a="-5"${e&&e.m>=5?'':' disabled'} aria-label="5分減らす">−5</button>${(g=>g?`<button class="qcopy qguide${g.ok?' ok':''}" data-a="set:${g.per}"${cur===g.per?' disabled':''} aria-label="1日の目安${clock(g.per)}にする">目安に<br><small>${clock(g.per)}</small></button>`:'')(dayGuide(c.f,c.o,d))}</div>
+    <div class="qmanual"><label for="qMinutes">分数を直接入力</label><input type="number" id="qMinutes" min="0" max="1440" step="1" inputmode="numeric" enterkeyhint="done" aria-describedby="qMinutesHelp qMinutesError" aria-invalid="${qMinuteDraft.error?'true':'false'}" data-qctx="${key}" value="${esc(qMinuteDraft.value)}"><span>分</span><button type="button" id="qMinutesApply" class="qapply">反映</button></div>
+    <p id="qMinutesHelp" class="qmanualHelp">0〜1,440分の整数。小数・負数は使えません。Enter または「反映」で記録します。</p>
+    <p id="qMinutesError" class="qmanualError" role="alert" aria-live="polite"${qMinuteDraft.error?'':' hidden'}>${esc(qMinuteDraft.error)}</p>
     <div class="qb">${addBtns()}</div>
     <div class="qbox"><span>ボックス開封</span>${boxHtml(pk(c.f,c.o),d)}</div>
     <div class="qswipe"${S.swiped?' hidden':''}>パネルを左右にスワイプで日付移動</div>`;
-  $('qsel').value=String(cur);
+  $('qsel').value=String(cur);syncQMinutesKeyboard();
 }
 function renderRecent(){
   const el=$('recent'), cur=pk(S.fam,S.oth), list=[...new Set([...S.pins,...S.recent])].filter(k=>k!==cur&&parsePk(k)).slice(0,10);
@@ -2506,7 +2688,9 @@ function renderRInfo(){
     ...(()=>{const pm=S.prevMonth, pr=pm?(pm.records[k]||{}):{}, ps=pairStats(pr,O), py=pm?(pm.yell||{})[k]:undefined, dm=st.min-ps.min;
       return [['先月 日数・時間',pm?`${ps.days}日・${clock(ps.min)}`:'—',''],['先月エール',py!=null?yfmt(py):'—',''],['先月比 時間',pm?`${dm>=0?'+':'−'}${clock(Math.abs(dm))}`:'—',pm&&dm>=0?'ok':'']]})(),
   ];
-  el.innerHTML=`<div class="rih"><b>${ymParts(S.ym).m}月度のまとめ</b><span class="rihr">${badge(st,F)}<button type="button" class="btn sm2" id="recCopy"${st.days||yv!=null?"":" disabled"}>コピー</button></span></div><div class="rig">`+T.map(([l,v,c2,tt,sub,act])=>`<div class="rit ${c2}"${tt?` title="${esc(tt)}"`:''}${act?` role="button" tabindex="0" data-fco aria-expanded="${!!S.fcOpen}"`:''}><span>${l}</span><b>${String(v).replace(/\//g,'/<wbr>')}</b>${sub?`<small>${esc(sub)}</small>`:''}</div>`).join('')+'</div>'+fcListHtml(F,O);
+  const riOpen=!!el.querySelector('#riDetails[open]'), main=new Set([0,1,11,14]);
+  const tile=([l,v,c2,tt,sub,act])=>`<div class="rit ${c2}"${tt?` title="${esc(tt)}"`:''}${act?` role="button" tabindex="0" data-fco aria-expanded="${!!S.fcOpen}"`:''}><span>${l}</span><b>${String(v).replace(/\//g,'/<wbr>')}</b>${sub?`<small>${esc(sub)}</small>`:''}</div>`;
+  el.innerHTML=`<div class="rih"><b>${ymParts(S.ym).m}月度のまとめ</b><span class="rihr">${badge(st,F)}<button type="button" class="btn sm2" id="recCopy"${st.days||yv!=null?"":" disabled"}>コピー</button></span></div><div class="rig ri-main">`+T.filter((_,i)=>main.has(i)).map(tile).join('')+`</div><details id="riDetails"${riOpen?' open':''}><summary>詳しい実績・コインの内訳</summary><div class="rig">`+T.filter((_,i)=>!main.has(i)).map(tile).join('')+'</div>'+fcListHtml(F,O)+'</details>';
 }
 function fcListHtml(F,O){ if(!S.fcOpen) return ''; const fc=famCoinPlan(f=>f===F)[F]; if(!fc) return '';
   return `<div class="fcl" aria-label="${esc(famName(F))}の必要コインの内訳">${fc.rows.map(r=>`<button type="button" class="ycp${r.ok?' ok':''}${r.o===O?' cur':''}" data-fco-o="${r.o}"><span class="yn">${esc(othName(r.o))}</span><span class="yt">${fcTgt(r)}${r.src==='c'?'<i>達成条件</i>':''}</span><span class="yv">必要 <b>${cfmt(r.need)}</b></span><span class="yu2">${!r.t?'最初の段階（0.01k）より下のため0コイン':r.v==null?'エール未入力':`今 ${yfmt(r.v)}・${r.ok?'届いています ✓':'残り '+cfmt(r.need-r.used)}`}</span></button>`).join('')}<button type="button" class="btn sm2" data-fcopen="${F}">この自分垢の必要コインを詳しく見る・目標を変える</button></div>` }
@@ -2749,7 +2933,7 @@ function renderSumFilt(){ const el=$('sumFilt'); const f=[];
   el.hidden=!f.length; el.innerHTML=f.length?`<span>絞り込み中：${esc(f.join('・'))}</span><button class="btn sm2" id="sumFiltClear">解除</button>`:''; }
 $('sumFilt').addEventListener('click',ev=>{if(ev.target.id!=='sumFiltClear')return;S.sumFam='all';S.sumOth='all';S.sumNotAch=false;S.sumQ='';$('sumQ').value='';savePref();renderSum()});
 function renderSum(){
-  const R=S.month.records; renderSumFilt(); renderFcCard(); renderYellCheck(); renderPatSum(); renderYgAll();
+  const R=S.month.records; renderSumFilt(); renderFcCard(); renderYellCheck(); renderPatSum(); renderYgAll(); renderTrend();
   fillSelect($('sumFam'),famName,S.sumFam,true);
   $('sumNotAch').checked=S.sumNotAch; $('sumSort').value=S.sumSort;
   const rows=[];
@@ -2829,7 +3013,7 @@ async function renderTrend(){
   const mos=await Promise.all(yms.map(getMonth));
   if(seq!==trendSeq) return;
   const rows=yms.map((ym,i)=>{const mo=mos[i];let n=0,a=0,days=0,min=0;
-    for(const k in mo.records){const p=parsePk(k);if(!p)continue;if(S.sumFam!=='all'&&p[0]!==+S.sumFam)continue;
+    for(const k in mo.records){const p=parsePk(k);if(!p)continue;if(S.sumFam!=='all'&&p[0]!==+S.sumFam)continue;if(S.sumOth!=='all'&&p[1]!==+S.sumOth)continue;if(S.sumQ&&!dayHit(dayKana(S.sumQ),p[0],p[1]))continue;
       const st=pairStats(mo.records[k],p[1]);if(!st.days)continue;n++;days+=st.days;min+=st.min;if(isAch(st,p[0],mo))a++}
     return {ym,n,a,days,min}});
   const {m:cm}=ymParts(S.ym);
@@ -2844,7 +3028,7 @@ async function allMonths(){
   if(db){ const q=await db.collection('months').limit(1000).get(); for(const d of q.docs) if(/^\d{4}-\d{2}$/.test(d.id)) out[d.id]=packMonth(unpackMonth(d.data())); }
   else { try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);const m=/^pk:months\/(\d{4}-\d{2})$/.exec(k);if(m)out[m[1]]=packMonth(unpackMonth(ls.get(k)))}}catch(e){} }
   // 保存容量不足でも、画面に残っている未保存記録をバックアップへ含める。
-  if(!db)for(const p in pend){const m=/^months\/(\d{4}-\d{2})$/.exec(p);if(m&&pend[p].month)out[m[1]]=packMonth(pend[p].month)}
+  for(const src of [sending,pend])for(const p in src){const m=/^months\/(\d{4}-\d{2})$/.exec(p);if(m&&src[p].month)out[m[1]]=packMonth(src[p].month)}
   return out;
 }
 $('expBtn').onclick=async()=>{
@@ -2858,7 +3042,7 @@ $('expBtn').onclick=async()=>{
     ls.set('pk:lastBk',Date.now()); checkBk(); if(typeof renderBkInfo==='function'){renderBkInfo();renderGuide()}
   }catch(e){ if(e&&e.code!=='declined') setStatus('err','書き出しに失敗しました'); }
 };
-let impData=null;
+let impData=null, impBusy=false;
 $('impFile').addEventListener('change',async ev=>{
   const f=ev.target.files&&ev.target.files[0]; ev.target.value=''; if(!f) return;
   const box=$('impConfirm'); box.hidden=false;
@@ -2873,23 +3057,36 @@ $('impFile').addEventListener('change',async ev=>{
   }catch(e){ impData=null; box.innerHTML='<div>このファイルは読み込めません。このツールで書き出したバックアップファイルを選んでください。</div><div class="row"><button class="btn" id="impCancel">閉じる</button></div>'; }
 });
 $('impConfirm').addEventListener('click',async ev=>{
+  if(impBusy) return;
   if(ev.target.id==='impCancel'){$('impConfirm').hidden=true;impData=null;return}
   if(ev.target.id!=='impGo'||!impData) return;
-  ev.target.disabled=true; await flush();
-  if(!db&&Object.keys(pend).length){impData=null;$('impConfirm').innerHTML='<div>未保存の記録があるため、復元を中止しました。先に現在のバックアップを書き出し、保存エラーを解消してからやり直してください。</div><div class="row"><button class="btn" id="impCancel">閉じる</button></div>';return}
-  const d=impData; impData=null; let okAll=true;
-  const w=async(p,v)=>{ if(db){ if((await tryWrite(()=>db.doc(p).set(v)))!==true) okAll=false; else if(p.startsWith('months/')) mExists[p]=true } else if(!ls.set('pk:'+p,v)) okAll=false };
-  if(d.lists){applyLists(d.lists); await w('config/lists',listsDoc())}
-  if(d.goals){applyGoals(d.goals); await w('config/goals',JSON.parse(JSON.stringify(S.goals)))}
-  if(d.pats){applyPats(d.pats); await w('config/pats',patsDoc())}
-  if(d.ryt){applyRyt(d.ryt); await w('config/ryt',JSON.parse(JSON.stringify(S.ryt)))}
-  if(d.oinfo){applyOinfo(d.oinfo); await w('config/oinfo',JSON.parse(JSON.stringify(S.oinfo)))}
-  if(d.oimg&&typeof d.oimg==='object') for(const key in d.oimg){const o=+String(key).slice(1); const v=d.oimg[key]; if(vIdx(o)&&typeof v==='string'&&/^data:image\/(jpeg|png|webp);base64,/.test(v)&&v.length<400000){try{await IMG.set(o,v); S.oinfo['o'+o]=Object.assign({},S.oinfo['o'+o],{img:true})}catch(e){okAll=false}}}
-  if(d.oimg) await w('config/oinfo',JSON.parse(JSON.stringify(S.oinfo)));
-  for(const [ym,mo] of d.months){ await w('months/'+ym,mo); delete monthCache[ym]; }
-  $('impConfirm').innerHTML=`<div>${okAll?'復元しました':'一部の復元に失敗しました。もう一度お試しください'}（${d.months.length}か月分）</div><div class="row"><button class="btn" id="impCancel">閉じる</button></div>`;
-  ['lstFam','lstOth'].forEach(id=>delete $(id).dataset.built);
-  subscribeMonth();
+  const confirm=$('impConfirm'), body=document.body, savedInert=body.inert, savedBusy=confirm.getAttribute('aria-busy');
+  impBusy=true;
+  try{
+    body.inert=true; confirm.setAttribute('aria-busy','true');
+    ev.target.disabled=true; const restoreFlush=flush(); await restoreFlush;
+    if(chain!==restoreFlush||Object.keys(pend).length||Object.keys(sending).length){impData=null;$('impConfirm').innerHTML='<div>未保存の記録があるため、復元を中止しました。先に現在のバックアップを書き出し、保存エラーを解消してからやり直してください。</div><div class="row"><button class="btn" id="impCancel">閉じる</button></div>';return}
+    const d=impData; impData=null; let okAll=true;
+    const w=async(p,v)=>{ if(db){ if((await tryWrite(()=>db.doc(p).set(v)))!==true) okAll=false; else if(p.startsWith('months/')) mExists[p]=true } else if(!ls.set('pk:'+p,v)) okAll=false };
+    if(d.lists){applyLists(d.lists); await w('config/lists',listsDoc())}
+    if(d.goals){applyGoals(d.goals); await w('config/goals',JSON.parse(JSON.stringify(S.goals)))}
+    if(d.pats){applyPats(d.pats); await w('config/pats',patsDoc())}
+    if(d.ryt){applyRyt(d.ryt); await w('config/ryt',JSON.parse(JSON.stringify(S.ryt)))}
+    if(d.oinfo){applyOinfo(d.oinfo); await w('config/oinfo',JSON.parse(JSON.stringify(S.oinfo)))}
+    if(d.oimg&&typeof d.oimg==='object') for(const key in d.oimg){const o=+String(key).slice(1); const v=d.oimg[key]; if(vIdx(o)&&typeof v==='string'&&/^data:image\/(jpeg|png|webp);base64,/.test(v)&&v.length<400000){try{await IMG.set(o,v); S.oinfo['o'+o]=Object.assign({},S.oinfo['o'+o],{img:true})}catch(e){okAll=false}}}
+    if(d.oimg) await w('config/oinfo',JSON.parse(JSON.stringify(S.oinfo)));
+    for(const [ym,mo] of d.months){ await w('months/'+ym,mo); delete monthCache[ym]; }
+    $('impConfirm').innerHTML=`<div>${okAll?'復元しました':'一部の復元に失敗しました。もう一度お試しください'}（${d.months.length}か月分）</div><div class="row"><button class="btn" id="impCancel">閉じる</button></div>`;
+    ['lstFam','lstOth'].forEach(id=>delete $(id).dataset.built);
+    subscribeMonth();
+  }catch(e){
+    impData=null; confirm.innerHTML='<div>復元を完了できませんでした。現在の記録を確認してから、もう一度お試しください。</div><div class="row"><button class="btn" id="impCancel">閉じる</button></div>';
+    setStatus('err','復元を完了できませんでした。記録を確認してください');
+  }finally{
+    body.inert=savedInert;
+    if(savedBusy==null) confirm.removeAttribute('aria-busy'); else confirm.setAttribute('aria-busy',savedBusy);
+    impBusy=false;
+  }
 });
 
 function renderEom(){ try{checkBk()}catch(e){}
@@ -2947,15 +3144,17 @@ $('sbar').addEventListener('click',ev=>{
   if(ev.target.id==='jumpToday'){ if(S.compact) S.sel=defaultDay(); renderRec(); goToday(); }
   if(ev.target.id==='modeBtn'){ S.compact=!S.compact; savePref(); document.body.classList.toggle('cmode',S.compact); renderRec(); goToday(); }
 });
-$('days').addEventListener('keydown',ev=>{const row=ev.target.closest&&ev.target.closest('.day.crow');if(row&&(ev.key==='Enter'||ev.key===' ')&&ev.target===row){ev.preventDefault();S.sel=+row.dataset.d;renderRec()}});
+$('days').addEventListener('keydown',ev=>{const row=ev.target.closest&&ev.target.closest('.day.crow');if(row&&(ev.key==='Enter'||ev.key===' ')&&ev.target===row){ev.preventDefault();S.sel=+row.dataset.d;renderRec();const n=document.querySelector('#days .day.sel');if(n){n.focus({preventScroll:true});n.scrollIntoView({block:'nearest'})}}});
 let lpFired=false, lpT=null, lpI=null;
 $('qpanel').addEventListener('click',ev=>{
+  const nav=ev.target.closest('[data-qshift]'); if(nav&&!nav.disabled){const dir=+nav.dataset.qshift;shiftPanelDay(dir);const next=$('qpanel').querySelector(`[data-qshift="${dir}"]`);if(next&&!next.disabled)next.focus({preventScroll:true});return}
+  if(ev.target.closest('#qMinutesApply')){applyQMinutes();return}
   if(ev.target.closest('#qMin')){S.panelMin=true;savePref();renderPanel();return}
   if(ev.target.closest('#qExpand')){S.panelMin=false;savePref();renderPanel();return}
   { const bx=ev.target.closest('[data-bx]'); if(bx){const c=panelCtx(); if(c) toggleBox(c.f,c.o,c.d,+bx.dataset.bx); return} }
   const b=ev.target.closest('button[data-a]');if(!b||b.disabled)return;
   if(lpFired){lpFired=false;if(b.closest('.qb'))return}
-  const c=panelCtx();if(c)edit(c.f,c.o,c.d,b.dataset.a)});
+  qMinuteDraft=null;const c=panelCtx();if(c)edit(c.f,c.o,c.d,b.dataset.a)});
 // 3: +ボタン長押しで連続加算
 function lpStop(){clearTimeout(lpT);clearInterval(lpI);lpT=lpI=null}
 $('qpanel').addEventListener('pointerdown',ev=>{
@@ -2969,7 +3168,15 @@ $('qpanel').addEventListener('click',ev=>{ const b=ev.target.closest('.qb button
 $('vList').onclick=()=>{S.cal=false;savePref();renderRec()};
 $('vCal').onclick=()=>{S.cal=true;savePref();scrollToday=true;renderRec()};
 $('dayTodo').addEventListener('change',e=>{S.dayTodo=e.target.checked;savePref();renderDay()});
-$('qpanel').addEventListener('change',ev=>{if(ev.target.id!=='qsel')return;const c=panelCtx();if(c)edit(c.f,c.o,c.d,'set:'+ev.target.value)});
+$('qpanel').addEventListener('change',ev=>{if(ev.target.id!=='qsel')return;qMinuteDraft=null;const c=panelCtx();if(c)edit(c.f,c.o,c.d,'set:'+ev.target.value)});
+$('qpanel').addEventListener('input',ev=>{
+  const field=ev.target;if(field.id!=='qMinutes')return;const c=panelCtx();if(!c||field.dataset.qctx!==qMinuteKey(c))return;
+  qMinuteDraft={key:qMinuteKey(c),value:field.value,saved:(getE(c.f,c.o,c.d)||{m:0}).m,error:''};showQMinuteError(field,'');
+});
+$('qpanel').addEventListener('keydown',ev=>{if(ev.target.id==='qMinutes'&&ev.key==='Enter'&&!ev.isComposing){ev.preventDefault();applyQMinutes()}});
+$('qpanel').addEventListener('focusin',syncQMinutesKeyboard);
+$('qpanel').addEventListener('focusout',()=>setTimeout(syncQMinutesKeyboard,0));
+if(window.visualViewport){window.visualViewport.addEventListener('resize',syncQMinutesKeyboard);window.visualViewport.addEventListener('scroll',syncQMinutesKeyboard)}
 // パネルを左右スワイプで日付移動
 function shiftPanelDay(dir){
   const {days,m}=ymParts(S.ym);
@@ -3211,9 +3418,10 @@ $('bsT').innerHTML=TOPTS; $('bsT').value='60';
 let bsArm=0;
 $('bsGo').onclick=()=>{ if(!S.mLoaded) return; const m=+$('bsT').value, d=S.dday, b=$('bsGo'), only=S.bsOnly!==false;
   const keys=(S.dayKeys||[]).filter(k=>{const [f,o]=parsePk(k), e=getE(f,o,d); return !(only&&e)&&!(e&&e.m===m)});
+  const sig=JSON.stringify([S.ym,d,S.dayFam,S.dayOth,S.dayQ||'',S.dayView||'all',S.dayKeys||[],keys,m,only]);
   if(!(S.dayKeys||[]).length){showToast('表示中の組み合わせがありません',false);return}
   if(!keys.length){bsArm=0;b.textContent='まとめて入れる';b.classList.remove('arm');showToast(only?'未入力の組み合わせはありません（「未入力だけ」を外すと記録済みも上書きします）':'変わる組み合わせはありませんでした',false);return}
-  if(Date.now()-bsArm>4000){bsArm=Date.now(); b.textContent=`本当に入れる（${keys.length}組・${clock(m)}）`; b.classList.add('arm'); setTimeout(()=>{if(Date.now()-bsArm>=3900){b.textContent='まとめて入れる';b.classList.remove('arm')}},4000); return}
+  if(!bsArm||bsArm.sig!==sig||Date.now()-bsArm.at>=4000){const arm={sig,at:Date.now()};bsArm=arm; b.textContent=`本当に入れる（${keys.length}組・${clock(m)}）`; b.classList.add('arm'); setTimeout(()=>{if(bsArm===arm&&Date.now()-arm.at>=3900){bsArm=0;b.textContent='まとめて入れる';b.classList.remove('arm')}},4000); return}
   bsArm=0; b.textContent='まとめて入れる'; b.classList.remove('arm');
   const items=[]; for(const k of keys){const [f,o]=parsePk(k), prev=getE(f,o,d); items.push({f,o,d,prev}); putE(f,o,d,{c:1,m})}
   if(!items.length){showToast('変わる組み合わせはありませんでした',false);return}
@@ -3273,8 +3481,8 @@ $('oiList').addEventListener('change',ev=>{const t=ev.target; if(!t.dataset||t.d
   showToast(`${othName(o)}の締め時間を${closeStr(o)}にしました`,false)});
 $('oiList').addEventListener('click',ev=>{if(ev.target.id==='oiAllBtn'){S.oiAll=!S.oiAll;renderOi()}});
 $('oiOth').addEventListener('change',e=>{S.oiO=+e.target.value;renderOi()});
-let oiT=null; $('oiTx').addEventListener('input',e=>{const o=+e.target.dataset.o, v=e.target.value.slice(0,1000); S.oinfo=S.oinfo||{}; clearTimeout(oiT); oiT=setTimeout(()=>{setOi(o,'s',v.trim()?v:null)},600)});
-$('oiTx').addEventListener('change',e=>{clearTimeout(oiT); const o=+e.target.dataset.o, v=e.target.value.slice(0,1000); setOi(o,'s',v.trim()?v:null); renderOi()});
+$('oiTx').addEventListener('input',e=>{const o=+e.target.dataset.o, v=e.target.value.slice(0,1000); setOi(o,'s',v.trim()?v:null)});
+$('oiTx').addEventListener('change',e=>{const o=+e.target.dataset.o, v=e.target.value.slice(0,1000); setOi(o,'s',v.trim()?v:null); renderOi()});
 $('oiFile').addEventListener('change',async ev=>{const f=ev.target.files&&ev.target.files[0]; ev.target.value=''; if(!f) return; const o=S.oiO, msg=$('oiMsg');
   if(!/^image\//.test(f.type)){ msg.textContent='画像ファイルを選んでください'; return }
   msg.textContent='取り込み中…';
@@ -3424,8 +3632,8 @@ function renderCl(){const el=$('clList'); if(!el) return; if(el.contains(documen
   el.innerHTML=Array.from({length:10},(_,i)=>`<label class="clr"><span><i class="cld" style="background:${CL_COL[i]}"></i>${i+1}</span><input type="text" data-cl="${i}" maxlength="30" value="${esc(cl[i]||'')}" placeholder="${i===0?'例：雑談':''}" aria-label="配信内容の候補${i+1}"></label>`).join('');
   $('clEx').hidden=cl.length>0 }
 function saveCl(){ const v=[...$('clList').querySelectorAll('input[data-cl]')].map(i=>i.value.trim().slice(0,30)).filter(Boolean); S.oinfo=S.oinfo||{}; if(v.length) S.oinfo.cl=v; else delete S.oinfo.cl; saveOinfo(); $('clEx').hidden=v.length>0; $('clMsg').textContent=`保存しました（${v.length}項目）` }
-let clT=null; $('clList').addEventListener('input',()=>{clearTimeout(clT); clT=setTimeout(saveCl,500)});
-$('clList').addEventListener('focusout',ev=>{ if(!$('clList').contains(ev.relatedTarget)){ clearTimeout(clT); saveCl(); setTimeout(renderCl,0) } });
+$('clList').addEventListener('input',saveCl);
+$('clList').addEventListener('focusout',ev=>{ if(!$('clList').contains(ev.relatedTarget)){ saveCl(); setTimeout(renderCl,0) } });
 $('clEx').onclick=()=>{ S.oinfo=S.oinfo||{}; S.oinfo.cl=CL_EX.slice(); saveOinfo(); renderCl(); $('clMsg').textContent='例を入れました。自由に書き換えられます' };
 // 画像から自動で読み取る（オンライン版：Claude）
 let smp=null; (async()=>{ try{ const c=window.claude; if(c&&c.use){ smp=await c.use('sample'); if(smp){ const lim=await smp.limits().catch(()=>null); if(!lim||!lim.images) smp=null } } }catch(e){ smp=null } updAiBtn() })();
@@ -3511,7 +3719,7 @@ $('dayCopyX').onclick=()=>{ $('dayCopyBox').hidden=true };
 // PCのキー操作（日付別実績入力）
 document.addEventListener('keydown',ev=>{
   if(S.tab!=='day'||ev.ctrlKey||ev.metaKey||ev.altKey||ev.isComposing) return;
-  const t=ev.target; if(t&&t.closest&&t.closest('input,select,textarea,[contenteditable]')) return;
+  const t=ev.target; if(t&&t.closest&&t.closest('input,select,textarea,[contenteditable],nav.tabs')) return;
   if(!$('sheet').hidden||!$('rstSheet').hidden||!$('imgSheet').hidden) return;
   const k=ev.key, ks=S.dayKeys||[], {days}=ymParts(S.ym);
   const sel=i=>{ S.dpk=ks[i]; renderDay(); const [f,o]=parsePk(S.dpk), r=document.querySelector(`#dayList .prow[data-f="${f}"][data-o="${o}"]`); if(r) r.scrollIntoView({block:'nearest'}) };
@@ -3773,10 +3981,11 @@ function openSheet(){
 }
 function closeSheet(){$('sheet').hidden=true;$('setBtn').focus()}
 $('setBtn').onclick=openSheet; $('sheetClose').onclick=closeSheet;
+$('backupQuick').onclick=()=>{if(S.tab!=='list')$('tab-list').click();else renderLists();requestAnimationFrame(()=>{const card=$('bkCard');card.scrollIntoView({block:'start'});card.focus({preventScroll:true})})};
 $('sheet').addEventListener('click',ev=>{if(ev.target.id==='sheet')closeSheet()});
 document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&!$('sheet').hidden)closeSheet()});
 // キーボード表示中はタブバーと入力パネルを隠す
-const isTextField=el=>el&&(el.tagName==='TEXTAREA'||(el.tagName==='INPUT'&&/^(text|search)$/.test(el.type)));
+const isTextField=el=>el&&(el.tagName==='TEXTAREA'||(el.tagName==='INPUT'&&(/^(text|search)$/.test(el.type)||el.id==='qMinutes')));
 document.addEventListener('focusin',ev=>{if(isTextField(ev.target))document.body.classList.add('kb')});
 document.addEventListener('focusout',()=>{setTimeout(()=>{if(!isTextField(document.activeElement))document.body.classList.remove('kb')},50)});
 
@@ -4022,7 +4231,7 @@ $('lstFam').addEventListener('click',ev=>{const b=ev.target.closest('.gsx'); if(
 $('gxAll').onclick=()=>{S.gxAll=!S.gxAll; S.gxOpen=new Set(); savePref(); updGx()};
 // 名前の重複チェック
 const nkey=v=>String(v||'').normalize('NFKC').trim().toLowerCase();
-function updDup(){ for(const kind of ['family','others']){ const el=$('dup-'+kind), L=$(kind==='family'?'lstFam':'lstOth'); if(!el||!L) continue; const by={};
+function updDup(){ for(const kind of ['family','others']){ const el=$('dup-'+kind), L=$(kind==='family'?'lstFam':'lstOth'); if(!el||!L) continue; const by=Object.create(null);
     S.lists[kind].forEach((n,i)=>{ if(isDefName(kind,i)) return; const k=nkey(n); if(k) (by[k]=by[k]||[]).push(i) });
     const d=Object.values(by).filter(a=>a.length>1), ds=new Set(d.flat()), P=kind==='family'?PF:PO;
     L.querySelectorAll('input[data-k]').forEach(inp=>{const on=ds.has(+inp.dataset.i); inp.classList.toggle('dup',on); if(on) inp.setAttribute('aria-invalid','true'); else inp.removeAttribute('aria-invalid')});

@@ -3302,7 +3302,7 @@ function dayMinuteSync(t,commit,quiet=false){
     if(t.dataset.dmStart===undefined)t.dataset.dmStart=JSON.stringify(prev);
     putE(c.f,c.o,c.d,next);dayMinuteRefreshMeta();dayMinutePreview(t,c,v);
   }
-  if(commit){dayMinuteFinalize(t,c);t.value=dayMinuteFormat(v);if(v>0&&S.dayLastMinutes!==v){S.dayLastMinutes=v;savePref()}}
+  if(commit){const edited=t.dataset.dmStart!==undefined;dayMinuteFinalize(t,c);t.value=dayMinuteFormat(v);if(edited&&v>0&&S.dayLastMinutes!==v){S.dayLastMinutes=v;savePref()}}
   if(!quiet){$('dayInputStatus').textContent=ymParts(S.ym).m+'月'+c.d+'日 '+famName(c.f)+' → '+othName(c.o)+'：'+(v===null?'未入力に戻しました':hm(v)+'を入力しました（自動保存）')+(famDayTotal(c.f,c.d)>1440?'（この自分垢の合計が24時間を超えています）':'')}
   return true;
 }

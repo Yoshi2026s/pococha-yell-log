@@ -106,6 +106,9 @@ test('explicit zero records a counted day; clear removes only it, each action Un
 test('last-input suggestion records only committed nonzero valid minutes and survives preference roundtrip',()=>{
  const t=setup(),f=t.field('f0_o0','75');t.sync(f,false);assert.equal(t.S.dayLastMinutes,null);t.sync(f,true);assert.equal(t.S.dayLastMinutes,75);assert.equal(t.read('pk:pref').dayLastMinutes,75);f.value='0';t.sync(f,true);f.value='';t.sync(f,true);f.value='24:01';t.sync(f,true);assert.equal(t.S.dayLastMinutes,75);assert.equal(t.read('pk:pref').dayLastMinutes,75);apply(t,'f0_o1','',{},['data-dmlast']);assert.equal(t.get(0,1,2).m,75);t.undo();assert.equal(t.get(0,1,2),null);
 });
+test('viewing an unchanged existing record does not replace the last entered time suggestion',()=>{
+ const t=setup();t.S.dayLastMinutes=75;t.savePref();const f=t.field('f0_o0','30');t.focus(f);assert.equal(t.selectDate(3),true);assert.equal(t.S.dayLastMinutes,75);assert.equal(t.read('pk:pref').dayLastMinutes,75);assert.equal(t.get(0,0,2).m,30);assert.equal(t.undoStack.length,0);assert.equal(t.move('f0_o0',1),true);assert.equal(t.S.dayLastMinutes,75);
+});
 test('save indicator copies exact real saving, error and saved status text',()=>{
  const t=setup(),n=t.node('save-badge');t.saveMirrors.push(n);for(const [cls,txt,state]of [['status busy','この端末に保存中…','pending'],['status err','保存できませんでした','error'],['status ok','この端末に保存しました','ok']]){t.nodes.status.className=cls;t.nodes.status.lastElementChild.textContent=txt;assert.deepEqual(plain(t.saveState()),{state,txt});t.mirror();assert.equal(n.dataset.state,state);assert.equal(n.textContent,txt)}
 });

@@ -3289,6 +3289,7 @@ function dayMinutePreview(t,c,v){
   const row=t.closest('.prow'),e=getE(c.f,c.o,c.d),hint=$(t.id+'-hint'),bad=Number.isNaN(v);
   t.classList.toggle('bad',bad);t.setAttribute('aria-invalid',String(bad));
   if(hint){hint.classList.toggle('error',bad);hint.textContent=bad?'入力例：75、1:15、1時間15分（上限24時間）。保存値：'+(e?hm(e.m):'未入力'):e?'記録済み：'+hm(e.m)+'（'+clock(e.m)+'）':'未入力 · 0分は稼いだ日として記録'}
+  const form=t.closest('.dmform');if(form){const next=form.querySelector('[data-dmnext]'),remove=form.querySelector('[data-dmremove]'),left=(S.dayKeys||[]).filter(k=>!(S.month.records[k]||{})[c.d]).length;if(next)next.textContent='次の未入力へ（'+left+'組）';if(remove)remove.hidden=!dayExtraOnly(c.k)}
   if(row){row.classList.toggle('on',!!e);const out=row.querySelector('.tm output'),chk=row.querySelector('.chk');if(out){out.textContent=clock(e?e.m:0);out.classList.toggle('has',!!(e&&e.m))}if(chk)chk.setAttribute('aria-pressed',String(!!e));for(const b of row.querySelectorAll('[data-dmadjust],[data-dmclear]')){if(b.dataset.dmadjust!==undefined)b.disabled=!!bad||(e?e.m:0)+(+b.dataset.dmadjust)<0||(e?e.m:0)+(+b.dataset.dmadjust)>1440;else if(b.hasAttribute('data-dmclear'))b.disabled=!e}}
 }
 function dayMinuteSync(t,commit,quiet=false){

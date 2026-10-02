@@ -32,7 +32,7 @@ function nodesFactory() {
   const nodes = {};
   const $ = id => nodes[id] ||= {
     value: '', dataset: {}, textContent: '', innerHTML: '', hidden: false,
-    handlers:{}, style: {setProperty(){}},
+    handlers:{}, attributes:{},setAttribute(k,v){this.attributes[k]=String(v)}, style: {setProperty(){}},
     classList:{add(){},remove(){},toggle(){}},
     addEventListener(type,fn){this.handlers[type]=fn;},
     querySelectorAll(){return [];}
@@ -46,12 +46,12 @@ function bulkFixture(searchScopes = {}) {
   const timerClock={now:1700000000000};
   class TestDate extends Date {static now(){return timerClock.now;}}
   const key=(f,o,d)=>`${S.ym}:${f}:${o}:${d}`;
-  const c=vm.createContext({console,$,S,Date:TestDate,setTimeout:fn=>{timers.push(fn);return timers.length;},clearTimeout(){},savePref(){},pushUndo(){},showToast(){},renderDay(){if(searchScopes[S.dayQ])S.dayKeys=searchScopes[S.dayQ].slice();},
+  const c=vm.createContext({console,$,S,Date:TestDate,setTimeout:fn=>{timers.push(fn);return timers.length;},clearTimeout(){},dayPrepareNavigation(){return true},savePref(){},pushUndo(){},showToast(){},renderDay(){if(searchScopes[S.dayQ])S.dayKeys=searchScopes[S.dayQ].slice();},
     getE:(f,o,d)=>records.get(key(f,o,d))||null,
     putE:(f,o,d,e)=>{writes.push({ym:S.ym,f,o,d,e});records.set(key(f,o,d),e);}
   });
   $('dayQ');
-  vm.runInContext(common+`const TOPTS='';let dayQT=null;`+take('function dayFlushSearch(){',"$('dayQ').addEventListener('input'")
+  vm.runInContext(common+`const TOPTS='';let dayQT=null;`+take('function dayMinuteParse(','function dayMinuteContext(')+take('function dayFlushSearch(){',"$('dayQ').addEventListener('input'")
     +take("$('bsT').innerHTML=TOPTS;",'// 機能6：バックアップのお知らせ')
     +take("$('bsOnly').addEventListener('change'", "$('bsChk').onclick"),c);
   return {S,nodes,writes,records,timers,timerClock,click:()=>nodes.bsGo.onclick(),key};

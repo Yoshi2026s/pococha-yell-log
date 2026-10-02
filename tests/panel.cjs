@@ -48,8 +48,9 @@ function fixture(pref={},width=1024){
     renderRec(){metrics.rec++;vm.runInContext('renderPanel()',context)},
     renderDay(){metrics.day++;vm.runInContext('renderPanel()',context)},
     edit(){metrics.edit++},toggleBox(){},togglePin(){},shiftPanelDay(){},applyQMinutes(){},
-    dayCommitFocused(){metrics.dayCommits++;return true;},queueMonth(){},defaultDay:()=>2,goToday(){},showToast(){}});
+    dayPrepareNavigation(){metrics.dayCommits++;return true;},dayCommitFocused(){metrics.dayCommits++;return true;},queueMonth(){},defaultDay:()=>2,goToday(){},showToast(){}});
   const code=take('const S={','let db=null')
+    +take('function dayMonthPrefs(','function dayMinuteHtml(')
     +take('function savePref(){','/* ---------- 操作 ---------- */')
     +`let qMinuteDraft=null;const qMinuteKey=c=>S.ym+':'+c.f+':'+c.o+':'+c.d;let TOPTS='<option value="0">0:00</option>';`
     +take('function panelCtx(){','// 任意分入力は')
@@ -118,15 +119,21 @@ test('monthly row Enter and Space open editing while other keys leave it compact
   assert.equal(t.api.S.panelMin,true);assert.equal(t.api.S.sel,2);
 });
 test('daily row selection opens the correct pair and preserves the selected date',()=>{
-  const t=fixture();t.api.S.tab='day';t.api.S.dday=12;t.api.S.dpk='f0_o0';t.api.renderPanel();
+  const t=fixture();t.api.S.tab='day';t.api.S.dayPanel=true;t.api.S.dday=12;t.api.S.dpk='f0_o0';t.api.renderPanel();
   t.nodes.dayList.dispatch('click',t.row('day',{f:'2',o:'3'}));
   assert.equal(t.api.S.dpk,'f2_o3');assert.equal(t.api.S.dday,12);assert.equal(t.api.S.panelMin,false);
   assert.match(t.nodes.qpanel.innerHTML,/自分垢3.*他人垢4/);assert.match(t.nodes.qpanel.innerHTML,/10月12日/);
   assert.equal(t.metrics.edit,0);assert.equal(t.metrics.saved,0);
 });
+test('daily inline input starts without a duplicate fixed panel and can explicitly show the legacy panel',()=>{
+  const t=fixture();t.api.S.tab='day';t.api.S.dpk='f0_o0';t.api.renderPanel();
+  assert.equal(t.api.S.dayPanel,false);assert.equal(t.nodes.qpanel.hidden,true);
+  t.api.S.dayPanel=true;t.api.renderPanel();assert.equal(t.nodes.qpanel.hidden,false);
+  assert.match(t.nodes.qpanel.innerHTML,/id="qExpand"/);assert.equal(t.metrics.edit,0);
+});
 test('daily row Enter and Space expand editing without intercepting nested input',()=>{
   for(const key of ['Enter',' ']){
-    const t=fixture();t.api.S.tab='day';
+    const t=fixture();t.api.S.tab='day';t.api.S.dayPanel=true;
     assert.equal(t.nodes.dayList.dispatch('keydown',t.row('day',{f:'4',o:'5'}),key),1);
     assert.equal(t.api.S.dpk,'f4_o5');assert.equal(t.api.S.panelMin,false);
   }
@@ -135,7 +142,7 @@ test('daily row Enter and Space expand editing without intercepting nested input
   assert.equal(t.nodes.dayList.dispatch('keydown',nested,'Enter'),0);assert.equal(t.api.S.panelMin,true);
 });
 test('adding a daily pair selects and opens it, clears hiding filters and preserves records and date',()=>{
-  const t=fixture();t.api.S.tab='day';t.api.S.dday=12;t.api.S.dpk='f0_o0';
+  const t=fixture();t.api.S.tab='day';t.api.S.dayPanel=true;t.api.S.dday=12;t.api.S.dpk='f0_o0';
   t.api.S.month.records={f0_o0:{12:{c:1,m:17}}};const before=JSON.stringify(t.api.S.month.records);
   t.api.S.dayFam='4';t.api.S.dayOth='5';t.api.S.dayView='todo';t.api.S.dayQ='検索外';t.api.S.dayHideAch=true;t.api.S.dayFold=[2,4];
   t.nodes.addFam.value='2';t.nodes.addOth.value='3';t.nodes.addPair.onclick();

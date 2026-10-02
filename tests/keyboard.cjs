@@ -18,7 +18,7 @@ function fixture(){
   const document={activeElement:null,addEventListener(type,fn){assert.equal(type,'keydown');handlers.push(fn);},querySelector(){return null;}};
   const c=vm.createContext({console,S,$,document,TABS:['rec','day','sum','list'],ADDS:[5,10,30,60,120],
     ymParts:()=>({days:31}),parsePk:k=>{const m=/^f(\d+)_o(\d+)$/.exec(k);return m?[+m[1],+m[2]]:null;},
-    dayCommitFocused(){return true;},savePref(){},renderDay:()=>renders.push(S.dday),edit:(...args)=>edits.push(args)
+    dayPrepareNavigation(){return true;},dayCommitFocused(){return true;},savePref(){},renderDay:()=>renders.push(S.dday),edit:(...args)=>edits.push(args)
   });
   vm.runInContext(take('function daySelectDate(d){','function dayNextMissing(')
     +take('// PCのキー操作（日付別実績入力）','/* ---------- 追加の便利機能 ---------- */')

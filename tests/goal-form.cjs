@@ -22,6 +22,7 @@ function setup(){
  const ytOf=(k,mo)=>{const v=((mo||S.month).yt||{})[k];return Number.isInteger(v)&&v>0?v:null},yellOf=k=>Number.isInteger(S.month.yell?.[k])?S.month.yell[k]:null;
  const isDefName=(kind,i)=>!S.lists[kind][i]||S.lists[kind][i]===(kind==='family'?'自分':'他人')+(i+1),dayKana=t=>String(t).normalize('NFKC').toLowerCase().trim();
  function showToast(m){toasts.push(m)}function hideToast(){}function pushUndo(u){undoStack.push(u);undo=u}function updHist(){}function rerender(){if(typeof renderYtForm==='function')renderYtForm(true)}function putE(){}function savePref(){}function updFamYell(){}function updFamBadges(){}function updOthBadges(){}function renderListSum(){}function renderYCoin(){}function renderYellCheck(){}function renderFcCard(){}function renderSoon(){}function updDayCoin(){}function renderYProg(){}function alignHeads(){}function updFamPats(){}function renderPatSum(){}function updDline(){}function subscribeMonth(){S.month=unpackMonth(ls.get('pk:months/'+S.ym))}
+ function dayPrepareNavigation(){return true}function daySaveMirror(){}
  function fillSelect(sel,label,val){sel.value=String(val);sel.options=S.order.family.map(i=>({value:String(i),textContent:label(i)}))}
  function dispatch(id,e,t,extra={}){for(const fn of $(id).listeners[e]||[])fn({target:t,preventDefault(){},...extra})}
  function nameField(i,value){const t=$('others-'+i);t.dataset={k:'others',i:String(i)};t.value=value;return t}

@@ -25,7 +25,7 @@ function setup(filename) {
     const vIdx=v=>Number.isInteger(v)&&v>=0&&v<N;
     const parsePk=k=>{const m=/^f(\\d+)_o(\\d+)$/.exec(k); return m&&vIdx(+m[1])&&vIdx(+m[2])?[+m[1],+m[2]]:null};
     const schNorm=x=>x;
-    function listSideUpd() {} function renderOi() {} function renderCl() {}
+    function listSideUpd() {} function renderOi() {} function renderCl() {} function daySaveMirror() {}
     const saveOinfo=()=>queueWrite('config/oinfo',JSON.parse(JSON.stringify(S.oinfo||{})));
   `;
   const code = prelude + segment(source, 'function packMonth(', '/* ---------- データ読込 ---------- */') +

@@ -20,6 +20,7 @@ function setup(){
   n.querySelector=s=>{const m=/data-dmkey="([^"]+)"/.exec(s);return n.children.find(t=>t.dataset.dmkey&&(!m||t.dataset.dmkey===m[1]))||null};
   n.closest=s=>s==='.prow'?n.row||null:s==='.dmform'?n.form||null:null;
   n.focus=()=>{document.activeElement=n;n.focused=(n.focused||0)+1};
+  n.select=()=>{n.selected=(n.selected||0)+1};
   n.blur=()=>{if(document.activeElement!==n)return;document.activeElement=null;n.blurred=(n.blurred||0)+1;if(n.dataset.dmkey)dispatch('dayList','focusout',n)};
   n.scrollIntoView=()=>n.scrolls++;
   let html='';Object.defineProperty(n,'innerHTML',{get(){return html},set(value){html=value;if(id!=='dayList')return;renderCount++;n.children=[];
@@ -143,6 +144,6 @@ test('immediate search before bulk refreshes production visible keys and applies
  const t=setup();assert.equal(t.S.dayKeys.length,4);t.nodes.dayQ.value='ユキ';t.nodes.bsT.value='60';t.nodes.bsGo.onclick();assert.equal(t.S.dayQ,'ユキ');assert.deepEqual(Array.from(t.S.dayKeys),['f0_o1']);assert.equal(t.get(0,1,2),null);t.nodes.bsGo.onclick();assert.equal(t.get(0,1,2).m,60);assert.equal(t.get(0,2,2),null);assert.equal(t.get(1,0,2),null);assert.equal(t.get(0,0,2).m,30);assert.equal(t.undoStack.length,1);
 });
 test('bulk action during search composition cannot arm or modify any pair',()=>{
- const t=setup();t.nodes.dayQ.value='ユキ';t.dispatch('dayQ','compositionstart',t.nodes.dayQ);t.nodes.bsT.value='60';t.nodes.bsGo.onclick();t.nodes.bsGo.onclick();assert.equal(t.get(0,1,2),null);assert.equal(t.S.dayQ,'');assert.equal(t.undoStack.length,0);assert.match(t.toasts.at(-1),/検索の文字を確定/);
+ const t=setup();t.nodes.dayQ.value='ユキ';t.dispatch('dayQ','compositionstart',t.nodes.dayQ);t.nodes.bsT.value='60';t.nodes.bsGo.onclick();t.nodes.bsGo.onclick();assert.equal(t.get(0,1,2),null);assert.equal(t.S.dayQ,'');assert.equal(t.undoStack.length,0);assert.match(t.toasts.at(-1),/文字を確定/);
 });
 console.log(`All ${passed} daily inline-minute scenarios passed.`);

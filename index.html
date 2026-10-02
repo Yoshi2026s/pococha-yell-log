@@ -1,4 +1,403 @@
-<!doctype html><html lang="ja"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html lang="ja"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><style id="dailyUsabilityStyle">
+/* 日付別実績：入力へ集中できる表示と、入力カードの操作整理。 */
+@media screen {
+  #p-day .day-intro {
+    align-items: flex-start;
+    gap: 12px 20px;
+    margin-bottom: 12px;
+  }
+  #p-day .day-intro h2 {
+    line-height: 1.5;
+    font-size: 18px;
+  }
+  #p-day .day-intro p {
+    flex: 1 1 300px;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  #p-day .day-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+  }
+  #p-day .day-actions .btn {
+    min-height: 46px;
+    border-radius: 11px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 750;
+  }
+  #p-day #dayStart {
+    background: var(--time);
+    border-color: var(--time);
+    color: var(--surface);
+    flex: 1 1 220px;
+  }
+  :root[data-theme="dark"] #p-day #dayStart { color: var(--bg); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) #p-day #dayStart { color: var(--bg); }
+  }
+  #p-day #dayFocus {
+    flex: 0 1 auto;
+    background: var(--surface);
+    color: var(--ink);
+    border-color: var(--line);
+  }
+  #p-day #dayFocus[aria-pressed="true"] {
+    color: var(--time);
+    border-color: var(--time);
+    background: var(--time-soft);
+  }
+  #p-day .day-actions button:disabled { opacity: .6; }
+
+  /* 日付・名前・この日の進み具合を残し、月全体の情報だけを畳む。 */
+  #p-day.day-focus .day-filters,
+  #p-day.day-focus .dsearch,
+  #p-day.day-focus #dStrip,
+  #p-day.day-focus .kbhint,
+  #p-day.day-focus .swipehint,
+  #p-day.day-focus #dayList .pmeta,
+  #p-day.day-focus #dayList .pbar {
+    display: none;
+  }
+  #p-day:not(.day-extras) #dayList .prow.sel:not(.day-extras) .bxy {
+    display: none;
+  }
+  #p-day.day-focus .dnav { margin-bottom: 4px; }
+  #p-day.day-focus .day-bulk { margin: 5px 0; }
+  #p-day.day-focus .day-bulk > summary {
+    color: var(--muted);
+    font-size: 12px;
+  }
+  #p-day.day-focus .day-save-note { margin: 5px 0 8px; }
+  #p-day.day-focus #dayList .prow:not(.sel) {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  #p-day #dayList .prow.sel {
+    scroll-margin-top: calc(var(--desktop-nav-height, 60px) + 14px);
+  }
+  #p-day #dayList .prow.sel .pn {
+    min-width: 0;
+    row-gap: 5px;
+  }
+
+  #p-day .dmform {
+    min-width: 0;
+    padding: 16px;
+    margin: 12px 0 3px;
+    border-radius: 14px;
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--time) 26%, var(--line));
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--ink) 4%, transparent);
+  }
+  #p-day .dmheading {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  #p-day .dmheading > b {
+    flex: 1 1 180px;
+    color: var(--ink);
+  }
+  #p-day .dmheading > span {
+    min-width: 0;
+    color: var(--muted);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+  }
+  #p-day .dmheading .dm-date {
+    flex: 0 1 auto;
+    max-width: 100%;
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: var(--time);
+    background: var(--time-soft);
+    font-size: 12px;
+    font-weight: 750;
+    font-variant-numeric: tabular-nums;
+  }
+  #p-day .dmnav {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(70px, auto) minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+    padding: 12px 0;
+    margin: 4px 0 12px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  #p-day .dmnav button,
+  #p-day .dmformat button,
+  #p-day .dmadjust button,
+  #p-day .dmsecondary button {
+    min-width: 0;
+    min-height: 44px;
+    padding: 9px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.5;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  #p-day .dmnav button:disabled,
+  #p-day .dmadjust button:disabled,
+  #p-day .dmsecondary button:disabled {
+    opacity: .5;
+    cursor: default;
+  }
+  #p-day .dm-index {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+  #p-day .dmformat {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    margin-bottom: 12px;
+    width: fit-content;
+    max-width: 100%;
+    border-radius: 12px;
+    background: var(--surface2);
+  }
+  #p-day .dmformat button {
+    flex: 1 1 0;
+    padding-inline: 16px;
+    border-color: transparent;
+    background: transparent;
+    color: var(--muted);
+  }
+  #p-day .dmformat button[aria-pressed="true"] {
+    background: var(--surface);
+    border-color: var(--line);
+    color: var(--time);
+  }
+  #p-day .dmpresets {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin: 12px 0;
+  }
+  #p-day .dmpresets button {
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 6px;
+    border-color: color-mix(in srgb, var(--time) 20%, var(--line));
+    border-radius: 10px;
+    background: var(--time-soft);
+    color: var(--time);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  #p-day .dmline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  #p-day .dmline label,
+  #p-day .dmline > span {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  #p-day .dmline input {
+    min-width: 0;
+    width: 146px;
+    max-width: 100%;
+    min-height: 52px;
+    padding: 10px 13px;
+    border-radius: 11px;
+    font-size: 22px;
+    line-height: 1.3;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    background: var(--surface);
+    border: 1.5px solid color-mix(in srgb, var(--time) 35%, var(--line));
+    color: var(--ink);
+  }
+  #p-day .dmline input.bad {
+    border-color: var(--sun);
+    outline: 2px solid color-mix(in srgb, var(--sun) 14%, transparent);
+  }
+  #p-day .dmline > .btn {
+    flex: 1 1 180px;
+    min-height: 48px;
+    padding: 10px 14px;
+    margin-left: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: normal;
+  }
+  #p-day .dmhint {
+    margin: 10px 0 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--time);
+  }
+  #p-day .dmhint.error { color: var(--sun); }
+  #p-day .dm-save {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    margin: 5px 0 2px;
+    padding: 3px 8px;
+    border-radius: 7px;
+    background: var(--ok-soft);
+    color: var(--ok);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+  #p-day .dm-save:empty { display: none; }
+  #p-day .dm-save.error,
+  #p-day .dm-save[data-state="error"] {
+    background: color-mix(in srgb, var(--sun) 8%, var(--surface));
+    color: var(--sun);
+  }
+  #p-day .dm-save[data-state="pending"] {
+    background: var(--surface2);
+    color: var(--muted);
+  }
+  #p-day .dmadjust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  #p-day .dmadjust button {
+    flex: 1 1 58px;
+    color: var(--time);
+    background: var(--surface2);
+    font-variant-numeric: tabular-nums;
+  }
+  #p-day .dmadjust [data-prevcopy] {
+    flex: 1.7 1 130px;
+    color: var(--ink);
+  }
+  #p-day .dmsecondary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 12px;
+    margin-top: 12px;
+    border-top: 1px solid var(--line-soft);
+  }
+  #p-day .dmsecondary button { flex: 1 1 130px; }
+  #p-day .dmsecondary [data-dmclear] { color: var(--sun); }
+  #p-day .dmsecondary [data-dmextras][aria-pressed="true"] {
+    color: var(--time);
+    border-color: var(--time);
+    background: var(--time-soft);
+  }
+  #p-day .dmhelp {
+    margin: 10px 0 0;
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+  #p-day #bsMinutes {
+    box-sizing: border-box;
+    min-width: 0;
+    width: 112px;
+    max-width: 100%;
+    min-height: 44px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    padding: 8px 10px;
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 16px;
+    font-weight: 700;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  #p-day #bsMinutes[aria-invalid="true"] { border-color: var(--sun); }
+  #p-day .day-bulk .bset {
+    gap: 8px;
+    font-size: 12px;
+    align-items: center;
+  }
+  #p-day .day-bulk .bset label {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-height: 44px;
+  }
+  #p-day .day-bulk .bset select,
+  #p-day .day-bulk .bset button { min-height: 44px; }
+  @media (hover: hover) {
+    #p-day .dmnav button:not(:disabled):hover,
+    #p-day .dmadjust button:not(:disabled):hover,
+    #p-day .dmsecondary button:not(:disabled):hover,
+    #p-day .dmpresets button:hover {
+      border-color: var(--time);
+      background: var(--time-soft);
+      color: var(--time);
+    }
+    #p-day .dmsecondary [data-dmclear]:hover {
+      border-color: var(--sun);
+      color: var(--sun);
+      background: color-mix(in srgb, var(--sun) 8%, var(--surface));
+    }
+  }
+  @media (max-width: 560px) {
+    #p-day .day-intro { gap: 8px; }
+    #p-day .day-intro h2 { font-size: 16px; }
+    #p-day .day-intro p { flex-basis: 100%; }
+    #p-day .day-actions { gap: 8px; }
+    #p-day .day-actions .btn { font-size: 13px; padding-inline: 12px; }
+    #p-day #dayStart { flex-basis: 175px; }
+    #p-day #dayList .prow.sel { scroll-margin-top: 12px; }
+    #p-day .dmform { padding: 12px; margin-top: 10px; }
+    #p-day .dmheading > b { flex-basis: 100%; }
+    #p-day .dmnav { gap: 6px; margin-bottom: 10px; }
+    #p-day .dmnav button { padding-inline: 8px; font-size: 12px; }
+    #p-day .dmformat { width: 100%; }
+    #p-day .dmformat button { font-size: 13px; }
+    #p-day .dmpresets { gap: 6px; }
+    #p-day .dmpresets button { font-size: 12px; padding: 9px 4px; }
+    #p-day .dmline input { width: 140px; }
+    #p-day .dmline > .btn { flex-basis: 100%; width: 100%; margin: 4px 0 0; }
+    #p-day .dmadjust { gap: 6px; }
+    #p-day .dmadjust button { padding: 9px 7px; font-size: 12px; flex-basis: 54px; }
+    #p-day .dmadjust [data-prevcopy] { flex-basis: 100%; }
+    #p-day .dmsecondary { gap: 6px; }
+    #p-day .dmsecondary button { flex-basis: calc(50% - 6px); font-size: 12px; padding-inline: 8px; }
+    #p-day .dmhint { font-size: 13px; }
+    #p-day .day-bulk .bset { padding-inline: 12px; }
+    #p-day .day-bulk .bset > button { flex: 1 1 125px; white-space: normal; }
+  }
+  @media (max-width: 360px) {
+    #p-day .day-actions { align-items: stretch; }
+    #p-day #dayStart { flex-basis: 100%; }
+    #p-day #dayFocus { flex: 1 1 100%; }
+    #p-day .dmform { padding: 10px; }
+    #p-day .dmnav { grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr); gap: 4px; }
+    #p-day .dmnav button { padding-inline: 5px; }
+    #p-day .dmline { gap: 6px; }
+    #p-day .dmline input { width: 125px; }
+    #p-day .dmsecondary button { flex-basis: 100%; }
+  }
+}
+
+</style>
+</head><body>
 <title>Pococha時間稼ぎ・エール記録帳</title>
 <style>
 :root{
@@ -1712,7 +2111,7 @@ html:has(body.haspanel){scroll-padding-bottom:calc(var(--ph,240px) + 32px)}
 
   <!-- 日付別（1日分をまとめて入力） -->
   <section class="panel" id="p-day" role="tabpanel" aria-labelledby="tab-day" hidden>
-    <div class="day-intro"><h2>この日の実績を入力</h2><p><b>1</b> 日付を選ぶ <span>→</span> <b>2</b> 組み合わせを選ぶ <span>→</span> <b>3</b> 時間を入力</p></div>
+    <div class="day-intro"><h2>この日の実績を入力</h2><p><b>1</b> 日付を選ぶ <span>→</span> <b>2</b> 組み合わせを選ぶ <span>→</span> <b>3</b> 時間を入力</p><div class="day-actions"><button type="button" class="btn pri" id="dayStart">入力を始める</button><button type="button" class="btn" id="dayFocus" aria-pressed="false">入力に集中</button><button type="button" class="btn sm2" id="dayPanelToggle" aria-pressed="false">固定パネル</button></div></div>
     <div class="dnav">
       <button id="prevD" aria-label="前の日">◀</button>
       <div class="pickwrap"><div class="label num" id="dayLabel"></div><input type="date" id="datePick" aria-label="日付を選ぶ"></div>
@@ -1734,7 +2133,7 @@ html:has(body.haspanel){scroll-padding-bottom:calc(var(--ph,240px) + 32px)}
     <div class="dsearch"><input type="search" class="lsearch" id="dayQ" placeholder="名前・番号で絞り込み（例：ゆき、12）" aria-label="日付別の一覧を名前・番号で絞り込み" autocomplete="off" enterkeyhint="search"><button type="button" class="btn sm2" id="dayClearFilters">絞り込みを解除</button></div>
     <div class="dview" id="dView" role="group" aria-label="表示する組み合わせ"></div>
     <div class="daysum" id="daySum"></div>
-    <details class="day-bulk"><summary>複数の組み合わせへまとめて入力</summary><div class="bset"><span>表示中の全部に</span><select class="sm" id="bsT" aria-label="まとめて入れる時間"></select><label class="chkl"><input type="checkbox" id="bsOnly" checked> 未入力だけ</label><button class="btn sm2" id="bsGo">まとめて入れる</button><button class="btn sm2" id="bsChk">未入力に✓だけ</button><button class="btn sm2" id="bsPrev">前日と同じに</button></div><p class="hint" id="dayBulkInfo"></p></details>
+    <details class="day-bulk"><summary>複数の組み合わせへまとめて入力</summary><div class="bset"><span>表示中の全部に</span><select class="sm" id="bsT" aria-label="まとめて入れる時間"></select><label class="hint">自由入力 <input type="text" id="bsMinutes" inputmode="text" maxlength="20" placeholder="75 または 1:15" aria-describedby="dayBulkInfo" aria-label="まとめて入れる自由な時間"></label><label class="chkl"><input type="checkbox" id="bsOnly" checked> 未入力だけ</label><button class="btn sm2" id="bsGo">まとめて入れる</button><button class="btn sm2" id="bsChk">未入力に✓だけ</button><button class="btn sm2" id="bsPrev">前日と同じに</button></div><p class="hint" id="dayBulkInfo"></p></details>
     <p class="day-save-note" id="dayInputStatus" role="status" aria-live="polite">時間を入力すると自動保存。0分は「稼いだ日」として記録できます。</p>
     <div class="card copybox" id="dayCopyBox" hidden><h2>この日の実績（コピー用）</h2><p class="hint">自動でコピーできなかったので、下の文字を長押しして「すべてを選択」→「コピー」してください。</p><textarea id="dayCopyTx" readonly aria-label="この日の実績のテキスト"></textarea><div class="row" style="justify-content:flex-end"><button class="btn sm2" id="dayCopyX">閉じる</button></div></div>
     <div class="famday" id="famDay"></div>
@@ -2145,7 +2544,8 @@ const dLabel=v=>v===0?'日数なし':v+'日';
 const vIdx=v=>Number.isInteger(v)&&v>=0&&v<N;
 const S={
   lists:{family:defNames('自分'),others:defNames('他人')},
-  ym:curYM(), month:{records:{}}, mLoaded:false, prevKeys:[], extra:[],
+  ym:curYM(), month:{records:{}}, mLoaded:false, prevKeys:[], extra:[], dayMonths:pref.dayMonths||{},
+  dayFocus:!!pref.dayFocus, dayClock:!!pref.dayClock, dayPanel:false, dayExtras:false, dayLastMinutes:Number.isInteger(pref.dayLastMinutes)&&pref.dayLastMinutes>0&&pref.dayLastMinutes<=1440?pref.dayLastMinutes:null,
   fam:vIdx(pref.fam)?pref.fam:0, oth:vIdx(pref.oth)?pref.oth:0,
   goals:{d:Array(N).fill(DEF_D),m:Array(N).fill(DEF_M),t:Array(N).fill(DEF_T),c:Array(N).fill(1)},
   tab:TABS.includes(pref.tab)?pref.tab:'rec', sumFam:(pref.sf==='all'||vIdx(+pref.sf))&&pref.sf!=null?String(pref.sf):'all', sumNotAch:!!pref.sna,
@@ -2351,7 +2751,7 @@ function deepMerge(a,b){for(const k in b){if(BADKEY(k))continue;if(b[k]&&typeof 
 const pend={}; let timer=null, chain=Promise.resolve();
 function setStatus(cls,txt){const s=$('status');s.className='status '+cls;
   if(cls==='ok'&&/保存済み/.test(txt)){const d=new Date();txt+=` ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`}
-  s.lastElementChild.textContent=txt}
+  s.lastElementChild.textContent=txt;daySaveMirror()}
 function schedule(){setStatus('busy',db&&navigator.onLine===false?'オフライン：つながったら保存します':'保存中…');clearTimeout(timer);timer=setTimeout(()=>{timer=null;flush()},500)}
 function queueWrite(path,obj){if(fcCache)fcCache.clear();pend[path]={obj};schedule()}
 function queueMonth(ym,patch,mo){
@@ -2477,7 +2877,8 @@ async function loadPrevKeys(ym){
 function subscribeMonth(){
   if(unsubM){unsubM();unsubM=null}
   const path='months/'+S.ym, ym=S.ym;
-  S.prevKeys=[]; S.prevMonth=null; S.extra=[]; const remembered=(ls.get('pk:pref')||{}).daily; S.dday=remembered&&remembered.ym===ym&&Number.isInteger(remembered.d)&&remembered.d>=1&&remembered.d<=ymParts(ym).days?remembered.d:defaultDay(); if(remembered&&remembered.ym===ym&&parsePk(remembered.k))S.dpk=remembered.k; S.sel=defaultDay(); hideToast();
+  const saved=ls.get('pk:pref')||{};S.dayMonths=dayMonthPrefs(saved.dayMonths);const remembered=S.dayMonths[ym]||saved.daily;
+  S.prevKeys=[];S.prevMonth=null;S.extra=dayExtraKeys(ym,saved);S.dday=remembered&&(!remembered.ym||remembered.ym===ym)&&Number.isInteger(remembered.d)&&remembered.d>=1&&remembered.d<=ymParts(ym).days?remembered.d:defaultDay();S.dpk=remembered&&(!remembered.ym||remembered.ym===ym)&&parsePk(remembered.k)?remembered.k:null;S.sel=defaultDay();hideToast();
   loadPrevKeys(ym);
   if(!db){S.month=unpackMonth(ls.get('pk:'+path));S.mLoaded=true;render();return}
   S.month={records:{}}; S.mLoaded=false; render();
@@ -2700,7 +3101,7 @@ function applyQMinutes(){
   edit(c.f,c.o,c.d,'set:'+result.n);syncQMinutesKeyboard();
 }
 function renderPanel(){
-  const qp=$('qpanel'), c=panelCtx(), show=S.compact&&S.mLoaded&&!!c&&(S.tab==='rec'||S.tab==='day');
+  const qp=$('qpanel'), c=panelCtx(), show=S.compact&&S.mLoaded&&!!c&&(S.tab==='rec'||S.tab==='day'&&S.dayPanel);
   qp.hidden=!show; document.body.classList.toggle('haspanel',show);
   if(!show){qMinuteDraft=null;syncQMinutesKeyboard();return}
   const rec=S.month.records[pk(c.f,c.o)]||{};
@@ -2749,6 +3150,8 @@ function dayPairs(){
 function dayBasePairs(){const q=dayKana(S.dayQ||'');return dayPairs().filter(p=>!q||dayHit(q,p[0],p[1]))}
 function renderDay(){
   if(ryFocus()||(typeof dayMinuteFocus==='function'&&dayMinuteFocus())){S.dayDirty=true;return}
+  $('p-day').classList.toggle('day-focus',!!S.dayFocus);$('p-day').classList.toggle('day-extras',!!S.dayExtras);
+  $('dayFocus').setAttribute('aria-pressed',String(!!S.dayFocus));$('dayFocus').textContent=S.dayFocus?'通常表示に戻す':'入力に集中';$('dayPanelToggle').setAttribute('aria-pressed',String(!!S.dayPanel));
   const {y,m,days}=ymParts(S.ym);
   S.dday=Math.min(Math.max(1,S.dday),days);
   const w=new Date(y,m-1,S.dday).getDay();
@@ -2786,12 +3189,13 @@ function renderDay(){
       $('famDay').hidden=group;
       $('famDay').innerHTML=fs.map(f=>{const t=famDayTotal(f,d), c=FC[f];return t||c?`<span class="${t>1440?'over':''}">${esc(famName(f))}${t?' '+clock(t):''}${t>1440?' ⚠24時間超え':''}${c?`<em class="fcn" data-f="${f}" data-fcopen="${f}" role="button" tabindex="0" title="${c.n}組（${esc(fcSrc(c))}）の目標エールに必要なコインの合計">必要コイン ${cfmt(c.need)}${fcRest(c)?`（残り ${cfmt(fcRest(c))}）`:'（達成 ✓）'}</em>`:''}</span>`:''}).join(''); }
     const pct=allKeys.length?Math.round(n/allKeys.length*100):0;
-    $('daySum').innerHTML=`<span>この日：<b>${n}</b>/${allKeys.length}組 記録</span><span>合計 <b>${hm(min)}</b></span><span class="todo">未入力 <b>${allKeys.length-n}</b>組</span>${bx?`<span>BOX開封 <b>${bx}</b>組</span>`:''}<button type="button" class="btn sm2" id="dayCopy"${n?'':' disabled'}>この日をコピー</button><span class="dsbar" role="progressbar" aria-label="この日の記録の進み具合" aria-valuemin="0" aria-valuemax="${allKeys.length}" aria-valuenow="${n}"><i style="width:${pct}%"></i></span>`;
+    $('daySum').innerHTML=`<span>この日：<b>${n}</b>/${allKeys.length}組 記録</span><span>合計 <b>${hm(min)}</b></span><span class="todo">未入力 <b>${allKeys.length-n}</b>組</span>${bx?`<span>BOX開封 <b>${bx}</b>組</span>`:''}<button type="button" class="btn sm2" id="dayCopy"${n?'':' disabled'}>表示中の実績をコピー</button><span class="dsbar" role="progressbar" aria-label="この日の記録の進み具合" aria-valuemin="0" aria-valuemax="${allKeys.length}" aria-valuenow="${n}"><i style="width:${pct}%"></i></span>`;
     const dn=$('dnProg'); dn.style.setProperty('--p',pct+'%'); dn.classList.toggle('ok',pct===100&&n>0); dn.title=`この日 ${n}/${allKeys.length}組 記録`; }
   $('dayTodo').checked=S.dayTodo;
   S.dayKeys=keys.slice(); S.dayAllKeys=allKeys;
+  dayStartLabel();
   $('dayClearFilters').hidden=!(S.dayQ||S.dayFam!=='all'||S.dayOth!=='all'||S.dayView!=='all'||S.dayHideAch||S.daySort!=='num'||(S.dayFold||[]).length);
-  $('dayBulkInfo').textContent=m+'月'+d+'日・表示中 '+keys.length+'組が対象です。閉じた自分垢と検索外の組み合わせには入力しません。';
+  $('dayBulkInfo').textContent=m+'月'+d+'日・表示中 '+keys.length+'組が対象です。自由入力が空欄なら選択した時間を使います。75分、1:15、1時間15分に対応。閉じた自分垢と検索外には入力しません。';
   $('bsPrev').disabled=d<=1||!keys.some(k=>(S.month.records[k]||{})[d-1]&&!(S.month.records[k]||{})[d]);
   if(!S.dpk||!keys.includes(S.dpk)) S.dpk=keys[0]||null;
   savePref();
@@ -2828,34 +3232,64 @@ function renderDay(){
   renderPanel(); requestAnimationFrame(alignHeads);
 }
 /* ---------- 日付別：選択した組み合わせの時間を直接入力 ---------- */
+function dayMinuteFormat(m){return m==null?'':S.dayClock?clock(m):String(m)}
+function daySaveState(){const s=$('status'),txt=s.lastElementChild.textContent||'この端末に保存';return {state:/\berr\b/.test(s.className)?'error':/\bbusy\b/.test(s.className)?'pending':'ok',txt}}
+function daySaveMirror(){const v=daySaveState();for(const n of document.querySelectorAll('.dm-save')){n.dataset.state=v.state;n.textContent=v.txt}}
+function dayMonthPrefs(raw){
+  const out={};if(!raw||typeof raw!=='object'||Array.isArray(raw))return out;
+  for(const ym of Object.keys(raw).filter(x=>/^\d{4}-(0[1-9]|1[0-2])$/.test(x)).sort().slice(-24)){
+    const r=raw[ym];if(!r||typeof r!=='object')continue;const d=Number.isInteger(r.d)&&r.d>=1&&r.d<=ymParts(ym).days?r.d:1;
+    out[ym]={d,k:parsePk(r.k)?r.k:null,keys:Array.isArray(r.keys)?[...new Set(r.keys.filter(k=>typeof k==='string'&&parsePk(k)))].slice(0,N*N):[]};
+  }return out;
+}
+function dayExtraKeys(ym,prefs){const r=dayMonthPrefs(prefs&&prefs.dayMonths)[ym];if(r)return r.keys;const old=prefs&&prefs.dextra;return old&&old.ym===ym&&Array.isArray(old.keys)?[...new Set(old.keys.filter(k=>typeof k==='string'&&parsePk(k)))].slice(0,N*N):[]}
+function daySnapshotHistory(){const history=dayMonthPrefs(S.dayMonths);history[S.ym]={d:S.dday,k:S.dpk,keys:(S.extra||[]).slice()};S.dayMonths=dayMonthPrefs(history);return S.dayMonths}
+function dayExtraOnly(k){return (S.extra||[]).includes(k)&&!S.pins.includes(k)&&!S.prevKeys.includes(k)&&['records','yell','yt','box','ryell','notes','ylog','rylog'].every(f=>!Object.prototype.hasOwnProperty.call(S.month[f]||{},k))}
+function dayRemoveExtra(k){if(!dayExtraOnly(k)||!dayPrepareNavigation())return false;const at=S.extra.indexOf(k);S.extra=S.extra.filter(x=>x!==k);S.dpk=null;pushUndo({ym:S.ym,items:[],fn:()=>{if(!S.extra.includes(k))S.extra.splice(Math.min(at,S.extra.length),0,k);S.dpk=k;savePref()}});savePref();renderDay();showToast('未入力の組み合わせを一覧から外しました');return true}
 function dayMinuteHtml(k,d,e){
-  const id='dm-'+k, value=e?String(e.m||0):'', pair=parsePk(k), label=famName(pair[0])+' → '+othName(pair[1]), ctx=S.ym+'-'+pad(d);
-  return '<div class="dmform"><div class="dmheading"><b>この組み合わせの時間</b><span>'+esc(label)+'</span></div><div class="dmpresets" role="group" aria-label="この日の時間を選ぶ">'+[30,60,90,120].map(n=>'<button type="button" data-dmset="'+n+'">'+hm(n)+'</button>').join('')+'</div><div class="dmline"><label for="'+id+'">分数</label><input type="text" id="'+id+'" data-dmkey="'+k+'" data-dmym="'+S.ym+'" data-dmday="'+d+'" inputmode="numeric" enterkeyhint="next" autocomplete="off" maxlength="6" value="'+value+'" placeholder="例：75" aria-label="'+esc(ctx+' '+label+'の時間（分）')+'" aria-describedby="'+id+'-hint"><span>分</span><button type="button" class="btn pri" data-dmnext>入力して次の未入力へ</button></div><p class="dmhint" id="'+id+'-hint">'+(e?'記録済み：'+hm(e.m||0):'未入力 · 0分は稼いだ日として記録')+'</p><p class="dmhelp">数字は自動保存。Enterで次の未入力へ。空欄で確定すると、この日の時間・✓を外します。</p></div>';
+  const id='dm-'+k,value=dayMinuteFormat(e?e.m||0:null),pair=parsePk(k),label=famName(pair[0])+' → '+othName(pair[1]),ctx=S.ym+'-'+pad(d),w=new Date(ymParts(S.ym).y,ymParts(S.ym).m-1,d).getDay(),keys=S.dayKeys||[],i=keys.indexOf(k),missing=keys.filter(x=>!(S.month.records[x]||{})[d]).length,prev=d>1?(S.month.records[k]||{})[d-1]:null,last=S.dayLastMinutes,save=daySaveState();
+  return '<div class="dmform"><div class="dmheading"><b>この組み合わせの時間</b><span>'+esc(label)+'</span><span class="dm-date">'+ctx+'（'+WD[w]+'）</span></div>'+
+    '<div class="dmnav"><button type="button" data-dmpair="-1"'+(i<=0?' disabled':'')+'>前の組み合わせ</button><span class="dm-index">'+(i+1)+' / '+keys.length+'組</span><button type="button" data-dmpair="1"'+(i>=keys.length-1?' disabled':'')+'>次の組み合わせ</button></div>'+
+    '<div class="dmformat" role="group" aria-label="時間の入力形式"><button type="button" data-dmformat="minutes" aria-pressed="'+!S.dayClock+'">分で入力</button><button type="button" data-dmformat="clock" aria-pressed="'+!!S.dayClock+'">時間:分で入力</button></div>'+
+    '<div class="dmpresets" role="group" aria-label="この日の合計を設定">'+[30,60,90,120].map(n=>'<button type="button" data-dmset="'+n+'">'+hm(n)+'</button>').join('')+'</div>'+
+    '<div class="dmline"><label for="'+id+'">'+(S.dayClock?'時間:分':'分数')+'</label><input type="text" id="'+id+'" data-dmkey="'+k+'" data-dmym="'+S.ym+'" data-dmday="'+d+'" inputmode="'+(S.dayClock?'text':'numeric')+'" enterkeyhint="next" autocomplete="off" maxlength="20" value="'+value+'" placeholder="'+(S.dayClock?'例：1:15':'例：75')+'" aria-label="'+esc(ctx+' '+label+'の時間（'+(S.dayClock?'時間:分':'分')+'）')+'" aria-describedby="'+id+'-hint"><span>'+(S.dayClock?'':'分')+'</span><button type="button" class="btn pri" data-dmnext>次の未入力へ（'+missing+'組）</button></div>'+
+    '<p class="dmhint" id="'+id+'-hint">'+(e?'記録済み：'+hm(e.m||0)+'（'+clock(e.m||0)+'）':'未入力 · 0分は稼いだ日として記録')+'</p>'+
+    '<div class="dmadjust"><button type="button" data-dmadjust="-5"'+(!e||e.m<5?' disabled':'')+'>−5分</button><button type="button" data-dmadjust="5"'+(e&&e.m>1435?' disabled':'')+'>＋5分</button><button type="button" data-dmadjust="15"'+(e&&e.m>1425?' disabled':'')+'>＋15分</button><button type="button" data-dmprevcopy'+(!prev?' disabled':'')+'>前日と同じ'+(prev?'（'+hm(prev.m||0)+'）':'')+'</button></div>'+
+    '<div class="dmsecondary"><button type="button" data-dmzero>稼いだ日だけ（0分）</button><button type="button" data-dmclear'+(!e?' disabled':'')+'>記録解除</button>'+(last?'<button type="button" data-dmlast>前回の入力 '+hm(last)+'</button>':'')+'<button type="button" data-dmextras aria-pressed="'+!!S.dayExtras+'">エール・BOX'+(S.dayExtras?'を閉じる':'も入力')+'</button>'+(dayExtraOnly(k)?'<button type="button" data-dmremove>未入力の組み合わせを外す</button>':'')+'</div>'+
+    '<p class="dmhelp">75分＝1:15。どちらの形式でも入力できます。自動保存・Enterで次へ。空欄で確定すると時間・✓を外します。</p><span class="dm-save" data-state="'+save.state+'" role="status">'+esc(save.txt)+'</span></div>';
 }
 function dayMinuteFocus(){const t=document.activeElement;return !!(t&&t.dataset&&t.dataset.dmkey&&$('dayList').contains(t))}
 function dayMinuteParse(raw){
-  const x=String(raw).normalize('NFKC').replace(/[,\s]/g,'');
-  if(!x)return null;
-  if(!/^\d+$/.test(x))return NaN;
-  const n=Number(x);return Number.isSafeInteger(n)&&n<=1440?n:NaN;
+  const x=String(raw).normalize('NFKC').replace(/[,\s]/g,'');if(!x)return null;
+  let n;if(/^\d+$/.test(x))n=Number(x);else{const c=/^(\d{1,2}):(\d{2})$/.exec(x),j=/^(?:(\d{1,2})時間)?(\d{1,4})分$/.exec(x),h=/^(\d{1,2})時間$/.exec(x);if(c){if(+c[2]>=60)return NaN;n=+c[1]*60+(+c[2])}else if(j){if(j[1]&&+j[2]>=60)return NaN;n=(+(j[1]||0))*60+(+j[2])}else if(h)n=+h[1]*60;else return NaN}
+  return Number.isSafeInteger(n)&&n>=0&&n<=1440?n:NaN;
 }
 function dayMinuteContext(t){
   if(!t||!t.dataset||!t.dataset.dmkey||!S.mLoaded||t.dataset.dmym!==S.ym||+t.dataset.dmday!==S.dday)return null;
   const p=parsePk(t.dataset.dmkey);return p?{f:p[0],o:p[1],d:+t.dataset.dmday,k:t.dataset.dmkey}:null;
 }
+function dayPairMeta(k,st){const [f,o]=parsePk(k),d=S.dday;return (gD(f,undefined,st.o)?st.days+'/'+gD(f,undefined,st.o)+'日':st.days+'日')+'・'+clock(st.min)+'/'+clock(gM(f,undefined,st.o))+patTag(f,st.o)+' '+badge(st,f)+' '+reachTag(st,f,false)+goalYellTag(k)+closeTag(o)+schTag(o,d)+(memoOf(k)?' <span class="mtag">'+esc(memoOf(k))+'</span>':'')}
+function dayLiveTotals(){
+  const keys=S.dayAllKeys||S.dayKeys||[],d=S.dday,FC=famCoinPlan();
+  for(const row of $('dayList').querySelectorAll('.prow')){const f=+row.dataset.f,o=+row.dataset.o;if(!vIdx(f)||!vIdx(o))continue;const k=pk(f,o),st=pairStats(S.month.records[k]||{},o),meta=row.querySelector('.pmeta'),bar=row.querySelector('.pbar');row.classList.toggle('achm',isAch(st,f));if(meta)meta.innerHTML=dayPairMeta(k,st);if(bar){const wrap=document.createElement('span');wrap.innerHTML=progBar(f,st);const next=wrap.firstElementChild;if(next)bar.replaceWith(next)}}
+  const fs=[...new Set(keys.map(k=>parsePk(k)[0]))].sort((a,b)=>PF(a)-PF(b));$('famDay').innerHTML=fs.map(f=>{const t=famDayTotal(f,d),c=FC[f];return t||c?'<span class="'+(t>1440?'over':'')+'">'+esc(famName(f))+(t?' '+clock(t):'')+(t>1440?' ⚠24時間超え':'')+(c?'<em class="fcn" data-f="'+f+'" data-fcopen="'+f+'" role="button" tabindex="0">必要コイン '+cfmt(c.need)+(fcRest(c)?'（残り '+cfmt(fcRest(c))+'）':'（達成 ✓）')+'</em>':'')+'</span>':''}).join('');
+  for(const b of $('dayList').querySelectorAll('[data-fold]')){if(b.dataset.fold===undefined)continue;const f=+b.dataset.fold,ks=keys.filter(k=>parsePk(k)[0]===f&&!S.pins.includes(k)),n=ks.filter(k=>(S.month.records[k]||{})[d]).length,mn=ks.reduce((a,k)=>a+(((S.month.records[k]||{})[d]||{}).m||0),0),gs=b.querySelector('.gs');b.classList.toggle('full',n===ks.length);if(gs){const coin=gs.querySelector('.gcn');gs.innerHTML='記録 '+n+'/'+ks.length+'組・'+clock(mn)+(coin?coin.outerHTML:'')+(famDayTotal(f,d)>1440?'<em>⚠この日24時間超え</em>':'')}}
+}
+function dayStartLabel(){const keys=S.dayKeys||[],n=keys.filter(k=>!(S.month.records[k]||{})[S.dday]).length,b=$('dayStart');b.disabled=!keys.length;b.textContent=n?'未入力を入力（残り'+n+'組）':'記録済みを確認・修正'}
 function dayMinuteRefreshMeta(){
   const keys=S.dayAllKeys||S.dayKeys||[],d=S.dday;let n=0,m=0,bx=0;
   for(const k of keys){const e=(S.month.records[k]||{})[d];if(e){n++;m+=e.m||0}if(boxOf(k,d))bx++}
   const pct=keys.length?Math.round(n/keys.length*100):0;
-  $('daySum').innerHTML='<span>この日：<b>'+n+'</b>/'+keys.length+'組 記録</span><span>合計 <b>'+hm(m)+'</b></span><span class="todo">未入力 <b>'+(keys.length-n)+'</b>組</span>'+(bx?'<span>BOX開封 <b>'+bx+'</b>組</span>':'')+'<button type="button" class="btn sm2" id="dayCopy"'+(n?'':' disabled')+'>この日をコピー</button><span class="dsbar" role="progressbar" aria-label="この日の記録の進み具合" aria-valuemin="0" aria-valuemax="'+keys.length+'" aria-valuenow="'+n+'"><i style="width:'+pct+'%"></i></span>';
+  $('daySum').innerHTML='<span>この日：<b>'+n+'</b>/'+keys.length+'組 記録</span><span>合計 <b>'+hm(m)+'</b></span><span class="todo">未入力 <b>'+(keys.length-n)+'</b>組</span>'+(bx?'<span>BOX開封 <b>'+bx+'</b>組</span>':'')+'<button type="button" class="btn sm2" id="dayCopy"'+(n?'':' disabled')+'>表示中の実績をコピー</button><span class="dsbar" role="progressbar" aria-label="この日の記録の進み具合" aria-valuemin="0" aria-valuemax="'+keys.length+'" aria-valuenow="'+n+'"><i style="width:'+pct+'%"></i></span>';
   const dn=$('dnProg');dn.style.setProperty('--p',pct+'%');dn.classList.toggle('ok',pct===100&&n>0);dn.title='この日 '+n+'/'+keys.length+'組 記録';
   if(typeof dayBasePairs==='function'){const all=dayBasePairs().map(p=>pk(p[0],p[1]));S.dayCnt={all:all.length,todo:all.filter(k=>!(S.month.records[k]||{})[d]).length,done:all.filter(k=>(S.month.records[k]||{})[d]).length,notach:all.filter(k=>{const p=parsePk(k);return !isAch(pairStats(S.month.records[k]||{},p[1]),p[0])}).length};renderDView();renderStrip()}
+  dayLiveTotals();dayStartLabel();
 }
 function dayMinutePreview(t,c,v){
   const row=t.closest('.prow'),e=getE(c.f,c.o,c.d),hint=$(t.id+'-hint'),bad=Number.isNaN(v);
   t.classList.toggle('bad',bad);t.setAttribute('aria-invalid',String(bad));
-  if(hint){hint.classList.toggle('error',bad);hint.textContent=bad?'0〜1,440分の整数で入力してください。':e?'記録済み：'+hm(e.m):'未入力 · 0分は稼いだ日として記録'}
-  if(row){row.classList.toggle('on',!!e);const out=row.querySelector('.tm output'),chk=row.querySelector('.chk');if(out){out.textContent=clock(e?e.m:0);out.classList.toggle('has',!!(e&&e.m))}if(chk)chk.setAttribute('aria-pressed',String(!!e))}
+  if(hint){hint.classList.toggle('error',bad);hint.textContent=bad?'入力例：75、1:15、1時間15分（上限24時間）。保存値：'+(e?hm(e.m):'未入力'):e?'記録済み：'+hm(e.m)+'（'+clock(e.m)+'）':'未入力 · 0分は稼いだ日として記録'}
+  if(row){row.classList.toggle('on',!!e);const out=row.querySelector('.tm output'),chk=row.querySelector('.chk');if(out){out.textContent=clock(e?e.m:0);out.classList.toggle('has',!!(e&&e.m))}if(chk)chk.setAttribute('aria-pressed',String(!!e));for(const b of row.querySelectorAll('[data-dmadjust],[data-dmclear]')){if(b.dataset.dmadjust!==undefined)b.disabled=!!bad||(e?e.m:0)+(+b.dataset.dmadjust)<0||(e?e.m:0)+(+b.dataset.dmadjust)>1440;else if(b.hasAttribute('data-dmclear'))b.disabled=!e}}
 }
 function dayMinuteSync(t,commit,quiet=false){
   const c=dayMinuteContext(t);if(!c||t.dataset.dmComp==='1')return false;
@@ -2867,35 +3301,49 @@ function dayMinuteSync(t,commit,quiet=false){
     if(t.dataset.dmStart===undefined)t.dataset.dmStart=JSON.stringify(prev);
     putE(c.f,c.o,c.d,next);dayMinuteRefreshMeta();dayMinutePreview(t,c,v);
   }
-  if(commit){
-    dayMinuteFinalize(t,c);
-    t.value=v===null?'':String(v);
-  }
+  if(commit){dayMinuteFinalize(t,c);t.value=dayMinuteFormat(v);if(v>0&&S.dayLastMinutes!==v){S.dayLastMinutes=v;savePref()}}
   if(!quiet){$('dayInputStatus').textContent=ymParts(S.ym).m+'月'+c.d+'日 '+famName(c.f)+' → '+othName(c.o)+'：'+(v===null?'未入力に戻しました':hm(v)+'を入力しました（自動保存）')+(famDayTotal(c.f,c.d)>1440?'（この自分垢の合計が24時間を超えています）':'')}
   return true;
 }
 function dayMinuteFinalize(t,c){if(t.dataset.dmStart!==undefined){const original=JSON.parse(t.dataset.dmStart),now=getE(c.f,c.o,c.d);if(JSON.stringify(original)!==JSON.stringify(now))pushUndo({ym:S.ym,items:[{f:c.f,o:c.o,d:c.d,prev:original}]});delete t.dataset.dmStart}}
 function dayMinuteCommitFocused(quiet=false){const t=document.activeElement;if(t&&t.dataset&&t.dataset.dmkey)return dayMinuteSync(t,true,quiet);return true}
 function dayMinuteUndoFields(items){
-  for(const it of items||[])for(const t of $('dayList').querySelectorAll('input[data-dmkey]'))if(t.dataset.dmkey===pk(it.f,it.o)&&t.dataset.dmym===S.ym&&+t.dataset.dmday===it.d){t.value=it.prev?String(it.prev.m||0):'';delete t.dataset.dmStart;dayMinutePreview(t,{f:it.f,o:it.o,d:it.d,k:t.dataset.dmkey},dayMinuteParse(t.value))}
+  for(const it of items||[])for(const t of $('dayList').querySelectorAll('input[data-dmkey]'))if(t.dataset.dmkey===pk(it.f,it.o)&&t.dataset.dmym===S.ym&&+t.dataset.dmday===it.d){t.value=dayMinuteFormat(it.prev?it.prev.m||0:null);delete t.dataset.dmStart;dayMinutePreview(t,{f:it.f,o:it.o,d:it.d,k:t.dataset.dmkey},dayMinuteParse(t.value))}
   dayMinuteRefreshMeta();
 }
-function dayCommitFocused(quiet=false){
-  if(typeof ryCommitFocused==='function')ryCommitFocused(quiet);
-  return dayMinuteCommitFocused(quiet);
+function dayCommitFocused(quiet=false){if(typeof ryCommitFocused==='function')ryCommitFocused(quiet);return dayMinuteCommitFocused(quiet)}
+function dayPrepareNavigation(){
+  if($('dayQ').dataset.dayComp==='1'||[...$('dayList').querySelectorAll('input')].some(t=>t.dataset.dmComp==='1'||t.dataset.numComp==='1')){showToast('入力中の文字を確定してから移動してください',false);return false}
+  dayCommitFocused(true);const t=document.activeElement;if(t&&t.dataset&&(t.dataset.dmkey||t.dataset.ry))t.blur();return true;
 }
 function daySelectDate(d){
-  const days=ymParts(S.ym).days;if(!Number.isInteger(d)||d<1||d>days)return false;
-  dayCommitFocused(true);const t=document.activeElement;if(t&&t.dataset&&(t.dataset.dmkey||t.dataset.ry))t.blur();
+  const days=ymParts(S.ym).days;if(!Number.isInteger(d)||d<1||d>days||!dayPrepareNavigation())return false;
   S.dday=d;S.dayDirty=false;savePref();renderDay();return true;
 }
+function dayFocusField(k){const t=$('dayList').querySelector('input[data-dmkey="'+k+'"]');if(t){t.focus({preventScroll:true});t.select();t.closest('.prow').scrollIntoView({block:'center',behavior:'smooth'})}}
+function dayMovePair(from,dir,keys){const ks=keys||S.dayKeys||[],i=ks.indexOf(from),j=i+dir;if(i<0||j<0||j>=ks.length||!dayPrepareNavigation())return false;S.dpk=ks[j];savePref();renderDay();dayFocusField(S.dpk);return true}
+function dayStartInput(){if(!dayPrepareNavigation()||!dayFlushSearch())return false;const ks=S.dayKeys||[],k=ks.find(x=>!(S.month.records[x]||{})[S.dday])|| (ks.includes(S.dpk)?S.dpk:ks[0]);if(!k){showToast('下から組み合わせを追加してください',false);return false}S.dpk=k;savePref();renderDay();dayFocusField(k);return true}
 function dayNextMissing(from,keys){
   const ks=keys||S.dayKeys||[],i=ks.indexOf(from);let nx=null;
   for(let j=1;j<=ks.length;j++){const k=ks[((i<0?ks.length-1:i)+j)%ks.length];if(!(S.month.records[k]||{})[S.dday]&&k!==from){nx=k;break}}
-  if(nx)S.dpk=nx;
-  renderDay();
-  if(!nx){showToast('次の未入力はありません。現在の組み合わせを確認してください。',false);return}
-  const t=$('dayList').querySelector('input[data-dmkey="'+nx+'"]');if(t){t.focus({preventScroll:true});t.closest('.prow').scrollIntoView({block:'center',behavior:'smooth'})}
+  if(nx)S.dpk=nx;renderDay();
+  if(!nx){showToast('次の未入力はありません。現在の組み合わせを確認してください。',false);return}dayFocusField(nx);
+}
+function dayMinuteAction(t,b){
+  const c=dayMinuteContext(t);if(!c||t.dataset.dmComp==='1')return false;const k=c.k,ks=(S.dayKeys||[]).slice();
+  if(b.hasAttribute('data-dmremove'))return dayRemoveExtra(k);
+  if(b.dataset.dmpair!==undefined){if(!dayMinuteSync(t,true)){t.focus();return false}return dayMovePair(k,+b.dataset.dmpair,ks)}
+  if(b.dataset.dmformat!==undefined){if(!dayMinuteSync(t,true)){t.focus();return false}t.blur();S.dayClock=b.dataset.dmformat==='clock';savePref();renderDay();dayFocusField(k);return true}
+  if(b.hasAttribute('data-dmextras')){S.dayExtras=!S.dayExtras;$('p-day').classList.toggle('day-extras',S.dayExtras);b.setAttribute('aria-pressed',String(S.dayExtras));b.textContent='エール・BOX'+(S.dayExtras?'を閉じる':'も入力');return true}
+  let value=null;
+  if(b.dataset.dmset!==undefined)value=+b.dataset.dmset;
+  else if(b.dataset.dmadjust!==undefined){const v=dayMinuteParse(t.value);if(Number.isNaN(v)){t.focus();return false}value=(v||0)+(+b.dataset.dmadjust);if(value<0||value>1440){showToast('0分〜24時間の範囲で調整してください',false);return false}}
+  else if(b.hasAttribute('data-dmprevcopy')){const p=c.d>1?getE(c.f,c.o,c.d-1):null;if(!p)return false;value=p.m}
+  else if(b.hasAttribute('data-dmzero'))value=0;
+  else if(b.hasAttribute('data-dmclear'))value='';
+  else if(b.hasAttribute('data-dmlast')){if(!Number.isInteger(S.dayLastMinutes))return false;value=S.dayLastMinutes}
+  if(value!==null)t.value=value===''?'':dayMinuteFormat(value);
+  if(!dayMinuteSync(t,true)){t.focus();return false}t.blur();if(b.hasAttribute('data-dmnext'))dayNextMissing(k,ks);else renderDay();return true;
 }
 $('dayList').addEventListener('input',ev=>{if(ev.target.dataset.dmkey&&!ev.isComposing)dayMinuteSync(ev.target,false)});
 $('dayList').addEventListener('change',ev=>{if(ev.target.dataset.dmkey)dayMinuteSync(ev.target,true)});
@@ -2903,11 +3351,10 @@ $('dayList').addEventListener('focusout',ev=>{if(!ev.target.dataset.dmkey)return
 $('dayList').addEventListener('compositionstart',ev=>{if(ev.target.dataset.dmkey)ev.target.dataset.dmComp='1'});
 $('dayList').addEventListener('compositionend',ev=>{if(ev.target.dataset.dmkey){delete ev.target.dataset.dmComp;dayMinuteSync(ev.target,false)}});
 $('dayList').addEventListener('keydown',ev=>{const t=ev.target;if(!t.dataset.dmkey||ev.key!=='Enter'||ev.isComposing||ev.keyCode===229||t.dataset.dmComp==='1')return;ev.preventDefault();if(!dayMinuteSync(t,true))return;const k=t.dataset.dmkey,ks=(S.dayKeys||[]).slice();t.blur();dayNextMissing(k,ks)});
-$('dayList').addEventListener('click',ev=>{
-  const form=ev.target.closest('.dmform');if(!form)return;const t=form.querySelector('[data-dmkey]'),b=ev.target.closest('[data-dmset],[data-dmnext]');if(!t||!b)return;
-  const k=t.dataset.dmkey,ks=(S.dayKeys||[]).slice();if(b.dataset.dmset!==undefined)t.value=b.dataset.dmset;
-  if(!dayMinuteSync(t,true)){t.focus();return}t.blur();if(b.hasAttribute('data-dmnext'))dayNextMissing(k,ks);else renderDay();
-});
+$('dayList').addEventListener('click',ev=>{const form=ev.target.closest('.dmform');if(!form)return;const t=form.querySelector('[data-dmkey]'),b=ev.target.closest('button');if(t&&b)dayMinuteAction(t,b)});
+$('dayStart').onclick=dayStartInput;
+$('dayFocus').onclick=()=>{if(!dayPrepareNavigation())return;S.dayFocus=!S.dayFocus;savePref();renderDay()};
+$('dayPanelToggle').onclick=()=>{if(!dayPrepareNavigation())return;S.dayPanel=!S.dayPanel;S.panelMin=false;renderDay()};
 /* ---------- 日付別の時間入力ここまで ---------- */
 // 日付別：名前・番号で絞り込み（ひらがな・カタカナ、全角・半角を区別しない）
 const dayKana=t=>String(t).normalize('NFKC').toLowerCase().trim().replace(/[ァ-ヶ]/g,c=>String.fromCharCode(c.charCodeAt(0)-0x60));
@@ -3565,7 +4012,7 @@ function render(){
   renderMonth(); renderTabs(); renderEom(); updHist();
   if(S.tab==='list') renderLists(); else rerender();
 }
-function savePref(){ls.set('pk:pref',{fam:S.fam,oth:S.oth,tab:S.tab,compact:S.compact,panelMin:S.panelMin,cal:S.cal,dayTodo:S.dayTodo,swiped:S.swiped,wake:S.wake,goalMin:S.goalMin,big:S.big,priv:S.priv,seenHelp:S.seenHelp,col:S.col,sf:S.sumFam,so:S.sumOth,ss:S.sumSort,sna:S.sumNotAch,pins:S.pins,dsort:S.daySort,theme:S.theme,df:S.dayFam,do:S.dayOth,yg:S.ygOpen,td:S.todoOpen,dv:S.dayView,ddt:S.dayDet,bso:S.bsOnly,dfold:S.dayFold,ycs:S.ycSort,fcf:S.fcF,fcs:S.fcSort,fcfl:S.fcFl,nmo:!!S.namedOnly,gxa:!!S.gxAll,ro:!!S.recOnly,ts:S.tsort,ytf:S.ytFormFam,ytu:S.ytFormUnit,daily:{ym:S.ym,d:S.dday,k:S.dpk}})}
+function savePref(){ls.set('pk:pref',{fam:S.fam,oth:S.oth,tab:S.tab,compact:S.compact,panelMin:S.panelMin,cal:S.cal,dayTodo:S.dayTodo,swiped:S.swiped,wake:S.wake,goalMin:S.goalMin,big:S.big,priv:S.priv,seenHelp:S.seenHelp,col:S.col,sf:S.sumFam,so:S.sumOth,ss:S.sumSort,sna:S.sumNotAch,pins:S.pins,dsort:S.daySort,theme:S.theme,df:S.dayFam,do:S.dayOth,yg:S.ygOpen,td:S.todoOpen,dv:S.dayView,ddt:S.dayDet,bso:S.bsOnly,dfold:S.dayFold,ycs:S.ycSort,fcf:S.fcF,fcs:S.fcSort,fcfl:S.fcFl,nmo:!!S.namedOnly,gxa:!!S.gxAll,ro:!!S.recOnly,ts:S.tsort,ytf:S.ytFormFam,ytu:S.ytFormUnit,daily:{ym:S.ym,d:S.dday,k:S.dpk},dayMonths:daySnapshotHistory(),dayFocus:!!S.dayFocus,dayClock:!!S.dayClock,dayLastMinutes:S.dayLastMinutes})}
 
 /* ---------- 操作 ---------- */
 $('days').addEventListener('click',ev=>{
@@ -3578,6 +4025,7 @@ $('days').addEventListener('click',ev=>{
 });
 $('dayList').addEventListener('click',ev=>{
   if(ev.target.closest('.ryell,.rybx,.dmform')) return;
+  if(!dayPrepareNavigation()) return;
   { const fb=ev.target.closest('[data-fold]'); if(fb){ const f=+fb.dataset.fold; S.dayFold=(S.dayFold||[]).includes(f)?S.dayFold.filter(x=>x!==f):[...(S.dayFold||[]),f]; savePref(); renderDay(); const nb=$('dayList').querySelector(`[data-fold="${f}"]`); if(nb) nb.focus({preventScroll:true}); return } }
   { const pb=ev.target.closest('[data-pin]'); if(pb){togglePin(pb.dataset.pin); return} }
   { const bx=ev.target.closest('[data-bx]'); if(bx){const r=bx.closest('.prow'); S.dpk=pk(+r.dataset.f,+r.dataset.o); toggleBox(+r.dataset.f,+r.dataset.o,S.dday,+bx.dataset.bx); return} }
@@ -3586,7 +4034,7 @@ $('dayList').addEventListener('click',ev=>{
   const r=b.closest('.prow'); S.dpk=pk(+r.dataset.f,+r.dataset.o);
   edit(+r.dataset.f,+r.dataset.o,S.dday,b.dataset.a);
 });
-$('dayList').addEventListener('keydown',ev=>{const row=ev.target.closest&&ev.target.closest('.prow.crow');if(row&&ev.target===row&&(ev.key==='Enter'||ev.key===' ')){ev.preventDefault();S.dpk=pk(+row.dataset.f,+row.dataset.o);S.panelMin=false;renderDay()}});
+$('dayList').addEventListener('keydown',ev=>{const row=ev.target.closest&&ev.target.closest('.prow.crow');if(row&&ev.target===row&&(ev.key==='Enter'||ev.key===' ')){ev.preventDefault();if(!dayPrepareNavigation())return;S.dpk=pk(+row.dataset.f,+row.dataset.o);S.panelMin=false;renderDay()}});
 $('goal').addEventListener('click',ev=>{
   if(ev.target.closest('#goalToggle')){S.goalMin=!S.goalMin;savePref();renderRec();return}
   if(!ev.target.closest('#goalReset')||!S.mLoaded) return;
@@ -3622,7 +4070,7 @@ $('qpanel').addEventListener('click',ev=>{ const b=ev.target.closest('.qb button
   const r=b.getBoundingClientRect(), a=+b.dataset.a, sp=document.createElement('span'); sp.className='qpop'+(a<0?' neg':''); sp.textContent=(a>0?'+':'−')+Math.abs(a); sp.style.left=(r.left+r.width/2)+'px'; sp.style.top=(r.top)+'px'; document.body.appendChild(sp); setTimeout(()=>sp.remove(),700) });
 $('vList').onclick=()=>{S.cal=false;savePref();renderRec()};
 $('vCal').onclick=()=>{S.cal=true;savePref();scrollToday=true;renderRec()};
-$('dayTodo').addEventListener('change',e=>{S.dayTodo=e.target.checked;savePref();renderDay()});
+$('dayTodo').addEventListener('change',e=>{if(!dayPrepareNavigation()){e.target.checked=S.dayTodo;return}S.dayTodo=e.target.checked;savePref();renderDay()});
 $('qpanel').addEventListener('change',ev=>{if(ev.target.id!=='qsel')return;qMinuteDraft=null;const c=panelCtx();if(c)edit(c.f,c.o,c.d,'set:'+ev.target.value)});
 $('qpanel').addEventListener('input',ev=>{
   const field=ev.target;if(field.id!=='qMinutes')return;const c=panelCtx();if(!c||field.dataset.qctx!==qMinuteKey(c))return;
@@ -3636,7 +4084,7 @@ if(window.visualViewport){window.visualViewport.addEventListener('resize',syncQM
 function shiftPanelDay(dir){
   const {days,m}=ymParts(S.ym);
   if(S.tab==='rec'){const nd=S.sel+dir;if(nd<1||nd>days)return;S.sel=nd;renderRec();const el=document.querySelector('#days .day.sel');if(el)el.scrollIntoView({block:'nearest'})}
-  else if(S.tab==='day'){const nd=S.dday+dir;if(nd<1||nd>days)return;daySelectDate(nd);undo=null;showToast(`${m}月${nd}日に移動しました`,false)}
+  else if(S.tab==='day'){const nd=S.dday+dir;if(nd<1||nd>days)return;if(!daySelectDate(nd))return;undo=null;showToast(`${m}月${nd}日に移動しました`,false)}
 }
 function onSwipe(el,fn){let sx=0,sy=0,t0=0,on=false;
   el.addEventListener('touchstart',e=>{if(e.touches.length!==1){on=false;return}on=true;sx=e.touches[0].clientX;sy=e.touches[0].clientY;t0=Date.now()},{passive:true});
@@ -3645,7 +4093,7 @@ function onSwipe(el,fn){let sx=0,sy=0,t0=0,on=false;
     if(e.target.closest&&e.target.closest('select,input'))return; fn(dx<0?1:-1,e)},{passive:true});
 }
 onSwipe($('qpanel'),dir=>{if(!S.swiped){S.swiped=true;savePref()}shiftPanelDay(dir)});
-$('dayMode').onclick=()=>{S.compact=!S.compact;savePref();document.body.classList.toggle('cmode',S.compact);renderDay()};
+$('dayMode').onclick=()=>{if(!dayPrepareNavigation())return;S.compact=!S.compact;savePref();document.body.classList.toggle('cmode',S.compact);renderDay()};
 document.querySelector('#p-rec .pickers').addEventListener('click',ev=>{
   const b=ev.target.closest('[data-step]'); if(!b) return; ev.preventDefault();
   const [kind,dir]=b.dataset.step.split(':'), key=kind==='fam'?'family':'others', act=S.active[key];
@@ -3661,7 +4109,7 @@ $('recent').addEventListener('click',ev=>{const b=ev.target.closest("button[data
     if(Date.now()-t0>800||Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*1.5)return;
     if(e.target.closest('select,input,textarea,.dstrip,.dview,.bset,.pgrp'))return;
     const {days}=ymParts(S.ym);const nd=S.dday+(dx<0?1:-1);if(nd<1||nd>days)return;
-    daySelectDate(nd);undo=null;showToast(`${ymParts(S.ym).m}月${nd}日に移動しました`,false)},{passive:true});
+    if(!daySelectDate(nd))return;undo=null;showToast(`${ymParts(S.ym).m}月${nd}日に移動しました`,false)},{passive:true});
 })();
 $('famPairs').addEventListener('click',ev=>{const b=ev.target.closest('[data-oth]');if(!b)return;S.oth=+b.dataset.oth;savePref();renderRec()});
 $('selFam').addEventListener('change',e=>{S.fam=+e.target.value;savePref();renderRec()});
@@ -3669,16 +4117,17 @@ $('selOth').addEventListener('change',e=>{S.oth=+e.target.value;savePref();rende
 $('sumFam').addEventListener('change',e=>{S.sumFam=e.target.value;savePref();renderSum()});
 $('sumNotAch').addEventListener('change',e=>{S.sumNotAch=e.target.checked;savePref();renderSum()});
 $('sumSort').addEventListener('change',e=>{S.sumSort=e.target.value;savePref();renderSum()});
-$('dayFam').addEventListener('change',e=>{S.dayFam=e.target.value;savePref();renderDay()});
-$('dayOth').addEventListener('change',e=>{S.dayOth=e.target.value;savePref();renderDay()});
-$('daySort').addEventListener('change',e=>{S.daySort=e.target.value;savePref();renderDay()});
-$('dayHideAch').addEventListener('change',e=>{S.dayHideAch=e.target.checked;renderDay()});
+$('dayFam').addEventListener('change',e=>{if(!dayPrepareNavigation()){e.target.value=S.dayFam;return}S.dayFam=e.target.value;savePref();renderDay()});
+$('dayOth').addEventListener('change',e=>{if(!dayPrepareNavigation()){e.target.value=S.dayOth;return}S.dayOth=e.target.value;savePref();renderDay()});
+$('daySort').addEventListener('change',e=>{if(!dayPrepareNavigation()){e.target.value=S.daySort;return}S.daySort=e.target.value;savePref();renderDay()});
+$('dayHideAch').addEventListener('change',e=>{if(!dayPrepareNavigation()){e.target.checked=S.dayHideAch;return}S.dayHideAch=e.target.checked;renderDay()});
 $('prevD').onclick=()=>{daySelectDate(S.dday-1)};
 $('nextD').onclick=()=>{daySelectDate(S.dday+1)};
 $('todayD').onclick=()=>{daySelectDate(defaultDay())};
 $('addPair').onclick=()=>{
+  if(!dayPrepareNavigation())return;
   const f=+$('addFam').value, o=+$('addOth').value, k=pk(f,o);
-  dayCommitFocused(true);S.dpk=k;S.panelMin=false;
+  S.dpk=k;S.panelMin=false;
   if(!S.extra.includes(k)) S.extra.push(k);
   if(S.dayFam!=='all'&&+S.dayFam!==f) S.dayFam='all';
   if(S.dayOth!=='all'&&+S.dayOth!==o) S.dayOth='all';
@@ -3715,9 +4164,10 @@ document.addEventListener('change',ev=>{
 });
 $('tPairs').addEventListener('click',ev=>{const tr=ev.target.closest('tr.go');if(!tr)return;S.fam=+tr.dataset.f;S.oth=+tr.dataset.o;S.tab='rec';savePref();render();window.scrollTo(0,0)});
 document.querySelector('nav.tabs').addEventListener('click',ev=>{const b=ev.target.closest('[data-tab]');if(!b)return;const to=b.dataset.tab;if(to===S.tab)return;
+  if(!dayPrepareNavigation())return;
   S.scrollPos[S.tab]=window.scrollY; S.tab=to; savePref(); render();
   window.scrollTo(0,to==='rec'?0:(S.scrollPos[to]||0));});
-function goMonth(ym){if(typeof dayCommitFocused==='function'){dayCommitFocused(true);const a=document.activeElement;if(a&&a.dataset&&(a.dataset.dmkey||a.dataset.ry))a.blur()}if(typeof ytFormCommitFocused==='function')ytFormCommitFocused();flush();if(!db&&Object.keys(pend).length){$('monthPick').value=S.ym;return false}S.ym=ym;scrollToday=true;subscribeMonth();return true}
+function goMonth(ym){if(!dayPrepareNavigation()){$('monthPick').value=S.ym;return false}if(typeof ytFormCommitFocused==='function')ytFormCommitFocused();flush();if(!db&&Object.keys(pend).length){$('monthPick').value=S.ym;return false}S.ym=ym;scrollToday=true;subscribeMonth();return true}
 $('prevM').onclick=()=>goMonth(shiftYM(S.ym,-1));
 $('nextM').onclick=()=>goMonth(shiftYM(S.ym,1));
 $('thisM').onclick=()=>goMonth(curYM());
@@ -3935,7 +4385,7 @@ $('ygBox').addEventListener('toggle',()=>{S.ygOpen=$('ygBox').open;savePref();re
 // 機能5：表示中の全組み合わせに同じ時間
 $('bsT').innerHTML=TOPTS; $('bsT').value='60';
 let bsArm=0;
-$('bsGo').onclick=()=>{ if(!S.mLoaded||!dayFlushSearch()) return; const m=+$('bsT').value, d=S.dday, b=$('bsGo'), only=S.bsOnly!==false;
+$('bsGo').onclick=()=>{ if(!S.mLoaded||!dayPrepareNavigation()||!dayFlushSearch()) return; const custom=$('bsMinutes'), parsed=dayMinuteParse(custom.value), m=parsed===null?+$('bsT').value:parsed, d=S.dday, b=$('bsGo'), only=S.bsOnly!==false; if(custom.dataset.numComp==='1'||!Number.isInteger(m)||m<0||m>1440){bsArm=0;b.textContent='まとめて入れる';b.classList.remove('arm');custom.setAttribute('aria-invalid','true');custom.classList.add('bad');showToast('時間を確定してください。入力例：75、1:15（上限24時間）',false);custom.focus();return}custom.setAttribute('aria-invalid','false');custom.classList.remove('bad');
   const keys=(S.dayKeys||[]).filter(k=>{const [f,o]=parsePk(k), e=getE(f,o,d); return !(only&&e)&&!(e&&e.m===m)});
   const sig=JSON.stringify([S.ym,d,S.dayFam,S.dayOth,S.dayQ||'',S.dayView||'all',S.dayKeys||[],keys,m,only]);
   if(!(S.dayKeys||[]).length){showToast('表示中の組み合わせがありません',false);return}
@@ -4038,7 +4488,7 @@ $('ygAll').addEventListener('click',ev=>{const b=ev.target.closest('.ygi'); if(!
   if(Date.now()<=sn||!S.prevKeys.length||!last) return; const d=new Date(last), lym=d.getFullYear()+'-'+pad(d.getMonth()+1);
   if(lym<curYM()&&S.ym===curYM()){ el.hidden=false; $('bkTx').innerHTML=`新しい月になりました。<b>先月分</b>をバックアップしましょう` } } }
 
-$('dline').addEventListener('click',()=>{const o=S.tab==='day'&&S.dpk&&parsePk(S.dpk)?parsePk(S.dpk)[1]:S.oth; S.oiO=o; S.tab='list'; savePref(); render(); requestAnimationFrame(()=>{const c=$('oiCard'); if(c.classList.contains('col')) toggleCard(c,false); c.scrollIntoView({block:'start',behavior:'smooth'})})});
+$('dline').addEventListener('click',()=>{if(!dayPrepareNavigation())return;const o=S.tab==='day'&&S.dpk&&parsePk(S.dpk)?parsePk(S.dpk)[1]:S.oth; S.oiO=o; S.tab='list'; savePref(); render(); requestAnimationFrame(()=>{const c=$('oiCard'); if(c.classList.contains('col')) toggleCard(c,false); c.scrollIntoView({block:'start',behavior:'smooth'})})});
 $('dline').addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();$('dline').click()}});
 /* ---------- v5：他人垢ごとの当月ミニカレンダー ---------- */
 const schOf=o=>((S.month.sch||{})['o'+o]||{});
@@ -4202,13 +4652,14 @@ function renderStrip(){ const el=$('dStrip'); if(!el) return; const {y,m,days}=y
   const b=el.querySelector('.dsd.on'); if(b&&el.dataset.sd!==S.ym+S.dday){ el.dataset.sd=S.ym+S.dday; requestAnimationFrame(()=>{ const er=el.getBoundingClientRect(), br=b.getBoundingClientRect(); el.scrollLeft=Math.max(0,el.scrollLeft+br.left-er.left-el.clientWidth/2+br.width/2) }) } }
 $('dStrip').addEventListener('click',ev=>{ const b=ev.target.closest('[data-sd3]'); if(!b) return; daySelectDate(+b.dataset.sd3) });
 $('dView').addEventListener('click',ev=>{ const b=ev.target.closest('[data-dv]');
+  if(!dayPrepareNavigation())return;
   if(b){ S.dayView=b.dataset.dv; savePref(); renderDay(); return }
   if(ev.target.closest('[data-ddt]')){ S.dayDet=!S.dayDet; savePref(); renderDay() } });
-$('bsPrev').onclick=()=>{ if(!S.mLoaded||!dayFlushSearch()) return; const d=S.dday; if(d<=1){ showToast('1日は前日がありません',false); return }
+$('bsPrev').onclick=()=>{ if(!S.mLoaded||!dayPrepareNavigation()||!dayFlushSearch()) return; const d=S.dday; if(d<=1){ showToast('1日は前日がありません',false); return }
   const items=[]; for(const k of (S.dayKeys||[])){ const [f,o]=parsePk(k), p=getE(f,o,d-1), cur=getE(f,o,d); if(!p||cur) continue; items.push({f,o,d,prev:cur}); putE(f,o,d,{c:1,m:p.m||0}) }
   if(!items.length){ showToast('前日と同じにできる組み合わせはありませんでした（この日が未入力で、前日に記録がある組み合わせだけ入ります）',false); return }
   pushUndo({ym:S.ym,items}); showToast(`${ymParts(S.ym).m}月${d}日：${items.length}組を前日と同じ時間にしました`); renderDay() };
-document.addEventListener('click',ev=>{ if(!ev.target.closest('[data-qn]')) return;if(!dayFlushSearch())return; const ks=S.dayKeys||[], d=S.dday, R=S.month.records; if(!ks.length) return;
+document.addEventListener('click',ev=>{ if(!ev.target.closest('[data-qn]')) return;if(!dayPrepareNavigation()||!dayFlushSearch())return; const ks=S.dayKeys||[], d=S.dday, R=S.month.records; if(!ks.length) return;
   const i0=Math.max(0,ks.indexOf(S.dpk)); let nx=null; for(let j=1;j<=ks.length;j++){ const k=ks[(i0+j)%ks.length]; if(!(R[k]||{})[d]&&k!==S.dpk){ nx=k; break } }
   if(!nx){ showToast('この日の未入力はありません',false); return } S.dpk=nx; renderDay();
   const [f,o]=parsePk(nx), row=document.querySelector(`#dayList .prow[data-f="${f}"][data-o="${o}"]`); if(row) row.scrollIntoView({block:'center',behavior:'smooth'}) });
@@ -4219,11 +4670,15 @@ function dayFlushSearch(){clearTimeout(dayQT);if($('dayQ').dataset.dayComp==='1'
 $('dayQ').addEventListener('input',e=>{clearTimeout(dayQT);if(e.isComposing||e.target.dataset.dayComp==='1')return;dayQT=setTimeout(()=>{S.dayQ=e.target.value;renderDay()},150)});
 $('dayQ').addEventListener('compositionstart',e=>{clearTimeout(dayQT);e.target.dataset.dayComp='1'});
 $('dayQ').addEventListener('compositionend',e=>{delete e.target.dataset.dayComp;S.dayQ=e.target.value;renderDay()});
-$('dayClearFilters').onclick=()=>{dayCommitFocused(true);clearTimeout(dayQT);S.dayFam='all';S.dayOth='all';S.dayQ='';S.dayView='all';S.dayHideAch=false;S.daySort='num';S.dayFold=[];$('dayQ').value='';savePref();renderDay()};
+$('dayClearFilters').onclick=()=>{if(!dayPrepareNavigation())return;clearTimeout(dayQT);S.dayFam='all';S.dayOth='all';S.dayQ='';S.dayView='all';S.dayHideAch=false;S.daySort='num';S.dayFold=[];$('dayQ').value='';savePref();renderDay()};
 $('dayQ').addEventListener('search',e=>{ clearTimeout(dayQT); S.dayQ=e.target.value; renderDay() });
 $('dayQ').addEventListener('keydown',e=>{ if(e.isComposing||e.keyCode===229) return; if(e.key==='Enter'){ e.preventDefault(); e.target.blur() } if(e.key==='Escape'&&e.target.value){ e.preventDefault(); e.target.value=''; S.dayQ=''; renderDay() } });
 $('bsOnly').addEventListener('change',e=>{ S.bsOnly=e.target.checked; savePref(); bsArm=0; $('bsGo').textContent='まとめて入れる'; $('bsGo').classList.remove('arm') });
-$('bsT').addEventListener('change',()=>{ bsArm=0; $('bsGo').textContent='まとめて入れる'; $('bsGo').classList.remove('arm') });
+$('bsT').addEventListener('change',()=>{ $('bsMinutes').value='';$('bsMinutes').classList.remove('bad');$('bsMinutes').setAttribute('aria-invalid','false');bsArm=0; $('bsGo').textContent='まとめて入れる'; $('bsGo').classList.remove('arm') });
+
+$('bsMinutes').addEventListener('input',e=>{bsArm=0;$('bsGo').textContent='まとめて入れる';$('bsGo').classList.remove('arm');if(e.isComposing||e.target.dataset.numComp==='1')return;const bad=Number.isNaN(dayMinuteParse(e.target.value));e.target.classList.toggle('bad',bad);e.target.setAttribute('aria-invalid',String(bad))});
+$('bsMinutes').addEventListener('compositionstart',e=>{e.target.dataset.numComp='1';bsArm=0;$('bsGo').textContent='まとめて入れる';$('bsGo').classList.remove('arm')});
+$('bsMinutes').addEventListener('compositionend',e=>{delete e.target.dataset.numComp;const bad=Number.isNaN(dayMinuteParse(e.target.value));e.target.classList.toggle('bad',bad);e.target.setAttribute('aria-invalid',String(bad))});
 $('bsChk').onclick=()=>bulk('chk');
 // この日の実績をテキストでコピー（LINEなどに貼り付け用）
 function dayText(){
@@ -4245,7 +4700,7 @@ document.addEventListener('keydown',ev=>{
   const t=ev.target; if(t&&t.closest&&t.closest('input,select,textarea,[contenteditable],nav.tabs')) return;
   if(!$('sheet').hidden||!$('rstSheet').hidden||!$('imgSheet').hidden) return;
   const k=ev.key, ks=S.dayKeys||[], {days}=ymParts(S.ym);
-  const sel=i=>{ S.dpk=ks[i]; renderDay(); const [f,o]=parsePk(S.dpk), r=document.querySelector(`#dayList .prow[data-f="${f}"][data-o="${o}"]`); if(r) r.scrollIntoView({block:'nearest'}) };
+  const sel=i=>{ if(!dayPrepareNavigation())return; S.dpk=ks[i]; renderDay(); const [f,o]=parsePk(S.dpk), r=document.querySelector(`#dayList .prow[data-f="${f}"][data-o="${o}"]`); if(r) r.scrollIntoView({block:'nearest'}) };
   if(k==='ArrowLeft'||k==='ArrowRight'){ if(t&&t.closest&&t.closest('.dstrip,.mcal')) return; const nd=S.dday+(k==='ArrowRight'?1:-1); if(nd<1||nd>days) return; ev.preventDefault(); daySelectDate(nd); return }
   if(!ks.length||!S.mLoaded) return;
   if(k==='ArrowDown'||k==='ArrowUp'){ ev.preventDefault(); const i=ks.indexOf(S.dpk); sel(Math.max(0,Math.min(ks.length-1,(i<0?0:i)+(k==='ArrowDown'?1:-1)))); return }
@@ -4259,7 +4714,7 @@ document.addEventListener('keydown',ev=>{
 S.wake=false;
 // 2,3 まとめて入力（表示中の組み合わせ・未入力のものだけ）
 function bulk(kind){
-  if(!S.mLoaded||!dayFlushSearch()) return; const d=S.dday, items=[];
+  if(!S.mLoaded||!dayPrepareNavigation()||!dayFlushSearch()) return; const d=S.dday, items=[];
   if(kind==='off'){ for(const k of S.dayKeys||[]){const [f,o]=parsePk(k), e=getE(f,o,d); if(!e||e.m) continue; items.push({f,o,d,prev:e}); putE(f,o,d,null)}
     if(!items.length){undo=null;showToast('外せる✓（時間0分）はありません。時間が入っている日は残します',false);return}
     pushUndo({ym:S.ym,items}); showToast(`${ymParts(S.ym).m}月${d}日：${items.length}組の✓を外しました（時間が入っている日は残しています）`); renderDay(); return; }
@@ -4294,7 +4749,7 @@ $('copyBtn').onclick=()=>{
   try{ navigator.clipboard.writeText(t).then(()=>{$('copyBox').hidden=true;showToast('集計をコピーしました（LINEなどに貼り付けできます）',false)},fallback) }catch(e){ fallback() }
 };
 // 6,7 日付・年月をタップで選ぶ
-$('datePick').addEventListener('change',e=>{const v=e.target.value,d=+v.slice(8,10),days=ymParts(S.ym).days;if(!/^\d{4}-\d{2}-\d{2}$/.test(v)||v.slice(0,7)!==S.ym||!Number.isInteger(d)||d<1||d>days){e.target.value=S.ym+'-'+pad(S.dday);showToast('表示中の月の日付を選んでください。別の月は上の年月から選べます。',false);return}daySelectDate(d)});
+$('datePick').addEventListener('change',e=>{const v=e.target.value,d=+v.slice(8,10),days=ymParts(S.ym).days;if(!/^\d{4}-\d{2}-\d{2}$/.test(v)||v.slice(0,7)!==S.ym||!Number.isInteger(d)||d<1||d>days){e.target.value=S.ym+'-'+pad(S.dday);showToast('表示中の月の日付を選んでください。別の月は上の年月から選べます。',false);return}if(!daySelectDate(d))e.target.value=S.ym+'-'+pad(S.dday)});
 $('monthPick').addEventListener('change',e=>{const v=e.target.value;if(/^\d{4}-\d{2}$/.test(v)&&v!==S.ym)goMonth(v)});
 // 9 タブごとのスクロール位置を記憶
 S.scrollPos={};
@@ -4854,7 +5309,7 @@ function renderDayChart(fr){ const el=$('dayChart'); if(!el) return; const {y,m,
   const xt=[1,...[5,10,15,20,25].filter(d=>d<days-2),days].map(d=>`<text class="gx" x="${f1(X(d)+bw/2)}" y="${H-6}" text-anchor="middle">${d}</text>`).join('');
   const rd=v.map((x,i)=>[x,i]).slice(1).filter(a=>a[0]).length, best=v.indexOf(mx);
   el.innerHTML=`<div class="dcs"><span>記録した日 <b>${rd}</b>日</span><span>最多 <b>${m}/${best}</b> ${clock(mx)}</span><span>1日平均 <b>${clock(Math.round(tot/Math.max(1,rd)))}</b></span></div><svg viewBox="0 0 ${W} ${H}" class="ysvg dsvg" role="group" aria-label="${m}月の日ごとの合計時間">${wk}${gl}${tdL}${bars}${avgL}${xt}<line class="gb" x1="${L}" x2="${W-Rr}" y1="${H-B}" y2="${H-B}"/></svg>` }
-function goDayFromChart(g){dayCommitFocused(true); S.dday=+g.dataset.cd2; S.tab='day'; savePref(); render(); window.scrollTo(0,0) }
+function goDayFromChart(g){if(!dayPrepareNavigation())return; S.dday=+g.dataset.cd2; S.tab='day'; savePref(); render(); window.scrollTo(0,0) }
 $('dayChart').addEventListener('click',ev=>{ const g=ev.target.closest('[data-cd2]'); if(g) goDayFromChart(g) });
 $('dayChart').addEventListener('keydown',ev=>{ const g=ev.target.closest('[data-cd2]'); if(g&&(ev.key==='Enter'||ev.key===' ')){ev.preventDefault();goDayFromChart(g)} });
 
@@ -4991,7 +5446,7 @@ document.querySelector('#p-sum .grand').addEventListener('keydown',ev=>{ const t
 // キー操作：「/」で検索欄へ・タブで← →
 document.addEventListener('keydown',ev=>{ if(ev.ctrlKey||ev.metaKey||ev.altKey||ev.isComposing) return; const t=ev.target;
   if(ev.key==='/'&&!(t&&t.closest&&t.closest('input,select,textarea,[contenteditable]'))){ const id={day:'dayQ',sum:'sumQ',list:'listQ'}[S.tab]; if(!id) return; ev.preventDefault(); if(id==='sumQ') $('sumCtl').open=true; const q=$(id); q.focus(); q.select(); return }
-  if((ev.key==='ArrowLeft'||ev.key==='ArrowRight')&&t&&t.closest&&t.closest('nav.tabs [data-tab]')){ ev.preventDefault(); const i=TABS.indexOf(S.tab), n=TABS[(i+(ev.key==='ArrowRight'?1:-1)+TABS.length)%TABS.length]; $('tab-'+n).click(); $('tab-'+n).focus() } });
+  if((ev.key==='ArrowLeft'||ev.key==='ArrowRight')&&t&&t.closest&&t.closest('nav.tabs [data-tab]')){ ev.preventDefault(); const i=TABS.indexOf(S.tab), n=TABS[(i+(ev.key==='ArrowRight'?1:-1)+TABS.length)%TABS.length]; $('tab-'+n).click(); if(S.tab===n)$('tab-'+n).focus() } });
 // ブラウザの上の色をテーマに合わせる
 function applyThemeColor(){ let m=document.head.querySelector('meta[name="theme-color"]'); if(!m){ m=document.createElement('meta'); m.name='theme-color'; document.head.appendChild(m) }
   const dark=S.theme==='dark'||(S.theme==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches); m.content=dark?'#12141c':'#f4f5fa' }

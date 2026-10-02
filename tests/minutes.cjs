@@ -42,7 +42,7 @@ function boot(){
  const PF=x=>x,PO=x=>x,famName=f=>'自分'+f,othName=o=>'他人'+o;const dayGuide=()=>null,addBtns=()=>'',boxHtml=()=>'',savePref=()=>{};
  const S={ym:'2026-10',month:{records:{}},mLoaded:true,compact:true,tab:'rec',sel:2,dday:2,fam:0,oth:0,dpk:'f0_o0',panelMin:false,recent:[],swiped:false};
  let db=null,dl=null,fcCache=null;const inflight={},mExists={};
- const isAch=()=>false,isNear=()=>false,celebrate=()=>{},hideToast=()=>{},showToast=(v)=>__metrics.toasts.push(v),rerender=()=>renderPanel();`;
+ const isAch=()=>false,isNear=()=>false,celebrate=()=>{},hideToast=()=>{},showToast=(v)=>__metrics.toasts.push(v),rerender=()=>renderPanel(),daySaveMirror=()=>{};`;
  code+=take('const ls={','const pref=');
  code+=take('function packMonth(mo){','/* ---------- 保存');
  code+=take('const pend={};','/* ---------- データ読込');
@@ -88,7 +88,7 @@ test('day, month and pair changes reset the draft; stale context cannot write',(
  }
 });
 test('day tab binding targets selected pair and day; leaving panel clears draft',()=>{
- const t=boot();t.api.S.tab='day';t.api.S.dpk='f2_o3';t.api.S.dday=5;t.api.renderPanel();t.input('23');t.apply();assert.equal(t.api.getE(2,3,5).m,23);assert.equal(t.api.getE(0,0,2),null);
+ const t=boot();t.api.S.tab='day';t.api.S.dayPanel=true;t.api.S.dpk='f2_o3';t.api.S.dday=5;t.api.renderPanel();t.input('23');t.apply();assert.equal(t.api.getE(2,3,5).m,23);assert.equal(t.api.getE(0,0,2),null);
  t.input('89');t.api.S.tab='sum';t.api.renderPanel();assert.equal(t.api.draft,null);assert.equal(t.nodes.qpanel.hidden,true);
  t.api.S.tab='day';t.api.renderPanel();assert.equal(t.nodes.qMinutes.value,'23');
 });

@@ -15,7 +15,7 @@ function make(){
  const parsePk=k=>{const m=/^f(\\d+)_o(\\d+)$/.exec(k);return m&&vIdx(+m[1])&&vIdx(+m[2])?[+m[1],+m[2]]:null};
  const schNorm=v=>v;const pad=n=>String(n).padStart(2,'0');const esc=s=>String(s);const patsDoc=()=>({p:{},a:{}});const listsDoc=()=>({});
  const S={ym:'2026-10',month:{records:{}},mLoaded:true,goals:{},oinfo:{},ryt:{},tab:'rec'};let db=null,dl=null,unsubM=null,scrollToday=false;const mExists={},inflight={};let fcCache=null,undo=null;const monthCache={},showToast=m=>__toasts.push(m);const IMG={all:async()=>({})};
- const defaultDay=()=>2,hideToast=()=>{},loadPrevKeys=()=>{},render=()=>{},renderSoon=()=>{},checkBk=()=>{},dayPrepareNavigation=()=>true,daySaveMirror=()=>{};`;
+ const defaultDay=()=>2,hideToast=()=>{},loadPrevKeys=()=>{},render=()=>{},renderSoon=()=>{},checkBk=()=>{},dayPrepareNavigation=()=>true,settingsPrepareNavigation=()=>true,daySaveMirror=()=>{},ytFormSaveMirror=()=>{};`;
  code+=take(src,'const ls={','const pref=');
  code+=take(src,'function ymParts(ym){','function defaultDay(){');
  code+=take(src,'function dayMonthPrefs(','function dayMinuteHtml(');

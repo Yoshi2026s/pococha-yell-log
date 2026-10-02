@@ -9,12 +9,12 @@ function setup(){
  const callbacks=new Map(),events={},nodes={},store=new Map(),toasts=[],undoStack=[];let timerId=0;
  const setTimeout=(f,ms)=>{const id=++timerId;callbacks.set(id,{f,ms});return id},clearTimeout=id=>callbacks.delete(id);
  const window={addEventListener:(e,fn)=>(events[e]||=[]).push(fn)},navigator={onLine:true};
- const document={activeElement:null,visibilityState:'visible',handlers:{},addEventListener(e,fn){(this.handlers[e]||=[]).push(fn)},querySelectorAll(sel){return sel.includes('ytFormRows')?$('ytFormRows').inputs||[]:[]}};
+ const document={activeElement:null,visibilityState:'visible',handlers:{},addEventListener(e,fn){(this.handlers[e]||=[]).push(fn)},querySelectorAll(sel){return sel.includes('ytFormRows')?$('ytFormRows').inputs||[]:[]},querySelector(){return null}};
  const localStorage={removeItem:k=>store.delete(k),get length(){return store.size},key:i=>[...store.keys()][i]};
  const ls={get:k=>store.has(k)?JSON.parse(store.get(k)):null,set:(k,v)=>{store.set(k,JSON.stringify(v));return true}};
  function $(id){return nodes[id]||(nodes[id]={id,tagName:'INPUT',type:'text',value:'',dataset:{},listeners:{},checked:false,hidden:false,disabled:false,innerHTML:'',textContent:'',options:[],lastElementChild:{textContent:''},attrs:{},className:'',classes:new Set(),classList:{contains(k){return nodes[id].classes.has(k)||nodes[id].className.split(' ').includes(k)},add(k){nodes[id].classes.add(k)},remove(k){nodes[id].classes.delete(k)},toggle(k,on){if(on)nodes[id].classes.add(k);else nodes[id].classes.delete(k)}},addEventListener(e,fn){(this.listeners[e]||=[]).push(fn)},setAttribute(k,v){this.attrs[k]=String(v)},removeAttribute(k){delete this.attrs[k]},querySelectorAll(){return this.inputs||[]},querySelector(){return null},contains(t){return t&&t.owner===id},matches(s){return s.includes('input')},closest(){return this.row||null},focus(){document.activeElement=this;this.focused=(this.focused||0)+1},blur(){document.activeElement=null;this.blurred=(this.blurred||0)+1},select(){this.selected=true},click(){this.clicked=(this.clicked||0)+1;if(this.onclick)this.onclick({target:this})}})}
  const N=50,YMAX=99999999,S={ym:'2026-10',mLoaded:true,tab:'list',month:{records:{},yt:{f0_o0:2000,f1_o0:7000},yell:{f0_o0:1000}},ryt:{f0_o0:3000},fam:0,oth:0,extra:[],active:{family:Array(N).fill(false),others:Array(N).fill(false)},order:{family:Array.from({length:N},(_,i)=>i),others:Array.from({length:N},(_,i)=>i)},lists:{family:Array.from({length:N},(_,i)=>'自分'+(i+1)),others:Array.from({length:N},(_,i)=>'他人'+(i+1))},priv:false};
- Object.assign(S,{ytFormFam:0,ytFormUnit:'yell',ytFormAll:false,ytFormQ:'',pats:{p:{},a:{}}});S.lists.family[0]='よし';S.lists.family[1]='サブ';S.lists.others[0]='もえ';S.lists.others[1]='応援先';S.active.family[0]=true;S.active.others[0]=true;S.active.others[1]=true;
+ Object.assign(S,{ytFormAxis:'family',ytFormFam:0,ytFormOth:0,ytFormUnit:'yell',ytFormAll:false,ytFormQ:'',ytFormFilter:'all',ytFormSort:'num',ytFormLastKey:'',pats:{p:{},a:{}}});S.lists.family[0]='よし';S.lists.family[1]='サブ';S.lists.others[0]='もえ';S.lists.others[1]='応援先';S.active.family[0]=true;S.active.others[0]=true;S.active.others[1]=true;
  const fcCache=new Map(),mExists={},inflight={};let db=null,undo=null,scrollToday=false;
  const pk=(f,o)=>'f'+f+'_o'+o,vIdx=v=>Number.isInteger(v)&&v>=0&&v<N;
  const parsePk=k=>{const m=/^f(\\d+)_o(\\d+)$/.exec(k);return m&&vIdx(+m[1])&&vIdx(+m[2])?[+m[1],+m[2]]:null};
@@ -22,14 +22,15 @@ function setup(){
  const ytOf=(k,mo)=>{const v=((mo||S.month).yt||{})[k];return Number.isInteger(v)&&v>0?v:null},yellOf=k=>Number.isInteger(S.month.yell?.[k])?S.month.yell[k]:null;
  const isDefName=(kind,i)=>!S.lists[kind][i]||S.lists[kind][i]===(kind==='family'?'自分':'他人')+(i+1),dayKana=t=>String(t).normalize('NFKC').toLowerCase().trim();
  function showToast(m){toasts.push(m)}function hideToast(){}function pushUndo(u){undoStack.push(u);undo=u}function updHist(){}function rerender(){if(typeof renderYtForm==='function')renderYtForm(true)}function putE(){}function savePref(){}function updFamYell(){}function updFamBadges(){}function updOthBadges(){}function renderListSum(){}function renderYCoin(){}function renderYellCheck(){}function renderFcCard(){}function renderSoon(){}function updDayCoin(){}function renderYProg(){}function alignHeads(){}function updFamPats(){}function renderPatSum(){}function updDline(){}function subscribeMonth(){S.month=unpackMonth(ls.get('pk:months/'+S.ym))}
- function dayPrepareNavigation(){return true}function daySaveMirror(){}
+ function dayPrepareNavigation(){return true}function daySaveMirror(){}function accountNameHelpAll(){}
  function fillSelect(sel,label,val){sel.value=String(val);sel.options=S.order.family.map(i=>({value:String(i),textContent:label(i)}))}
  function dispatch(id,e,t,extra={}){for(const fn of $(id).listeners[e]||[])fn({target:t,preventDefault(){},...extra})}
  function nameField(i,value){const t=$('others-'+i);t.dataset={k:'others',i:String(i)};t.value=value;return t}
  function fireDocument(e,t,extra={}){for(const fn of document.handlers[e]||[])fn({target:t,isComposing:false,...extra})}
- function field(k,value,unit='yell',ym=S.ym){const t=$('field-'+k);t.dataset={ytfk:k,ytfym:ym,ytfunit:unit};t.value=value;t.owner='ytFormRows';t.row=$('row-'+k);t.row.querySelector=s=>$('state-'+k+'-'+s);return t}
+ function field(k,value,unit=S.ytFormUnit,ym=S.ym){S.ytFormUnit=unit;const t=$('field-'+k);t.dataset={ytfk:k,ytfym:ym,ytfunit:unit,ytfctx:ytFormContext()};t.value=value;t.owner='ytFormRows';t.row=$('row-'+k);t.row.querySelector=s=>$('state-'+k+'-'+s);return t}
  `;
  const code=prelude+
+  line('function daySaveState(){')+
   take('function packMonth(','/* ---------- データ読込 ---------- */')+
   line('const parseYell=t=>')+
   take('function fcSetYt(','function fcAfter(')+
@@ -94,8 +95,8 @@ for(const raw of ['', '0']){
  pass('stale month fields and invalid account pairs cannot write into the current month');
 }
 {
- const t=setup(),f=t.field('f0_o0','2.5','k');t.S.ytFormUnit='yell';t.sync(f,false);assert.equal(t.S.month.yt.f0_o0,2500);
- pass('a row retains the unit in which it was rendered when the form unit changes');
+ const t=setup(),f=t.field('f0_o0','2.5','k');t.S.ytFormUnit='yell';t.sync(f,false);assert.equal(t.S.month.yt.f0_o0,2000);
+ pass('a field from a previous input-unit context cannot write after the form unit changes');
 }
 for(const [raw,unit,expected] of [['','yell',undefined],['9.','k',9000]]){
  const t=setup(),f=t.field('f0_o0',raw,unit);t.focus(f);t.sync(f,false);t.commitFocused();t.flush();assert.equal(t.read('pk:months/2026-10').yt?.f0_o0,expected);assert.equal(t.undoStack.length,1);
@@ -106,13 +107,13 @@ for(const [raw,unit,expected] of [['','yell',undefined],['9.','k',9000]]){
  pass('leaving during unfinished Japanese composition does not overwrite the saved goal');
 }
 {
- const t=setup();t.S.month.yt.f0_o2=6000;t.nodes.ytFormRows.inputs=[t.field('f0_o0','2000'),t.field('f0_o1','')];t.nodes.ytFormBulk.value='５，０００';t.nodes.ytFormEmpty.checked=true;t.bulk();t.flush();
+ const t=setup();t.S.month.yt.f0_o2=6000;t.nodes.ytFormRows.inputs=[t.field('f0_o0','2000'),t.field('f0_o1','')];t.nodes.ytFormBulk.value='５，０００';t.nodes.ytFormEmpty.checked=true;t.bulk();assert.equal(t.S.month.yt.f0_o1,undefined);t.bulk();t.flush();
  const saved=t.read('pk:months/2026-10');assert.equal(saved.yt.f0_o0,2000);assert.equal(saved.yt.f0_o1,5000);assert.equal(saved.yt.f0_o2,6000);assert.equal(saved.yt.f1_o0,7000);assert.equal(t.S.ryt.f0_o0,3000);
  assert.equal(t.undoStack.length,1);assert.deepEqual(JSON.parse(JSON.stringify(t.undoStack[0].extra.yt)),{f0_o1:null});t.undo();t.flush();assert.equal(t.read('pk:months/2026-10').yt.f0_o1,undefined);assert.equal(t.read('pk:months/2026-10').yt.f0_o0,2000);
  pass('empty-only batch fills visible unset rows without changing hidden rows, existing goals, another own account or reciprocal goals; one Undo reverts the batch');
 }
 {
- const t=setup();t.nodes.ytFormRows.inputs=[t.field('f0_o0','2000'),t.field('f0_o1','')];t.nodes.ytFormBulk.value='4.25';t.S.ytFormUnit='k';t.nodes.ytFormEmpty.checked=false;t.bulk();t.flush();
+ const t=setup();t.S.ytFormUnit='k';t.nodes.ytFormRows.inputs=[t.field('f0_o0','2'),t.field('f0_o1','')];t.nodes.ytFormBulk.value='4.25';t.nodes.ytFormEmpty.checked=false;t.bulk();assert.equal(t.S.month.yt.f0_o0,2000);t.bulk();t.flush();
  assert.equal(t.read('pk:months/2026-10').yt.f0_o0,4250);assert.equal(t.read('pk:months/2026-10').yt.f0_o1,4250);assert.equal(t.read('pk:months/2026-10').yt.f1_o0,7000);assert.equal(t.undoStack.length,1);
  t.undo();t.flush();assert.equal(t.read('pk:months/2026-10').yt.f0_o0,2000);assert.equal(t.read('pk:months/2026-10').yt.f0_o1,undefined);
  pass('explicit overwrite batch respects k units and Undo restores both existing and unset goals');
@@ -149,7 +150,7 @@ for(const mode of ['composing','229','tracked']){
  pass('normal view includes active or named accounts and this own account’s goals/records; name and number search narrow it; all view exposes all 50 accounts');
 }
 {
- const t=setup();t.render(true);const f=t.field('f0_o0','7.','k');t.nodes.ytFormRows.inputs=[f];t.focus(f);const oldHtml=t.nodes.ytFormRows.innerHTML;t.S.lists.family[0]='よし変更';t.S.lists.others[0]='もえ変更';t.render(false);
+ const t=setup();t.S.ytFormUnit='k';t.render(true);const f=t.field('f0_o0','7.','k');t.nodes.ytFormRows.inputs=[f];t.focus(f);const oldHtml=t.nodes.ytFormRows.innerHTML;t.S.lists.family[0]='よし変更';t.S.lists.others[0]='もえ変更';t.render(false);
  assert.equal(f.value,'7.');assert.equal(t.nodes.ytFormRows.innerHTML,oldHtml);assert.match(f.attrs['aria-label'],/よし変更.*もえ変更/);assert.match(f.row.querySelector('.ytf-name').textContent,/もえ変更/);assert.equal(f.focused,undefined);
  pass('name refresh updates account labels and accessible input names while retaining the focused field and decimal draft');
 }

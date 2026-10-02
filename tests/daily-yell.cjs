@@ -21,7 +21,7 @@ function setup(){
  const ytOf=k=>S.month.yt?.[k]??null,yellOf=k=>S.month.yell?.[k]??null,ryellOf=k=>S.month.ryell?.[k]??null;
  const yTarget=()=>null,rowCoinHtml=()=>'',ryStatus=()=>'';
  function showToast(m){toasts.push(m)}function renderSoon(){}function renderDay(){}function renderSum(){}function renderEom(){}function rerender(){}function updDayCoin(){}function celebrate(){}function hideToast(){}function ytFormUndoFields(){}
- const ryFocus=()=>false,dayMinuteCommitFocused=()=>true;function daySaveMirror(){}
+ const ryFocus=()=>false,dayMinuteCommitFocused=()=>true;function daySaveMirror(){}function ytFormSaveMirror(){}
  function dispatch(id,e,t,extra={}){for(const fn of $(id).listeners[e]||[])fn({target:t,...extra})}
  function field(fld='yell',k='f0_o0',value='5.25',ym=S.ym,d=S.dday){const t=$('field'+Object.keys(elements).length);t.owner='dayList';t.dataset={ry:fld,pkey:k,ryym:ym,ryday:String(d)};t.value=value;t.row={msg:{textContent:''},querySelector(s){return s==='[data-ry="yell"]'?$('nextYell'):s==='.rymsg'?this.msg:{innerHTML:''}}};$('dayList').inputs=[...($('dayList').inputs||[]),t];return t}
  `;

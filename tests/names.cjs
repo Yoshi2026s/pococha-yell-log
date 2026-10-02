@@ -15,7 +15,7 @@ function setup(){
  const localStorage={getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v),removeItem:k=>store.delete(k),key:i=>[...store.keys()][i],get length(){return store.size}};
  const context=vm.createContext({console,document,$:node,localStorage,setTimeout:()=>1,clearTimeout:()=>{},window:{addEventListener(){}},navigator:{onLine:true},Promise,Date,Map,Set,__undo:undo,__toasts:toasts});
  const prelude=`const N=50,fcCache=null;const S={ym:'2026-10',tab:'list',month:{records:{}},lists:{family:Array.from({length:N},(_,i)=>'自分'+(i+1)),others:Array.from({length:N},(_,i)=>'他人'+(i+1))},active:{family:Array(N).fill(false),others:Array(N).fill(false)},order:{family:Array.from({length:N},(_,i)=>i),others:Array.from({length:N},(_,i)=>i)},pos:{family:Array.from({length:N},(_,i)=>i),others:Array.from({length:N},(_,i)=>i)},pats:{p:{o0:[{},{}]},a:{}},priv:false,rytO:0,namedOnly:true,onlyActive:false};let db=null,undo=null;const mExists={},inflight={};const vIdx=v=>Number.isInteger(v)&&v>=0&&v<N,PF=i=>S.pos.family[i],PO=i=>S.pos.others[i],pad=n=>String(n).padStart(2,'0');const packMonth=m=>m;const pushUndo=u=>__undo.push(u),showToast=m=>__toasts.push(m);function updFamPats(){}function renderPatSum(){}function updDline(){}function updNdot(){}function applyListQ(){}function updDup(){}function renderListSum(){}function updOthBadges(){}function setOrder(k,a){if(Array.isArray(a))S.order[k]=a.slice()}`;
- let code=prelude+'function daySaveMirror(){};';
+ let code=prelude+'function daySaveMirror(){}function ytFormSaveMirror(){};';
  code+=take('const isDefName=','const curYM=');
  code+=take('const ls={','const pref=');
  code+=take('const famName=','const memoOf=');

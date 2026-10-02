@@ -42,7 +42,7 @@ function boot(){
  const PF=x=>x,PO=x=>x,famName=f=>'自分'+f,othName=o=>'他人'+o;const dayGuide=()=>null,addBtns=()=>'',boxHtml=()=>'',savePref=()=>{};
  const S={ym:'2026-10',month:{records:{}},mLoaded:true,compact:true,tab:'rec',sel:2,dday:2,fam:0,oth:0,dpk:'f0_o0',panelMin:false,recent:[],swiped:false};
  let db=null,dl=null,fcCache=null;const inflight={},mExists={};
- const isAch=()=>false,isNear=()=>false,celebrate=()=>{},hideToast=()=>{},showToast=(v)=>__metrics.toasts.push(v),rerender=()=>renderPanel(),daySaveMirror=()=>{};`;
+ const isAch=()=>false,isNear=()=>false,celebrate=()=>{},hideToast=()=>{},showToast=(v)=>__metrics.toasts.push(v),rerender=()=>renderPanel(),daySaveMirror=()=>{},ytFormSaveMirror=()=>{};`;
  code+=take('const ls={','const pref=');
  code+=take('function packMonth(mo){','/* ---------- 保存');
  code+=take('const pend={};','/* ---------- データ読込');

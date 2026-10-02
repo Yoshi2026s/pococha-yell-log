@@ -17,7 +17,7 @@ function setup(file){
   let db=null;
   const vIdx=n=>Number.isInteger(n)&&n>=0&&n<N;
   const parsePk=k=>{const m=/^f(\\d+)_o(\\d+)$/.exec(k);return m&&vIdx(+m[1])&&vIdx(+m[2])?[+m[1],+m[2]]:null};
-  const schNorm=x=>x;function daySaveMirror(){}
+  const schNorm=x=>x;function daySaveMirror(){}function ytFormSaveMirror(){}
   function subscribeMonth(){if(throwSubscribe)throw new Error('Injected render error');resubscribed++}
   function online(){db={doc:p=>({set:async v=>{if(holdNext){holdNext=false;await new Promise(r=>releaseWrite=r)}writes.push({path:p,minute:v.records?.f0_o0?.['2']});server.set(p,JSON.parse(JSON.stringify(v)))},update:async v=>{writes.push({path:p,minute:v.records?.f0_o0?.['2']});deepMerge(server.get(p)||{},v)}})}};
   function backup(){impData={months:[['2026-10',{records:{f0_o0:{2:5}}}]]}}

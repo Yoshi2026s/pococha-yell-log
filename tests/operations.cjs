@@ -23,6 +23,7 @@ const clock = m => Math.floor(m/60)+':'+pad(m%60);
 const PF = i => i, PO = i => i;
 const famName = i => S.lists.family[i], othName = i => S.lists.others[i];
 const isAch = () => false;
+function accountNameHelpAll() {}
 ` + take('const esc=s=>', 'function ymParts(ym){')
   + take('function ymParts(ym){', 'function defaultDay(){')
   + take('function pairStats(rec,o){', 'const BADKEY=')

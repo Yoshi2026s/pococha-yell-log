@@ -397,6 +397,283 @@
 }
 
 </style>
+<style id="goalsOrientationStyle">
+/* Goal form: other-account first, with an optional self-account view. */
+#p-list #ytFormCard {
+  padding: 18px;
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+  background: var(--surface);
+}
+#ytFormCard > h2 { margin-bottom: 10px; font-size: 1.15rem; }
+#ytFormCard .ytf-intro { gap: 8px 12px; margin-bottom: 14px; }
+#ytFormCard .ytf-intro p { font-size: .86rem; line-height: 1.65; }
+#ytFormCard .ytf-month { flex: 0 0 auto; }
+#ytFormCard .ytf-step {
+  background: var(--accent);
+  color: var(--accent-ink);
+  width: 25px;
+  height: 25px;
+  border-radius: 8px;
+}
+#ytFormCard #ytFormAxis {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  border: 1px solid var(--line);
+  background: var(--surface2);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 12px;
+}
+#ytFormCard #ytFormAxis button {
+  min-width: 0;
+  min-height: 44px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  padding: 9px 12px;
+  font: inherit;
+  font-size: .86rem;
+  font-weight: 750;
+  color: var(--muted);
+  background: transparent;
+  overflow-wrap: anywhere;
+}
+#ytFormCard #ytFormAxis button[aria-pressed="true"] {
+  color: var(--accent);
+  background: var(--surface);
+  border-color: color-mix(in srgb, var(--accent) 28%, var(--line));
+  box-shadow: 0 2px 5px #101c3010;
+}
+#ytFormCard .ytf-axis-panel[hidden] { display: none; }
+#ytFormCard .ytf-axis-panel .ytf-pick,
+#ytFormCard .ytf-axis-panel.ytf-pick {
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  border-color: color-mix(in srgb, var(--accent) 28%, var(--line));
+  background: color-mix(in srgb, var(--accent-soft) 45%, var(--surface));
+  padding: 13px;
+}
+#ytFormCard .ytf-picker { gap: 7px; }
+#ytFormCard .ytf-picker select { font-size: 1rem; font-weight: 750; }
+#ytFormCard .ytf-picker .step { flex: 0 0 44px; padding: 8px; font-size: 1.1rem; }
+#ytFormCard .ytf-context {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: .82rem;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+#ytFormCard .ytf-context strong,
+#ytFormCard .ytf-context b { color: var(--accent); font-size: 1rem; }
+#ytFormCard .ytf-heading { gap: 10px; margin: 19px 0 8px; }
+#ytFormCard .ytf-heading h3 { font-size: 1rem; line-height: 1.5; }
+#ytFormCard .ytf-unit button { min-height: 44px; padding: 8px 12px; }
+#ytFormCard .ytf-example { margin: 8px 0 12px; font-size: .8rem; }
+#ytFormCard .ytf-tools { gap: 7px; flex-wrap: wrap; }
+#ytFormCard .ytf-tools input { flex: 1 1 220px; width: auto; }
+#ytFormCard .ytf-tools .btn { min-height: 44px; padding: 8px 11px; font-size: .8rem; }
+#ytFormCard #ytFormQueryClear { flex: 0 0 auto; }
+#ytFormCard #ytFormQueryClear[hidden] { display: none; }
+#ytFormCard .ytf-viewbar {
+  display: flex;
+  gap: 8px 12px;
+  align-items: end;
+  flex-wrap: wrap;
+  margin: 10px 0 12px;
+}
+#ytFormCard .ytf-viewbar label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  flex: 1 1 140px;
+  font-size: .76rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+#ytFormCard .ytf-viewbar select {
+  min-height: 44px;
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: .85rem;
+  font-weight: 650;
+}
+#ytFormCard .ytf-viewbar .btn { min-height: 44px; font-size: .8rem; }
+#ytFormCard .ytf-metacards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px 12px;
+  margin: 12px 0 9px;
+  padding: 9px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+#ytFormCard .ytf-metacards > * {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 3px 6px;
+  min-width: 0;
+}
+#ytFormCard .ytf-metacards small,
+#ytFormCard .ytf-metacards span { color: var(--muted); font-size: .75rem; }
+#ytFormCard .ytf-metacards b,
+#ytFormCard .ytf-metacards strong {
+  color: var(--ink);
+  font-size: .94rem;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+#ytFormCard .ytf-metacards > :last-child b { color: var(--accent); }
+#ytFormCard .ytf-meta { font-size: .8rem; margin: 8px 0; }
+#ytFormCard .ytf-rows { gap: 10px; }
+#ytFormCard .ytf-row {
+  grid-template-columns: minmax(0, 1fr) minmax(175px, 240px);
+  gap: 8px 14px;
+  align-items: center;
+  padding: 13px 14px;
+  transition: border-color .15s ease, background-color .15s ease;
+}
+#ytFormCard .ytf-row:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 9%, transparent);
+}
+#ytFormCard .ytf-row.has-target {
+  border-color: color-mix(in srgb, var(--accent) 24%, var(--line));
+  background: color-mix(in srgb, var(--accent-soft) 22%, var(--surface));
+}
+#ytFormCard .ytf-name { font-size: .98rem; line-height: 1.45; }
+#ytFormCard .ytf-caption { font-size: .76rem; margin-top: 5px; line-height: 1.5; }
+#ytFormCard .ytf-goallabel { display: block; font-size: .75rem; color: var(--muted); margin-bottom: 4px; }
+#ytFormCard .ytf-number input { min-height: 48px; font-size: 1.08rem; font-variant-numeric: tabular-nums; }
+#ytFormCard .ytf-preview { font-size: .76rem; line-height: 1.55; }
+#ytFormCard .ytf-rowtools {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+#ytFormCard [data-ytf-clear] {
+  min-height: 44px;
+  min-width: 44px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 8px 11px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: .8rem;
+  font-weight: 700;
+}
+#ytFormCard [data-ytf-clear] { color: var(--muted); }
+#ytFormCard button:disabled { opacity: .5; }
+#ytFormCard .ytf-save {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 24px;
+  color: var(--muted);
+  font-size: .75rem;
+  line-height: 1.5;
+}
+#ytFormCard .ytf-save.ok,
+#ytFormCard .ytf-save[data-state="ok"] { color: var(--ok); }
+#ytFormCard .ytf-save.error,
+#ytFormCard .ytf-save[data-state="error"] { color: var(--sun); }
+#ytFormCard .ytf-bulk {
+  background: var(--surface2);
+  border-color: var(--line);
+  padding: 14px;
+  margin-top: 16px;
+}
+#ytFormCard .ytf-bulk > summary {
+  cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink);
+  font-size: .86rem;
+  font-weight: 750;
+  list-style: none;
+}
+#ytFormCard .ytf-bulk > summary::-webkit-details-marker { display: none; }
+#ytFormCard .ytf-bulk > summary::before { content: "＋"; font-size: 1.15rem; color: var(--muted); }
+#ytFormCard .ytf-bulk[open] > summary::before { content: "−"; }
+#ytFormCard .ytf-bulk[open] > summary { margin-bottom: 12px; }
+#ytFormCard .ytf-bulk h3 { font-size: .9rem; line-height: 1.5; }
+#ytFormCard .ytf-presets { gap: 7px; }
+#ytFormCard .ytf-presets button { min-height: 44px; }
+#ytFormCard .ytf-bulkline { gap: 8px 10px; }
+#ytFormCard .ytf-bulkline > .btn { min-height: 48px; }
+#ytFormCard #ytFormScope { color: var(--ink); font-size: .8rem; line-height: 1.7; }
+#ytFormCard .ytf-foot { font-size: .77rem; line-height: 1.75; }
+#ytFormCard .ytf-status { line-height: 1.7; overflow-wrap: anywhere; }
+#ytFormCard .ytf-empty { font-size: .85rem; border: 1px dashed var(--line); }
+@media (max-width: 560px) {
+  #p-list #ytFormCard { padding: 13px; }
+  #ytFormCard > h2 { font-size: 1.08rem; }
+  #ytFormCard .ytf-axis-panel .ytf-pick,
+  #ytFormCard .ytf-axis-panel.ytf-pick { grid-template-columns: 1fr; gap: 8px; padding: 11px; }
+  #ytFormCard #ytFormAxis button { font-size: .8rem; padding: 8px 5px; }
+  #ytFormCard .ytf-heading { align-items: flex-start; }
+  #ytFormCard .ytf-heading h3 { flex: 1 1 100%; font-size: .94rem; }
+  #ytFormCard .ytf-tools input { flex: 1 1 170px; }
+  #ytFormCard .ytf-tools #ytFormAll { margin-left: 0; }
+  #ytFormCard .ytf-metacards { gap: 6px 8px; }
+  #ytFormCard .ytf-metacards b,
+  #ytFormCard .ytf-metacards strong { font-size: .96rem; }
+  #ytFormCard .ytf-row { grid-template-columns: minmax(0, 1fr) minmax(140px, 47%); gap: 8px 10px; padding: 11px; }
+  #ytFormCard .ytf-name { font-size: .9rem; }
+  #ytFormCard .ytf-number input { font-size: 1rem; padding: 9px 8px; }
+  #ytFormCard .ytf-bulkline > .btn { width: 100%; margin-left: 0; }
+  #ytFormCard .ytf-bulkline > .ytf-number { flex: 1 1 190px; max-width: none; }
+  #ytFormCard .ytf-viewbar { gap: 8px; }
+  #ytFormCard .ytf-viewbar label { flex-basis: 130px; }
+}
+@media (max-width: 360px) {
+  #ytFormCard .ytf-row { grid-template-columns: 1fr; }
+  #ytFormCard .ytf-preview { text-align: left; }
+  #ytFormCard .ytf-number input { text-align: left; }
+  #ytFormCard .ytf-metacards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  #ytFormCard .ytf-unit { width: 100%; }
+  #ytFormCard .ytf-unit button { flex: 1; }
+  #ytFormCard .ytf-context strong,
+  #ytFormCard .ytf-context b { font-size: .95rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #ytFormCard .ytf-row { transition: none; }
+}
+
+
+#p-list #jumpList{display:none!important}
+#p-list .lsum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible;margin-bottom:12px}
+#p-list .lsi{min-width:0;min-height:76px;flex:none}
+#p-list .lqwrap{position:relative;padding-top:14px;margin-top:10px}
+.settings-advanced{margin:16px 0;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.settings-advanced>summary{padding:16px;min-height:50px;cursor:pointer;font-weight:750;color:var(--muted)}
+.settings-advanced[open]>summary{border-bottom:1px solid var(--line);margin-bottom:12px;color:var(--ink)}
+.settings-advanced>.card{margin:12px}
+.fcgoal-link{margin-top:12px;display:flex;justify-content:flex-end}
+.fcgoal-read{gap:8px;flex-wrap:wrap}.fcgoal-read .btn{min-height:44px}
+@media(max-width:560px){#p-list .lsi{padding:10px 7px}#p-list .lsi b{font-size:1.2rem}#p-list .lsi em{font-size:.68rem}.settings-advanced>.card{margin:8px}}
+
+#ytFormCard .ytf-bulkline>.chkl{min-height:44px}
+@media(max-width:560px){#ytFormCard .ytf-row{grid-template-columns:1fr}#ytFormCard .ytf-number input{flex:1 1 0;width:0}#ytFormCard .ytf-metacards{grid-template-columns:repeat(2,minmax(0,1fr))}#ytFormCard .ytf-metacards>:last-child{grid-column:1/-1}}
+</style>
 </head><body>
 <title>Pococha時間稼ぎ・エール記録帳</title>
 <style>
@@ -1527,7 +1804,7 @@ button.pgrp:hover{background:color-mix(in srgb,var(--time) 14%,var(--surface2))}
 .qpanel .qh2 .qguide{color:var(--time)}.qpanel .qh2 .qguide.ok{color:var(--ok)}
 .bset .chkl{font-size:.74rem}
 .bset .chkl input{width:18px;height:18px;accent-color:var(--accent)}
-/* ===== v10：名前・条件設定 ===== */
+/* ===== v10：名前・目標設定 ===== */
 #p-list .card{scroll-margin-top:72px}
 .lsum{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:6px}
 .lsi{display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;border:1px solid var(--line-soft);background:var(--surface);border-radius:12px;padding:6px 10px;box-shadow:var(--shadow);color:var(--ink);min-width:0;font:inherit}
@@ -1588,6 +1865,12 @@ button.ob:hover{filter:brightness(.96)}
 .nbprev{font-size:.76rem;color:var(--muted);display:flex;flex-direction:column;gap:4px}
 .nbprev:empty{display:none}
 .nbprev ul{margin:0;padding-left:1.2em}.nbprev b{color:var(--ink)}.nbprev .w{color:var(--sun);margin-left:4px}
+/* 名前入力：補助は編集中・重複時だけ表示する。 */
+.name-help{grid-column:4/-1;font-size:.72rem;line-height:1.4;color:var(--muted);overflow-wrap:anywhere}
+.name-help[hidden]{display:none}.name-help.warn{color:var(--sun)}
+.name-start{margin-left:auto;min-height:36px}.nb-errors{color:var(--sun);padding:7px 10px;border:1px solid var(--line);border-radius:9px;background:var(--surface2)}
+.nbprev details>summary{cursor:pointer;min-height:36px;align-content:center}.nbprev .nb-scope{font-weight:800;color:var(--ink)}
+@media(max-width:560px){.name-start,.nbprev details>summary{min-height:44px}.nbrow label{flex:1 1 auto}.nbrow .sm{min-width:0;max-width:100%}}
 .nbcopy{width:100%;font-size:16px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:6px 8px}
 .nbact{gap:6px}
 :root.priv #nbTx,:root.priv .nbcopy{filter:blur(5px)}:root.priv #nbTx:focus{filter:none}
@@ -1670,7 +1953,7 @@ kbd{display:inline-block;min-width:1.6em;text-align:center;font:inherit;font-siz
   #tPairs tr.go td[data-l]:empty::before{content:none}
   #tPairs .pbar{max-width:none}
 }
-/* ===== v12：名前・条件設定（2回目） ===== */
+/* ===== v12：名前・目標設定（2回目） ===== */
 .lqwrap .jump{padding:0 0 6px}
 .lguide{background:var(--surface);border:1px solid color-mix(in srgb,var(--time) 35%,var(--line));border-radius:14px;padding:8px 12px;box-shadow:var(--shadow)}
 .lguide .lgh{display:flex;align-items:center;gap:8px;font-size:.82rem}
@@ -2061,7 +2344,7 @@ html:has(body.haspanel){scroll-padding-bottom:calc(var(--ph,240px) + 32px)}
     <button role="tab" data-tab="rec" id="tab-rec" aria-controls="p-rec"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><span class="tl2"><span>当月一覧</span><span>表示</span></span></button>
     <button role="tab" data-tab="day" id="tab-day" aria-controls="p-day"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span class="tl2"><span>日付別</span><span>実績入力</span></span></button>
     <button role="tab" data-tab="sum" id="tab-sum" aria-controls="p-sum"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span class="tl2"><span>集計</span><span>結果</span></span></button>
-    <button role="tab" data-tab="list" id="tab-list" aria-controls="p-list"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 5.5a3 3 0 010 5.5M18.5 14.8c1.6.8 2.6 2.5 3 5.2"/></svg><span class="tl2"><span>名前・</span><span>条件設定</span></span></button>
+    <button role="tab" data-tab="list" id="tab-list" aria-controls="p-list"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 5.5a3 3 0 010 5.5M18.5 14.8c1.6.8 2.6 2.5 3 5.2"/></svg><span class="tl2"><span>名前・</span><span>目標設定</span></span></button>
   </nav>
 
   <div class="eom" id="helpTip" hidden><span>はじめての方へ：操作の説明は「⚙ 設定」の中にあります。</span><button class="btn sm2" id="helpOpen">見る</button><button class="btn sm2" id="helpX" aria-label="閉じる">×</button></div>
@@ -2069,7 +2352,7 @@ html:has(body.haspanel){scroll-padding-bottom:calc(var(--ph,240px) + 32px)}
   <div class="eom" id="eom" hidden></div>
   <!-- 記録（組み合わせ別） -->
   <section class="panel" id="p-rec" role="tabpanel" aria-labelledby="tab-rec">
-    <div class="gs" id="gsCard" hidden><div class="gsh"><details class="gs-steps"><summary>はじめての方へ：3ステップを見る</summary><ol><li><button type="button" data-gs="list"><span>1</span>名前・条件設定で、自分垢と他人垢（稼ぎ先）に名前を付ける</button></li><li><button type="button" data-gs="rec"><span>2</span>当月一覧表示で自分垢→他人垢を選び、日付を押して時間を入れる</button></li><li><button type="button" data-gs="sum"><span>3</span>集計結果で達成状況と必要コインを確認する</button></li></ol></details><button type="button" class="btn sm2" id="gsX" aria-label="はじめての案内を閉じる">×</button></div></div>
+    <div class="gs" id="gsCard" hidden><div class="gsh"><details class="gs-steps"><summary>はじめての方へ：3ステップを見る</summary><ol><li><button type="button" data-gs="list"><span>1</span>名前・目標設定で、自分垢と他人垢（稼ぎ先）に名前を付ける</button></li><li><button type="button" data-gs="rec"><span>2</span>当月一覧表示で自分垢→他人垢を選び、日付を押して時間を入れる</button></li><li><button type="button" data-gs="sum"><span>3</span>集計結果で達成状況と必要コインを確認する</button></li></ol></details><button type="button" class="btn sm2" id="gsX" aria-label="はじめての案内を閉じる">×</button></div></div>
     <div class="recent" id="recent" hidden></div>
     <div class="rq"><input type="search" class="lsearch" id="recQ" placeholder="自分垢・他人垢を名前で探して切り替え（例：ゆき、12）" aria-label="自分垢・他人垢を名前・番号で探して切り替える" autocomplete="off" enterkeyhint="search"><div class="qres" id="recQRes" role="listbox" aria-label="見つかった組み合わせ" hidden></div></div>
     <div class="pickers">
@@ -2182,7 +2465,7 @@ html:has(body.haspanel){scroll-padding-bottom:calc(var(--ph,240px) + 32px)}
     <div class="card" id="fcCard">
       <h2>自分垢1人ごとの必要コイン</h2>
       <div id="fcBody"></div>
-      <p class="hint">選んだ自分垢1人の今月の組み合わせごとに、エール目標（入っていればその目標、なければ達成条件のエール段階）に届く段階の必要コイン（コアファン条件表）を合計した目安です。目標の欄はここで直接変えられます（空にすると達成条件の段階で計算）。</p>
+      <p class="hint">選んだ自分垢1人の今月の組み合わせごとに、エール目標（入っていればその目標、なければ達成条件のエール段階）に届く段階の必要コイン（コアファン条件表）を合計した目安です。目標の「変更」で名前・目標設定の入力欄を開きます。</p>
     </div>
     <div class="card" id="dayChartCard">
       <h2>日ごとの合計時間</h2>
@@ -2211,7 +2494,7 @@ html:has(body.haspanel){scroll-padding-bottom:calc(var(--ph,240px) + 32px)}
       <div class="tbl"><table id="tYell" class="ychk"></table></div>
       <div id="yCoinWrap" hidden><details class="ycall" id="ycAllBox"><summary><h3 class="pah">全員の一覧（自分垢ごとの必要コイン）</h3></summary><div class="yctools" id="ycTools"></div><div class="tbl"><table id="tYCoin" class="ychk ycoin2"></table></div>
       <p class="hint">「目標に必要」＝その自分垢の今月の組み合わせごとに、エール目標（入っていればその目標、なければ達成条件のエール段階）に届く段階の必要コイン（コアファン条件表）を合計した目安。「使った目安」＝現在のエールで届いた段階の必要コイン（目標を上限）。自分垢の行を押すと他人垢ごとの内訳が開き、内訳を押すとその組み合わせへ移動します。</p></details></div>
-      <p class="hint">目標は日付別実績入力の各行のエール欄で組み合わせごとに設定します。目標が0（設定なし）の組み合わせはこの表に出しません。行をタップするとその組み合わせへ移動します。</p>
+      <p class="hint">目標は名前・目標設定で組み合わせごとに入力できます。目標が0（設定なし）の組み合わせはこの表に出しません。行をタップするとその組み合わせへ移動します。</p>
     </div>
     <div class="card" hidden>
       <h2>月別推移（直近6か月）</h2>
@@ -2230,35 +2513,51 @@ html:has(body.haspanel){scroll-padding-bottom:calc(var(--ph,240px) + 32px)}
 
   <!-- 名前・条件・エール数入力 -->
   <section class="panel" id="p-list" role="tabpanel" aria-labelledby="tab-list" hidden>
-    <nav class="jump" id="jumpList" aria-label="名前・条件設定の見出しへ移動"></nav>
+    <nav class="jump" id="jumpList" aria-label="名前・目標設定の見出しへ移動" hidden></nav>
     <div class="lsum" id="listSum" role="group" aria-label="設定の状況"></div>
     <div class="lguide" id="lGuide" hidden></div>
+    <div class="card ytf-card" id="ytFormCard">
+      <h2>組み合わせごとの目標エール</h2>
+      <div class="ytf-intro"><span class="ytf-month" id="ytFormMonth"></span></div>
+      <div class="ytf-unit" id="ytFormAxis" role="group" aria-label="目標入力の起点"><button type="button" data-ytf-axis="others" aria-pressed="true">他人垢から入力</button><button type="button" data-ytf-axis="family" aria-pressed="false">自分垢から入力</button></div>
+      <div class="ytf-pick ytf-axis-panel" id="ytFormOthPanel"><label for="ytFormOth">1 他人垢を選ぶ</label><div class="ytf-picker"><button type="button" class="step" data-ytf-step="-1" aria-label="前の他人垢">‹</button><select id="ytFormOth" aria-label="目標を設定する他人垢"></select><button type="button" class="step" data-ytf-step="1" aria-label="次の他人垢">›</button></div></div>
+      <div class="ytf-pick ytf-axis-panel" id="ytFormFamPanel" hidden><label for="ytFormFam">1 自分垢を選ぶ</label><div class="ytf-picker"><button type="button" class="step" data-ytf-step="-1" aria-label="前の自分垢">‹</button><select id="ytFormFam" aria-label="目標エールを設定する自分垢"></select><button type="button" class="step" data-ytf-step="1" aria-label="次の自分垢">›</button></div></div>
+      <p class="ytf-context" id="ytFormContext"></p>
+      <div class="ytf-heading"><h3 id="ytFormHeading">2 自分垢ごとの目標を入力</h3><div class="ytf-unit" role="group" aria-label="目標エールの入力単位"><button type="button" data-ytf-unit="yell" aria-pressed="true">エール数</button><button type="button" data-ytf-unit="k" aria-pressed="false">k単位</button></div></div>
+      <p class="ytf-example" id="ytFormExample">20,000エール＝20k。空欄・0で個別目標を解除。</p>
+      <div class="ytf-tools"><input type="search" id="ytFormQuery" placeholder="自分垢を名前・番号で探す" aria-label="目標を設定する自分垢を検索" autocomplete="off" enterkeyhint="search"><button type="button" class="btn sm2" id="ytFormQueryClear" aria-label="目標の検索を消す" hidden>×</button><button type="button" class="btn sm2" id="ytFormAll" aria-pressed="false">全50人を表示</button></div>
+      <div class="ytf-viewbar"><label for="ytFormFilter">表示 <select class="sm" id="ytFormFilter"><option value="all">すべて</option><option value="empty">未設定</option><option value="set">設定済み</option></select></label></div>
+      <div class="ytf-meta ytf-metacards" id="ytFormMeta"></div>
+      <div class="ytf-rows" id="ytFormRows"></div>
+      <datalist id="ytFormSuggestions"></datalist>
+      <details class="ytf-bulk"><summary>同じ目標をまとめて入力</summary>
+        <div class="ytf-presets" role="group" aria-label="まとめて入力する目標の候補"><button type="button" data-ytf-preset="2000">2,000</button><button type="button" data-ytf-preset="10000">10,000</button><button type="button" data-ytf-preset="20000">20,000</button></div>
+        <div class="ytf-bulkline"><label for="ytFormBulk">目標</label><div class="ytf-number"><input type="text" id="ytFormBulk" inputmode="numeric" enterkeyhint="done" autocomplete="off" maxlength="15" placeholder="例：20000" aria-describedby="ytFormScope"><span id="ytFormBulkUnit">エール</span></div><label class="chkl"><input type="checkbox" id="ytFormEmpty" checked>未設定だけ</label><button type="button" class="btn pri" id="ytFormApply">未設定へ反映</button></div>
+        <p id="ytFormScope" class="hint"></p>
+      </details>
+      <p class="ytf-foot">自動保存。Enterで次、Shift＋Enterで前へ。Escで未確定の入力を取り消せます。</p>
+      <p class="ytf-status" id="ytFormStatus" role="status" aria-live="polite"></p><span class="ytf-save" role="status"></span>
+    </div>
     <div class="lqwrap">
     <div class="lqbox"><input type="search" class="lsearch" id="listQ" placeholder="名前・番号で探す（例：ゆき、12）" aria-label="名前・番号で探す" autocomplete="off"><button type="button" class="lqx" id="listQX" aria-label="検索を消す" hidden>×</button></div>
     <div class="qres" id="listQRes" role="status" aria-live="polite" hidden></div>
     </div>
-    <div class="card ytf-card" id="ytFormCard">
-      <h2>自分垢ごとの目標エール</h2>
-      <div class="ytf-intro"><span class="ytf-month" id="ytFormMonth"></span><p>自分垢から、各他人垢で取る目標を設定します。</p></div>
-      <div class="ytf-pick">
-        <label for="ytFormFam"><span class="ytf-step">1</span> 自分垢を選ぶ</label>
-        <div class="ytf-picker"><button type="button" class="step" data-ytf-step="-1" aria-label="目標を設定する前の自分垢">‹</button><select id="ytFormFam" aria-label="目標エールを設定する自分垢"></select><button type="button" class="step" data-ytf-step="1" aria-label="目標を設定する次の自分垢">›</button></div>
-      </div>
-      <div class="ytf-heading"><h3><span class="ytf-step">2</span> 他人垢ごとの目標を入力</h3><div class="ytf-unit" role="group" aria-label="目標エールの入力単位"><button type="button" data-ytf-unit="yell" aria-pressed="true">エール数</button><button type="button" data-ytf-unit="k" aria-pressed="false">k単位</button></div></div>
-      <p class="ytf-example" id="ytFormExample">20,000エールなら「20000」と入力。1k＝1,000エール。</p>
-      <div class="ytf-tools"><input type="search" id="ytFormQuery" placeholder="他人垢を名前・番号で探す" aria-label="目標を設定する他人垢を検索" autocomplete="off" enterkeyhint="search"><button type="button" class="btn sm2" id="ytFormAll" aria-pressed="false">全50人を表示</button></div>
-      <div class="ytf-meta" id="ytFormMeta"></div>
-      <div class="ytf-rows" id="ytFormRows"></div>
-      <datalist id="ytFormSuggestions"></datalist>
-      <div class="ytf-bulk">
-        <h3>同じ目標をまとめて入力</h3>
-        <div class="ytf-presets" role="group" aria-label="まとめて入力する目標の候補"><span>よく使う目標</span><button type="button" data-ytf-preset="2000">2,000</button><button type="button" data-ytf-preset="5000">5,000</button><button type="button" data-ytf-preset="10000">10,000</button><button type="button" data-ytf-preset="20000">20,000</button></div>
-        <div class="ytf-bulkline"><label for="ytFormBulk">目標</label><div class="ytf-number"><input type="text" id="ytFormBulk" inputmode="numeric" enterkeyhint="done" autocomplete="off" maxlength="15" placeholder="例：20000" aria-describedby="ytFormScope"><span id="ytFormBulkUnit">エール</span></div><label class="chkl"><input type="checkbox" id="ytFormEmpty" checked>未設定だけ</label><button type="button" class="btn pri" id="ytFormApply">未設定の他人垢へ反映</button></div>
-        <p id="ytFormScope" class="hint"></p>
-      </div>
-      <p class="ytf-foot">入力した数字は自動保存。Enterで次の他人垢へ進めます。空欄・0は個別目標なし（達成条件で計算）。</p>
-      <p class="ytf-status" id="ytFormStatus" role="status" aria-live="polite"></p>
+    <div class="card" id="nameBulk">
+      <h2>名前をまとめて入力</h2>
+      <div class="nbrow"><select class="sm" id="nbKind" aria-label="入力する垢の種類"><option value="family">自分垢</option><option value="others">他人垢</option></select><select class="sm" id="nbFormat" aria-label="貼り付ける名前の形式"><option value="plain">名前だけ（1行1人）</option><option value="numbered">番号付き（01 名前）</option></select><label class="hint" id="nbStartWrap">開始番号 <select class="sm" id="nbStart" aria-label="何番から入れるか"></select></label></div>
+      <textarea id="nbTx" rows="4" placeholder="1行に1人ずつ。空の行は変更しません" aria-label="まとめて入れる名前" aria-describedby="nbPrev"></textarea>
+      <div class="nbprev" id="nbPrev" aria-live="polite"></div>
+      <div class="row nbact"><button class="btn pri" id="nbGo">反映する</button><button class="btn sm2" id="nbLoad">今の名前を読み込む</button><button class="btn sm2" id="nbCopy">名前一覧をコピー</button><span class="hint" id="nbMsg"></span></div>
     </div>
+    <div class="ltools">
+      <label class="chkl swl"><input type="checkbox" id="namedOnly"> 名前を付けた垢だけ一覧に出す</label>
+      <button type="button" class="btn sm2" id="gxAll" aria-pressed="false">条件を全部開く</button>
+    </div>
+    <div class="lists">
+      <div class="card" id="famCard"><h2>自分垢（1〜50）<small style="font-weight:500;color:var(--muted);font-size:.72rem;margin-left:6px">名前・デフォルト達成条件</small><span class="hcnt" id="hc-family"></span></h2><div class="sorttools" data-kind="family"><span class="stl">並べ替え</span><button type="button" class="btn sm2" data-sort="kana">あいうえお順</button><button type="button" class="btn sm2" data-sort="use" title="今月の記録日数が多い順">よく使う順</button><button type="button" class="btn sm2" data-sort="id" title="最初の番号順に戻す">番号順</button></div><div class="nwrow"><button type="button" class="btn sm2" id="condCopy">条件一覧をコピー</button><button type="button" class="btn sm2 name-start" data-name-start="family">未登録に名前を付ける</button></div><div class="condbox" id="condBox" hidden><textarea id="condTx" readonly rows="5" aria-label="条件一覧"></textarea><span class="hint">自動でコピーできなかったので、長押しして「すべてを選択」→「コピー」してください</span><button type="button" class="btn sm2" id="condX">閉じる</button></div><div class="dupw" id="dup-family" hidden></div><div class="lst" id="lstFam"></div><p class="lhid" id="hid-family" hidden></p></div>
+      <div class="card" id="othCard"><h2>他人垢（1〜50）<span class="hcnt" id="hc-others"></span></h2><div class="sorttools" data-kind="others"><span class="stl">並べ替え</span><button type="button" class="btn sm2" data-sort="kana">あいうえお順</button><button type="button" class="btn sm2" data-sort="use" title="今月の記録日数が多い順">よく使う順</button><button type="button" class="btn sm2" data-sort="id" title="最初の番号順に戻す">番号順</button></div><div class="nwrow"><button type="button" class="btn sm2 name-start" data-name-start="others">未登録に名前を付ける</button></div><div class="dupw" id="dup-others" hidden></div><div class="lst" id="lstOth"></div><p class="lhid" id="hid-others" hidden></p></div>
+    </div>
+    <details id="settingsAdvanced" class="settings-advanced"><summary>達成条件・配信予定などの詳細設定</summary>
     <div class="card">
       <h2>全員の条件をまとめて設定</h2>
       <div class="bulkgoal"><select class="sm" id="bgT" aria-label="エール数"></select><select class="sm" id="bgC" aria-label="条件"><option value="1">条件1（日数＋時間）</option><option value="2">条件2（時間のみ）</option></select><select class="sm" id="bgS" aria-label="設定する自分垢"><option value="all">全員（50人）</option><option value="named">名前を付けた自分垢だけ</option></select><button class="btn" id="bgGo">まとめて設定</button></div>
@@ -2301,21 +2600,7 @@ html:has(body.haspanel){scroll-padding-bottom:calc(var(--ph,240px) + 32px)}
       <div class="rytall"><span>表示中の全員に</span><input type="text" id="rytAllV" inputmode="decimal" autocomplete="off" maxlength="12" value="0" aria-label="まとめて入れる相手エール目標（k）"><span class="yu">k</span><button class="btn sm2" id="rytAllGo">まとめて入れる</button></div>
       <div class="rytlist" id="rytList"></div>
     </div>
-    <div class="card" id="nameBulk">
-      <h2>名前をまとめて入力</h2>
-      <div class="nbrow"><select class="sm" id="nbKind" aria-label="入力する垢の種類"><option value="family">自分垢</option><option value="others">他人垢</option></select><label class="hint">開始番号 <select class="sm" id="nbStart" aria-label="何番から入れるか"></select></label></div>
-      <textarea id="nbTx" rows="4" placeholder="1行に1人ずつ（空の行はその番号をそのままにします）" aria-label="まとめて入れる名前"></textarea>
-      <div class="nbprev" id="nbPrev" aria-live="polite"></div>
-      <div class="row nbact"><button class="btn pri" id="nbGo">反映する</button><button class="btn sm2" id="nbLoad">今の名前を読み込む</button><button class="btn sm2" id="nbCopy">名前一覧をコピー</button><span class="hint" id="nbMsg"></span></div>
-    </div>
-    <div class="ltools">
-      <label class="chkl swl"><input type="checkbox" id="namedOnly"> 名前を付けた垢だけ一覧に出す</label>
-      <button type="button" class="btn sm2" id="gxAll" aria-pressed="false">条件を全部開く</button>
-    </div>
-    <div class="lists">
-      <div class="card" id="famCard"><h2>自分垢（1〜50）<small style="font-weight:500;color:var(--muted);font-size:.72rem;margin-left:6px">名前・デフォルト達成条件</small><span class="hcnt" id="hc-family"></span></h2><div class="sorttools" data-kind="family"><span class="stl">並べ替え</span><button type="button" class="btn sm2" data-sort="kana">あいうえお順</button><button type="button" class="btn sm2" data-sort="use" title="今月の記録日数が多い順">よく使う順</button><button type="button" class="btn sm2" data-sort="id" title="最初の番号順に戻す">番号順</button></div><div class="nwrow"><button type="button" class="btn sm2" id="condCopy">条件一覧をコピー</button></div><div class="condbox" id="condBox" hidden><textarea id="condTx" readonly rows="5" aria-label="条件一覧"></textarea><span class="hint">自動でコピーできなかったので、長押しして「すべてを選択」→「コピー」してください</span><button type="button" class="btn sm2" id="condX">閉じる</button></div><div class="dupw" id="dup-family" hidden></div><div class="lst" id="lstFam"></div><p class="lhid" id="hid-family" hidden></p></div>
-      <div class="card" id="othCard"><h2>他人垢（1〜50）<span class="hcnt" id="hc-others"></span></h2><div class="sorttools" data-kind="others"><span class="stl">並べ替え</span><button type="button" class="btn sm2" data-sort="kana">あいうえお順</button><button type="button" class="btn sm2" data-sort="use" title="今月の記録日数が多い順">よく使う順</button><button type="button" class="btn sm2" data-sort="id" title="最初の番号順に戻す">番号順</button></div><div class="dupw" id="dup-others" hidden></div><div class="lst" id="lstOth"></div><p class="lhid" id="hid-others" hidden></p></div>
-    </div>
+    </details>
     <div class="card" id="chgCard">
       <h2>最近の変更</h2>
       <ol class="chglog" id="chgLog"></ol>
@@ -2332,13 +2617,15 @@ html:has(body.haspanel){scroll-padding-bottom:calc(var(--ph,240px) + 32px)}
       </div>
       <div class="confirm" id="impConfirm" hidden></div>
     </div>
-    <details class="lhelp" id="lHelp"><summary>名前・条件設定の使い方</summary><ul>
+    <details class="lhelp" id="lHelp"><summary>名前・目標設定の使い方</summary><ul>
       <li><b>名前</b>：入力するだけで自動保存。一覧の最後の「＋ 新しい名前」に入れてEnterを押すと、続けて次の垢を入力できます。Escで入力前に戻ります。空にすると初期の名前（自分N・他人N）に戻ります。</li>
+      <li><b>目標</b>：他人垢を選び、自分垢ごとの目標エールを入力します。月ごとに自動保存。空欄・0で個別目標を解除します。</li>
+      <li><b>詳細設定</b>：達成条件・締め時間・配信予定・相手エールは「詳細設定」を開いて変更できます。</li>
       <li><b>行の左の点</b>：<i class="ndot rec"></i>今月の記録あり／<i class="ndot nm"></i>名前あり／<i class="ndot"></i>初期のまま。</li>
       <li><b>デフォルト達成条件</b>：自分垢の条件ボタンを押して、エール段階と条件1（日数＋時間）／条件2（時間のみ）を選びます。月だけ変えたいときは当月一覧表示で。</li>
       <li><b>並べ替え</b>：「⠿」を押したまま上下に。記録は垢に付いたまま動きます。</li>
       <li><b>条件パターン</b>：他人垢ごとにA〜Jを作って自分垢に割り当てます（パターンだけは「保存」ボタンで保存）。</li>
-      <li>間違えたときは画面下の「元に戻す」か「最近の変更」から戻せます。</li>
+      <li>間違えたときは画面下の「元に戻す」で直前の入力を戻せます。</li>
     </ul></details>
   </section>
   <!--Y1012-FOOTER-START--><footer class="y1012-foot" style="max-width:720px;margin:24px auto 12px;padding:0 16px;font:12px/1.6 -apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;color:inherit;opacity:.8"><details style="border:1px solid rgba(127,127,127,.35);border-radius:10px;padding:8px 12px"><summary style="cursor:pointer;font-weight:600">免責事項</summary><ul style="margin:8px 0 2px;padding-left:1.2em"><li>本ツールは Yoshi1012 が個人で制作した非公式ツールです。Pococha・Instagram・TikTok・X・LINE・Google など、各サービスの運営会社とは一切関係ありません。</li><li>計算結果・表示内容は目安（参考値）です。正確性・最新性・完全性を保証するものではありません。実際の数値・ルールは各サービスの公式情報で必ずご確認ください。</li><li>本ツールの利用、または利用できなかったことにより生じたいかなる損害・トラブルについても、制作者は一切の責任を負いません。</li><li>入力・保存したデータは、端末やブラウザの設定・データ削除・不具合などにより消える場合があります。大切なデータはご自身で控えを取ってください。</li><li>本ツールの内容・仕様は、予告なく変更・公開停止する場合があります。</li></ul></details><div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px"><svg viewBox="0 0 48 48" width="22" height="22" aria-hidden="true" style="flex-shrink:0"><defs><linearGradient id="y1012fg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset=".5" stop-color="#6366f1"/><stop offset="1" stop-color="#ec4899"/></linearGradient></defs><circle cx="24" cy="24" r="23" fill="#141827"/><circle cx="24" cy="24" r="20.5" fill="none" stroke="url(#y1012fg)" stroke-width="4"/><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"><path d="M15.5 13 24 24 32.5 13"/><path d="M24 24v12"/></g></svg><span>© 2026 Yoshi1012 ／ 無断転載・転用・再配布禁止</span></div></footer><!--Y1012-FOOTER-END-->
@@ -2366,29 +2653,29 @@ html:has(body.haspanel){scroll-padding-bottom:calc(var(--ph,240px) + 32px)}
       <li><b>✓を外す</b>：時間が入っている日は、うっかり消さないよう2回押すと消えます。</li>
       <li><b>まちがえたら</b>：「元に戻す」か上の「↶ 戻す」（最大20回）。</li>
       <li><b>日付別実績入力</b>：その日の全組み合わせをまとめて入力。各組み合わせの行で、エールの目標・現在（k単位）も入力できます。目標に必要なコインと、今のエールからの残り必要コイン（目安）も表示します。</li>
-      <li><b>達成条件</b>：エール数と条件1（日数＋時間）／条件2（時間のみ）を選びます。名前・条件設定で全員まとめて設定もできます。</li>
+      <li><b>達成条件</b>：エール数と条件1（日数＋時間）／条件2（時間のみ）を選びます。名前・目標設定で全員まとめて設定もできます。</li>
       <li><b>集計結果</b>：「テキストでコピー」でLINEなどに貼り付けできます。「印刷する」で印刷も。上の「移動：」で見出しへ、見出しを押すとたたむ／開くができます。</li>
-      <li><b>エール</b>：日付別実績入力の各行のエール欄に「目標」と「現在」をk単位で入れます（15,230エール → 15.23）。現在のエールは、達成条件のエール数と並べて当月一覧表示・日付別実績入力・集計結果・名前・条件設定に表示します。集計結果の「エール目標チェック」で達成状況をまとめて確認できます。</li>
-      <li><b>自分垢1人ごとの必要コイン</b>：集計結果のいちばん上で自分垢を1人選ぶと（‹ › で切り替え）、その人の今月の目標エールに必要なコインの合計・使った目安・あと・1日あたり・段階ごとのまとめ・他人垢ごとの内訳を出します。内訳の「目標」欄でエール目標をその場で変えられ（空にすると達成条件の段階で計算・元に戻す可）、「まとめて入れる」でその人の組み合わせにまとめて目標を入れられます。「この自分垢をコピー」でその人の分だけ文章にできます。▼▲で目標を1段階ずつ上げ下げでき、目標欄は段階の候補からも選べます。今月の予算（コイン）を入れると必要コインと比べて「予算内／超えています」を出します（先月と同じ予算も1回で入ります）。日ごとの推移グラフ（日付別実績入力で入れたエールから）、このペースだと月末いくらになるかの見込み、「未達成」「エール未入力」だけの表示、稼ぎ先の追加、条件1と条件2の必要コインの比較もあります。画面を左右にスワイプすると自分垢を切り替えられます。当月一覧表示のまとめの内訳・名前・条件設定の「必要コイン」バッジ・日付別実績入力の自分垢ごとの必要コインから開けます。</li>
-      <li><b>自分垢ごとの必要コイン</b>：その自分垢の今月の組み合わせごとに、エール目標（入っていればその目標、なければ達成条件のエール段階）に届くための必要コイン（コアファン条件表）を合計して表示します。当月一覧表示のまとめ（押すと他人垢ごとの内訳）・日付別実績入力の自分垢の見出し・集計結果の「エール目標チェック」・名前・条件設定の自分垢の行に出ます。集計結果では行を押すと内訳が開き、並び順（必要コインが多い順・残りが多い順）、月末までの1日あたりの目安、先月との差、「コイン一覧をコピー」も使えます。達成条件がカスタム（エール段階なし）でエール目標もない組み合わせは計算に入りません（計算外）。</li>
+      <li><b>エール</b>：日付別実績入力の各行のエール欄に「目標」と「現在」をk単位で入れます（15,230エール → 15.23）。現在のエールは、達成条件のエール数と並べて当月一覧表示・日付別実績入力・集計結果・名前・目標設定に表示します。集計結果の「エール目標チェック」で達成状況をまとめて確認できます。</li>
+      <li><b>自分垢1人ごとの必要コイン</b>：集計結果で自分垢を選ぶと、必要コイン・使った目安・残り・他人垢ごとの内訳が見られます。目標の「変更」は名前・目標設定の該当する組み合わせを開きます。予算はコイン数で入力。内訳の絞り込み・並べ替え・コピー・日ごとの推移も使えます。</li>
+      <li><b>自分垢ごとの必要コイン</b>：その自分垢の今月の組み合わせごとに、エール目標（入っていればその目標、なければ達成条件のエール段階）に届くための必要コイン（コアファン条件表）を合計して表示します。当月一覧表示のまとめ（押すと他人垢ごとの内訳）・日付別実績入力の自分垢の見出し・集計結果の「エール目標チェック」・名前・目標設定の自分垢の行に出ます。集計結果では行を押すと内訳が開き、並び順（必要コインが多い順・残りが多い順）、月末までの1日あたりの目安、先月との差、「コイン一覧をコピー」も使えます。達成条件がカスタム（エール段階なし）でエール目標もない組み合わせは計算に入りません（計算外）。</li>
       <li><b>使用コインの目安</b>：現在のエールで届いた段階の必要コイン（コアファン条件表）を目安として表示します。実際に使ったコイン数とは違うことがあります。</li>
-      <li><b>条件パターン</b>：名前・条件設定で他人垢ごとにA〜J（最大10個）を作って「保存」し、自分垢に割り当てます。割り当てた組み合わせはそのパターンで判定します。</li>
-      <li><b>並べ替え</b>：名前・条件設定の「⠿」を押したまま上下に動かします。記録は垢に付いたまま動きます。</li>
+      <li><b>条件パターン</b>：名前・目標設定で他人垢ごとにA〜J（最大10個）を作って「保存」し、自分垢に割り当てます。割り当てた組み合わせはそのパターンで判定します。</li>
+      <li><b>並べ替え</b>：名前・目標設定の「⠿」を押したまま上下に動かします。記録は垢に付いたまま動きます。</li>
       <li><b>ボックス開封</b>：日付ごとに「BOX1」「BOX2」を押すと✓で記録します（もう一度押すと外れます）。当月一覧表示（詳細表示）・日付別実績入力・入力パネルから記録できます。かんたん入力の一覧では①②の印で表示します。</li>
       <li><b>当月一覧表示のまとめ</b>：日数・時間・残り日数・1日の目安・エール・必要コイン・相手エール・BOX開封をまとめて表示します。日付の行には、その日までの累計時間（計）も出ます。</li>
-      <li><b>相手エール</b>：他人垢が自分垢の配信で取るエールです。目標は「名前・条件設定」の「相手エールの目標」で入れ、現在の値は「日付別実績入力」の各行で入れます。</li>
-      <li><b>名前をまとめて入力</b>：「名前・条件設定」で1行に1人ずつ貼り付けて反映できます。名前の欄でEnterを押すと次の垢へ移ります。</li>
+      <li><b>相手エール</b>：他人垢が自分垢の配信で取るエールです。目標は「名前・目標設定」の「相手エールの目標」で入れ、現在の値は「日付別実績入力」の各行で入れます。</li>
+      <li><b>名前をまとめて入力</b>：「名前・目標設定」で1行に1人ずつ貼り付けて反映できます。名前の欄でEnterを押すと次の垢へ移ります。</li>
       <li><b>締めまでの残り時間</b>：上に「今日の締め(22:00)まで」と「月末締めまで」を表示します。締めまで1時間を切ると赤くなります。</li>
       <li><b>今日のやること</b>：当月一覧表示のいちばん上に、今月まだ達成していない組み合わせと今日の目安時間を出します。押すとその組み合わせに切り替わります。</li>
       <li><b>エールの推移</b>：日付別実績入力で入れたエール・相手エールを日ごとに記録し、当月一覧表示でグラフにします。</li>
       <li><b>まとめて入れる</b>：日付別実績入力で、表示中の全組み合わせに同じ時間を入れられます（2回押しで実行、元に戻す可）。</li>
       <li><b>テーマ</b>：「⚙ 設定」で 自動／ライト／ダーク を切り替えられます。</li>
-      <li><b>他人垢の締め時間</b>：「名前・条件設定」で他人垢ごとに 13:00・22:00・0:00 から選べます（初期22:00）。0:00はその日の24時で締めです。上の表示・日付別実績入力の各行・今日のやることに、その他人垢の締めまでの時間が出ます。</li>
-      <li><b>配信スケジュール</b>：「名前・条件設定」で他人垢ごとにメモでき、スケジュールの画像も取り込めます（画像は縮小して保存）。当月一覧表示で見られ、画像は押すと大きくなります。</li>
+      <li><b>他人垢の締め時間</b>：「名前・目標設定」で他人垢ごとに 13:00・22:00・0:00 から選べます（初期22:00）。0:00はその日の24時で締めです。上の表示・日付別実績入力の各行・今日のやることに、その他人垢の締めまでの時間が出ます。</li>
+      <li><b>配信スケジュール</b>：「名前・目標設定」で他人垢ごとにメモでき、スケジュールの画像も取り込めます（画像は縮小して保存）。当月一覧表示で見られ、画像は押すと大きくなります。</li>
       <li><b>固定（★）</b>：日付別実績入力の行や上部バーの☆で、よく使う組み合わせを上に固定できます。</li>
       <li><b>並び順</b>：日付別実績入力で 番号順／達成まで近い順／締めが近い順／未入力を上に を選べます。</li>
       <li><b>引き継ぎ</b>：新しい月は、先月のエール目標・月だけの達成条件をワンタップで引き継げます。</li>
-      <li><b>ミニカレンダー</b>：他人垢ごとに当月の配信予定を入れられます（当月一覧表示のスケジュール欄・名前・条件設定）。日付を押して配信時間（空欄は未定）と配信内容（手入力か、配信内容リストから選ぶ）を入れます。配信内容リストは名前・条件設定で全アカウント共通に10項目まで登録でき、内容ごとにカレンダーが色分けされます。「曜日でまとめて入力」で毎週の予定を一度に入れられ、「告知用にコピー」でその月の予定を投稿用の文章にしてコピーできます。入れた予定は「元に戻す」で戻せます。配信予定の日は日付別実績入力の行と今日のやることにも出ます。オンライン版では、スケジュールの画像を取り込むとAIが自動で読み取ってカレンダーに反映します（その分のClaudeの使用量がかかります）。</li>
+      <li><b>ミニカレンダー</b>：他人垢ごとに当月の配信予定を入れられます（当月一覧表示のスケジュール欄・名前・目標設定）。日付を押して配信時間（空欄は未定）と配信内容（手入力か、配信内容リストから選ぶ）を入れます。配信内容リストは名前・目標設定で全アカウント共通に10項目まで登録でき、内容ごとにカレンダーが色分けされます。「曜日でまとめて入力」で毎週の予定を一度に入れられ、「告知用にコピー」でその月の予定を投稿用の文章にしてコピーできます。入れた予定は「元に戻す」で戻せます。配信予定の日は日付別実績入力の行と今日のやることにも出ます。</li>
       <li><b>日付別実績入力</b>：上の日付の帯で日を選べます（点の数字はその日に記録した組数）。「すべて・未入力・記録済み・未達成」で表示を切り替えられます。行を押すとその行だけBOX・エール・コインが開きます（「詳細を全部表示」で全部開きます）。「前日と同じに」は、表示中でこの日が未入力の組み合わせに前日の時間を入れます。入力パネルの「次の未入力」で、まだ入れていない組み合わせへ進めます。</li>
       <li><b>日付別実績入力（追加）</b>：日付の帯は全組記録した日が緑（✓）になり、未来の日は薄く表示します。日付の横に「今日・昨日・3日前」などを出し、上のバーの細い線でこの日の進み具合がわかります。</li>
       <li><b>名前で絞り込み</b>：日付別実績入力の検索欄に名前の一部か番号を入れると、その組み合わせだけ表示します（ひらがな・カタカナは同じ扱い）。</li>
@@ -2398,14 +2685,14 @@ html:has(body.haspanel){scroll-padding-bottom:calc(var(--ph,240px) + 32px)}
       <li><b>まとめて入れる</b>：「未入力だけ」にチェックすると記録済みの組み合わせは変えません。「未入力に✓だけ」で時間なしの✓をまとめて付けられます。</li>
       <li><b>この日をコピー</b>：その日の実績を自分垢ごとにまとめた文章にしてコピーします（LINEなどに貼り付け用）。</li>
       <li><b>キー操作（パソコン）</b>：日付別実績入力で ← → 日付、↑ ↓ 組み合わせ、1〜5 で +5〜+60分、Space で✓、N で次の未入力、B で前日と同じ。</li>
-      <li><b>名前・条件設定の状況</b>：いちばん上のボタンに、名前を付けた垢の数・条件パターン・締め時間・配信予定などの件数を出します。押すとその設定へ移動します。</li>
+      <li><b>名前・目標設定の状況</b>：上の3つのボタンで名前ありの自分垢・他人垢と当月の目標数を確認し、それぞれの入力欄へ移動できます。</li>
       <li><b>自分垢の条件</b>：各行の「2k・条件1」のようなボタンを押すと、その自分垢の条件を変える欄が開きます。「条件を全部開く」で全員分を開けます。</li>
       <li><b>名前の変更を戻す</b>：名前を書き換えると「元に戻す」が出ます。同じ名前が2つ以上あると赤く知らせます。</li>
       <li><b>並べ替え（名前順）</b>：「あいうえお順に並べる」「最初の番号順に戻す」で一度に並べ替えられます（元に戻す可）。</li>
       <li><b>名前をまとめて入力</b>：「今の名前を読み込む」で今の名前を書き換え用に入れられます。反映する前に、変わる名前を確認できます。「名前一覧をコピー」で番号付きの一覧をコピーできます。</li>
       <li><b>当月一覧表示の追加</b>：上のバーの「全日／記録日だけ」で、記録した日だけの一覧にできます。一覧には週ごとの合計が出ます。「9月度のまとめ」に月末予測・最長の日・連続記録を出し、「コピー」でこの組み合わせの月の実績を文章でコピーできます。</li>
       <li><b>集計結果の追加</b>：名前・番号で絞り込めます。「日ごとの合計時間」のグラフの棒を押すと、その日の日付別実績入力を開きます。合計の数字の下に先月との差を出します。自分垢別・他人垢別の表は見出しを押すと並べ替え、行を押すとその垢で絞り込みます。スマホの内訳には「日数・時間」などの見出しを付けました。</li>
-      <li><b>名前・条件設定（追加）</b>：「移動」ボタンは検索欄と一緒に上に残ります。検索してEnterを押すと、見つかった垢の名前欄へ移ります。自分垢の条件を開くと「この条件を名前ありの全員にコピー」が使えます（2回押しで実行・元に戻す可）。条件パターンは「表示中の自分垢をまとめて割り当て」、締め時間は「表示中の全員を○○締めにする」でまとめて変えられます。バックアップの欄に最後に書き出した日を出します。</li>
+      <li><b>名前・目標設定（追加）</b>：名前の検索欄は名前一覧の手前にあります。検索してEnterを押すと、見つかった垢の名前欄へ移ります。自分垢の条件を開くと「この条件を名前ありの全員にコピー」が使えます（2回押しで実行・元に戻す可）。条件パターンは「表示中の自分垢をまとめて割り当て」、締め時間は「表示中の全員を○○締めにする」でまとめて変えられます。バックアップの欄に最後に書き出した日を出します。</li>
       <li><b>さらに追加</b>：当月一覧表示の上の検索欄で、自分垢・他人垢を名前や番号で探して切り替えられます。入力パネルの「−5」で5分減らせます。目標を達成すると小さなお祝いが出ます。集計結果の「日ごとの合計時間」に週末・今日・平均の線を出します。スマホでは「共有」でLINEなどに直接送れます。オフライン版（GitHub）でもバックアップ・CSVを書き出せます。</li>
       <li><b>見た目と操作（追加）</b>：集計結果の数字のタイルを押すと関連する見出しへ移動します。絞り込み・並び順は「絞り込み・並び順」を押して開きます（絞り込み中は件数が出ます）。月のバーを左右にスワイプすると月を移動できます。パソコンでは「/」で検索欄へ、タブの上で ← → でタブを移動できます。お知らせは押すと閉じます。「この端末のブラウザだけに保存」の表示は×で閉じられます。</li>
       <li><b>全リセット</b>：当月一覧表示の下の「全リセット」から。範囲を選び「リセット」と入力して実行します。</li>
@@ -2554,7 +2841,8 @@ const S={
   col:Array.isArray(pref.col)?pref.col.filter(x=>typeof x==='string').slice(0,30):[],
   recent:Array.isArray(ls.get('pk:recent'))?ls.get('pk:recent').filter(k=>typeof k==='string'&&parsePk0(k)).slice(0,8):[],
   active:{family:Array(N).fill(false),others:Array(N).fill(false)}, onlyActive:false,
-  ytFormFam:vIdx(pref.ytf)?pref.ytf:(vIdx(pref.fam)?pref.fam:0),ytFormUnit:pref.ytu==='k'?'k':'yell',ytFormAll:false,ytFormQ:'',
+  ytFormAxis:pref.ytax==='family'?'family':'others',ytFormOth:vIdx(pref.yto)?pref.yto:(vIdx(pref.oth)?pref.oth:0),ytFormFilter:['all','empty','set'].includes(pref.ytfl)?pref.ytfl:'all',ytFormLastKey:typeof pref.ytl==='string'&&parsePk0(pref.ytl)?pref.ytl:null,
+  ytFormFam:vIdx(pref.ytf)?pref.ytf:(vIdx(pref.fam)?pref.fam:0),ytFormUnit:pref.ytu==='k'?'k':'yell',ytFormAll:!!pref.yta,ytFormQ:'',
   pats:{p:{},a:{}}, ryt:{}, oinfo:{}, pins:Array.isArray(pref.pins)?pref.pins.filter(k=>typeof k==='string'&&parsePk0(k)).slice(0,30):[], daySort:['num','near','close','todo'].includes(pref.dsort)?pref.dsort:'num',
   order:{family:Array.from({length:N},(_,i)=>i),others:Array.from({length:N},(_,i)=>i)}, pos:{family:Array.from({length:N},(_,i)=>i),others:Array.from({length:N},(_,i)=>i)}
 };
@@ -2751,7 +3039,7 @@ function deepMerge(a,b){for(const k in b){if(BADKEY(k))continue;if(b[k]&&typeof 
 const pend={}; let timer=null, chain=Promise.resolve();
 function setStatus(cls,txt){const s=$('status');s.className='status '+cls;
   if(cls==='ok'&&/保存済み/.test(txt)){const d=new Date();txt+=` ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`}
-  s.lastElementChild.textContent=txt;daySaveMirror()}
+  s.lastElementChild.textContent=txt;daySaveMirror();ytFormSaveMirror()}
 function schedule(){setStatus('busy',db&&navigator.onLine===false?'オフライン：つながったら保存します':'保存中…');clearTimeout(timer);timer=setTimeout(()=>{timer=null;flush()},500)}
 function queueWrite(path,obj){if(fcCache)fcCache.clear();pend[path]={obj};schedule()}
 function queueMonth(ym,patch,mo){
@@ -2992,7 +3280,7 @@ function renderRec(){
     <div class="cyl">${condYellTag(F,O,true)}</div>
     <div class="gsum">${PI>=0?`<span class="ptag">${PL[PI]}</span> `:''}${goalName(F,undefined,O)||'カスタム '}${dLabel(GD)}・${hm(GM)}</div>
     ${parr.length?`<label class="patsel"><span>この他人垢の条件</span><select class="sm" id="patSel" data-pa="${F}" aria-label="この組み合わせで使う条件"><option value="-1">自分垢の条件（${esc(famGoalDesc(F))}）</option>${parr.map((pt,i)=>`<option value="${i}"${PI===i?' selected':''}>パターン${PL[i]}：${esc(patDesc(pt))}</option>`).join('')}</select></label>`:''}
-    ${PI>=0?`<div class="gset pnote">他人垢の<b>パターン${PL[PI]}</b>で判定しています。パターンの中身は「名前・条件設定」で変えられます。</div>`:`<div class="gset">${goalSelects(F,'rg','month')}
+    ${PI>=0?`<div class="gset pnote">他人垢の<b>パターン${PL[PI]}</b>で判定しています。パターンの中身は「名前・目標設定」の詳細設定で変えられます。</div>`:`<div class="gset">${goalSelects(F,'rg','month')}
       <span class="gtag${isOv(F)?' ov':''}">${isOv(F)?'この月だけ変更中':'デフォルト'}</span>
       ${isOv(F)?`<button class="btn sm2" id="goalReset">デフォルト（${dLabel(S.goals.d[F])}・${hm(S.goals.m[F])}）に戻す</button>`:''}</div>`}
     ${tierInfo(gT(F,undefined,O),gC(F,undefined,O))}
@@ -3560,7 +3848,7 @@ function fcText(){ const by=famCoinPlan(ycFilt()), {m}=ymParts(S.ym), fs=Object.
     for(const x of b.rows) t+=`・${othName(x.o)}　${fcTgt(x)} → ${cfmt(x.need)}コイン（${!x.t?'段階前':x.v==null?'エール未入力':`今 ${yfmt(x.v)}${x.ok?' ✓':'・残り '+cfmt(x.need-x.used)}`}）\n` }
   return t+`\n合計 必要 ${cfmt(N2)}／使った目安 ${cfmt(U)}／あと ${cfmt(Math.max(0,N2-U))}（${fs.length}人・${n}組）\n※コアファン条件表の必要コインからの目安です\n\n© Yoshi1012 無断転載・転用・再配布禁止` }
 $('tYCoin').addEventListener('click',ev=>{
-  const g=ev.target.closest('[data-ycgo]'); if(g){ const p=parsePk(g.dataset.ycgo); if(!p) return; S.fam=p[0]; S.oth=p[1]; S.tab='rec'; savePref(); render(); window.scrollTo(0,0); return }
+  const g=ev.target.closest('[data-ycgo]'); if(g){ const p=parsePk(g.dataset.ycgo); if(!p||!settingsPrepareNavigation()) return; S.fam=p[0]; S.oth=p[1]; S.tab='rec'; savePref(); render(); window.scrollTo(0,0); return }
   const fb=ev.target.closest('[data-ycf]'); if(fb){ const v=fb.dataset.ycf; S.sumFam=S.sumFam===v?'all':v; savePref(); renderSum(); undo=null; showToast(S.sumFam==='all'?'絞り込みを外しました':`${famName(+v)}で絞り込みました`,false); return }
   const tr=ev.target.closest('tr[data-yx]'); if(!tr) return; const f=+tr.dataset.yx; if(S.ycOpen.has(f)) S.ycOpen.delete(f); else S.ycOpen.add(f); renderYCoin();
   const nr=$('tYCoin').querySelector(`tr[data-yx="${f}"]`); if(nr) nr.focus({preventScroll:true}) });
@@ -3576,7 +3864,7 @@ $('ycTools').addEventListener('click',ev=>{
 function fcKeys(f){ const M=S.month; return [...new Set([...Object.keys(M.records||{}),...Object.keys(M.yell||{}),...Object.keys(M.yt||{}),...Object.keys(M.box||{}),...Object.keys(M.ryell||{}),...(S.extra||[])])].filter(k=>{const p=parsePk(k); return p&&p[0]===f}) }
 function fcFams(){ const by=famCoinPlan(), st=new Set([...Object.keys(by),...Object.keys(by.nx)].map(Number)); return S.order.family.filter(f=>st.has(f)) }
 function fcCur(){ const fs=fcFams(); let f=S.fcF; if(f==null||!fs.includes(f)) f=S.sumFam!=='all'&&fs.includes(+S.sumFam)?+S.sumFam:fs.includes(S.fam)?S.fam:(fs.length?fs[0]:null); return {f,fs} }
-function fcOpenFor(f){ S.fcF=f; S.tab='sum'; savePref(); render(); requestAnimationFrame(()=>{ const c=$('fcCard'); if(!c) return; if(c.classList.contains('col')) toggleCard(c,false); jumpTo(c) }) }
+function fcOpenFor(f){ if(!settingsPrepareNavigation()||!dayPrepareNavigation())return false;S.fcF=f; S.tab='sum'; savePref(); render(); requestAnimationFrame(()=>{ const c=$('fcCard'); if(!c) return; if(c.classList.contains('col')) toggleCard(c,false); jumpTo(c) });return true }
 function fcTiers(rows){ const m=new Map(); for(const r of rows){ const key=fcTgt(r), x=m.get(key)||{n:0,c:0}; x.n++; x.c+=r.need; m.set(key,x) } return [...m].sort((a,b)=>b[1].c-a[1].c) }
 function fcRowsSorted(b){ const rs=r=>Math.max(0,r.need-r.used); return b.rows.slice().sort({need:(x,y)=>y.need-x.need,rest:(x,y)=>rs(y)-rs(x)}[S.fcSort]||(()=>0)).sort((x,y)=>S.fcSort==='oth'?PO(x.o)-PO(y.o):0) }
 { const pr=ls.get('pk:pref')||{}; S.fcFl=['all','todo','na'].includes(pr.fcfl)?pr.fcfl:'all'; }
@@ -3603,7 +3891,7 @@ function renderFcCard(force){
   const P=famCoinPlan(x=>x===f), b=P[f], nx=P.nx[f]||0, pv=S.prevMonth?famCoinPlan(x=>x===f,S.prevMonth)[f]:null, pvo={}; if(pv) for(const r of pv.rows) pvo[r.o]=r;
   const i=fs.indexOf(f), one=fs.length<2;
   let h=`<div class="fch"><button type="button" class="step" data-fcs="-1"${one?' disabled':''} aria-label="前の自分垢">‹</button><select class="sm" id="fcSel" aria-label="必要コインを見る自分垢">${fs.map(x=>`<option value="${x}"${x===f?' selected':''}>${esc(famName(x))}</option>`).join('')}</select><button type="button" class="step" data-fcs="1"${one?' disabled':''} aria-label="次の自分垢">›</button><span class="fcpos">${i+1} / ${fs.length}人${b?`<b class="${fcRest(b)?'':'ok'}">${fcRest(b)?'あと '+cfmt(fcRest(b)):'達成 ✓'}</b>`:''}</span></div>`;
-  const bulk=`<div class="fcbulk"><span>この自分垢の組み合わせに目標</span><input type="text" id="fcBV" inputmode="decimal" enterkeyhint="done" autocomplete="off" maxlength="12" placeholder="例:5" aria-label="まとめて入れるエール目標（k）"><span class="yu">k</span><label class="chkl"><input type="checkbox" id="fcBOnly"${S.fcBAll?'':' checked'}> 未設定だけ</label><button type="button" class="btn sm2" id="fcBGo">まとめて入れる</button></div>`;
+  const bulk=`<div class="fcgoal-link"><button type="button" class="btn" data-fcgoal-family="${f}">この自分垢の目標を設定</button></div>`;
   if(!b){ el.innerHTML=h+`<p class="hint fcx">${esc(famName(f))}のこの月度の${nx}組は、達成条件がカスタム（エール段階なし）でエール目標もないため、必要コインを計算できません。エール目標を入れると計算します。</p>`+bulk; return }
   const rest=fcRest(b), per=fcPer(rest), pct=b.need?Math.min(100,Math.floor(b.used/b.need*100)):100, ok=!rest, left=fcLeft();
   h+=`<div class="fchero${ok?' ok':''}"><div class="fcbig"><span>${m}月の目標エールに必要なコイン</span><b>${cfmt(b.need)}<small>コイン</small></b><em>${b.n}組（${fcSrc(b)}）${nx?`・計算外${nx}組`:''}${pv?`・先月 ${cfmt(pv.need)}（${fcDiff(b.need,pv.need)}）`:''}</em></div>
@@ -3616,12 +3904,10 @@ function renderFcCard(force){
   const shown=fcRowsSorted(b).filter(fcRowPass);
   h+=`<div class="fcrows">`+(shown.length?'':`<p class="empty">この表示に当てはまる組み合わせはありません（「すべて」で全部表示）</p>`)+shown.map(r=>{ const rs=Math.max(0,r.need-r.used), ya=r.v!=null&&r.v<r.tv?r.tv-r.v:0, p=pvo[r.o];
     return `<div class="fcr${r.ok?' ok':''}"><button type="button" class="fcn2" data-fcgo="${r.k}" title="当月一覧表示で見る">${esc(othName(r.o))} ›</button>
-      <span class="fcin"><button type="button" class="fcsb" data-fcstep="-1" data-fck="${r.k}" aria-label="${esc(othName(r.o))}の目標を1段階下げる"${fcStepTier(r.tv,-1)==null?' disabled':''}>▼</button><label>目標<input type="text" inputmode="decimal" enterkeyhint="done" list="ytList" data-fct="${r.k}" data-fcym="${S.ym}" value="${r.src==='y'?kn(r.tv):''}" placeholder="${r.src==='c'?kn(r.tv):''}" autocomplete="off" maxlength="12" aria-label="${esc(othName(r.o))}へのエール目標（k）。空にすると達成条件の段階"><span class="yu">k</span></label><button type="button" class="fcsb" data-fcstep="1" data-fck="${r.k}" aria-label="${esc(othName(r.o))}の目標を1段階上げる"${fcStepTier(r.tv,1)==null?' disabled':''}>▲</button></span>
+      <span class="fcin fcgoal-read"><span>目標 <b>${yfmt(r.tv)}</b></span><button type="button" class="btn sm2" data-fcgoal="${r.k}" aria-label="${esc(famName(f))}から${esc(othName(r.o))}への目標を設定">変更</button></span>
       <span class="fcsrc">${r.src==='y'?'エール目標で計算':`達成条件（${esc(fcTgt(r))}）で計算`}${r.t?`<i>条件${r.c===1?2:1}なら ${cfmt(r.c===1?r.t.c2:r.t.c1)}</i>`:''}</span>
       <span class="fcv">必要 <b>${cfmt(r.need)}</b>${p?`<i>先月 ${cfmt(p.need)}</i>`:''}</span>
       <span class="fcu">${!r.t?'最初の段階（0.01k）より下のため0コイン':r.v==null?'エール未入力':`今 ${yfmt(r.v)}（${cfmt(r.used)}）・${r.ok?'届いています ✓':`残り ${cfmt(rs)}・エールあと${yfmt(ya)}`}`}</span></div>` }).join('')+'</div>';
-  { const have=new Set(fcKeys(f).map(k=>parsePk(k)[1])), opts=S.order.others.filter(o=>!have.has(o));
-    if(opts.length) h+=`<div class="fcadd"><span>稼ぎ先を追加</span><select class="sm" id="fcAddO" aria-label="追加する他人垢">${opts.map(o=>`<option value="${o}">${esc(othName(o))}</option>`).join('')}</select><label>目標<input type="text" id="fcAddV" inputmode="decimal" list="ytList" autocomplete="off" maxlength="12" placeholder="なし" aria-label="追加する組み合わせのエール目標（k）。空なら達成条件の段階で計算"><span class="yu">k</span></label><button type="button" class="btn sm2" id="fcAddGo">追加</button></div>`; }
   if(nx) h+=`<p class="hint fcx">ほかに${nx}組は、達成条件がカスタム（エール段階なし）でエール目標もないため計算していません。</p>`;
   el.innerHTML=h+bulk;
 }
@@ -3663,12 +3949,13 @@ function fcSyncNumber(t,commit,quiet=false){
   if(old!==v)fcSetYt(k,v);
   if(commit){if(fcFinalizeInputUndo(t,'yt',k,v)&&!quiet)showToast(`${othName(p[1])}：エール目標を${v==null?'なし（達成条件の段階で計算）':yfmt(v)}にしました`);if(!quiet)fcRefreshAfterInput()}
 }
+function fcPrepareNavigation(){const body=$('fcBody');if(!body)return true;const comp=[...body.querySelectorAll('input')].find(t=>t.dataset.numComp==='1');if(comp){showToast('入力中の文字を確定してから操作してください。',false);return false}const bad=[...body.querySelectorAll('input')].find(t=>t.dataset.fcym===S.ym&&t.classList.contains('bad'));if(bad){showToast('赤い入力欄を直してから操作してください。',false);bad.focus({preventScroll:true});return false}const t=document.activeElement;if(t&&body.contains(t)&&(t.id==='fcBud'||t.dataset.fct)){fcSyncNumber(t,true,true);if(t.classList.contains('bad')){showToast('赤い入力欄を直してから操作してください。',false);t.focus({preventScroll:true});return false}t.blur()}return true}
 $('fcBody').addEventListener('input',ev=>{if(!ev.isComposing)fcSyncNumber(ev.target,false)});
 $('fcBody').addEventListener('compositionstart',ev=>{if(ev.target.id==='fcBud'||ev.target.dataset.fct)ev.target.dataset.numComp='1'});
 $('fcBody').addEventListener('compositionend',ev=>{delete ev.target.dataset.numComp;fcSyncNumber(ev.target,false)});
 $('fcBody').addEventListener('change',ev=>{ const t=ev.target;
-  if(t.id==='fcSel'){ S.fcF=+t.value; savePref(); renderFcCard(true); return }
-  if(t.id==='fcSort'){ S.fcSort=t.value; savePref(); renderFcCard(true); return }
+  if(t.id==='fcSel'){ if(!fcPrepareNavigation()){t.value=String(fcCur().f);return}S.fcF=+t.value; savePref(); renderFcCard(true); return }
+  if(t.id==='fcSort'){ if(!fcPrepareNavigation()){t.value=S.fcSort;return}S.fcSort=t.value; savePref(); renderFcCard(true); return }
   if(t.id==='fcBOnly'){ S.fcBAll=!t.checked; return }
   if(t.id==='fcBud'||(t.dataset&&t.dataset.fct))fcSyncNumber(t,true); });
 $('fcBody').addEventListener('keydown',ev=>{ const t=ev.target; if(ev.key!=='Enter'||ev.isComposing||ev.keyCode===229||t.dataset.numComp==='1') return;
@@ -3678,8 +3965,9 @@ $('fcBody').addEventListener('keydown',ev=>{ const t=ev.target; if(ev.key!=='Ent
   if(t.id==='fcAddV'){ ev.preventDefault(); $('fcAddGo').click() } });
 $('fcBody').addEventListener('focusout',ev=>{ if(ev.target.id==='fcBud'||(ev.target.dataset&&ev.target.dataset.fct)) setTimeout(()=>{ if(!$('fcBody').contains(document.activeElement)) renderFcCard() },0) });
 $('fcBody').addEventListener('click',ev=>{
-  const st=ev.target.closest('[data-fcs]'); if(st){ const {f,fs}=fcCur(); if(!fs.length) return; const i=(fs.indexOf(f)+ +st.dataset.fcs+fs.length)%fs.length; S.fcF=fs[i]; savePref(); renderFcCard(true); return }
-  const fl=ev.target.closest('[data-fcfl]'); if(fl){ S.fcFl=fl.dataset.fcfl; savePref(); renderFcCard(true); return }
+  const goal=ev.target.closest('[data-fcgoal]');if(goal){ytFormOpenFor(goal.dataset.fcgoal);return}const goalFam=ev.target.closest('[data-fcgoal-family]');if(goalFam){ytFormOpenFor(null,+goalFam.dataset.fcgoalFamily);return}
+  const st=ev.target.closest('[data-fcs]'); if(st){ if(!fcPrepareNavigation())return;const {f,fs}=fcCur(); if(!fs.length) return; const i=(fs.indexOf(f)+ +st.dataset.fcs+fs.length)%fs.length; S.fcF=fs[i]; savePref(); renderFcCard(true); return }
+  const fl=ev.target.closest('[data-fcfl]'); if(fl){ if(!fcPrepareNavigation())return;S.fcFl=fl.dataset.fcfl; savePref(); renderFcCard(true); return }
   const sb=ev.target.closest('[data-fcstep]'); if(sb){ if(!S.mLoaded||sb.disabled) return; const k=sb.dataset.fck, p=parsePk(k), r=(famCoinPlan(x=>x===p[0])[p[0]]||{rows:[]}).rows.find(x=>x.k===k); if(!r) return;
     const v=fcStepTier(r.tv,+sb.dataset.fcstep); if(v==null) return; const old=ytOf(k); fcSetYt(k,v); pushUndo({ym:S.ym,items:[],extra:{yt:{[k]:old??null}}}); fcAfter();
     const nb=$('fcBody').querySelector(`[data-fcstep="${sb.dataset.fcstep}"][data-fck="${k}"]`); if(nb&&!nb.disabled) nb.focus({preventScroll:true}); showToast(`${othName(p[1])}：エール目標を${yfmt(v)}にしました`); return }
@@ -3688,7 +3976,7 @@ $('fcBody').addEventListener('click',ev=>{
     if(Number.isNaN(v0)){ undo=null; showToast('目標はk単位の数字で（例：5）。空なら達成条件の段階で計算します',false); return }
     if(v0){ fcSetYt(k,v0); pushUndo({ym:S.ym,items:[],extra:{yt:{[k]:null}}}) } else if(!S.extra.includes(k)) S.extra.push(k);
     fcAfter(); showToast(`${famName(f)} → ${othName(o)} を追加しました${v0?`（目標 ${yfmt(v0)}）`:'（達成条件の段階で計算）'}`,!!v0); return }
-  const g=ev.target.closest('[data-fcgo]'); if(g){ const p=parsePk(g.dataset.fcgo); if(!p) return; S.fam=p[0]; S.oth=p[1]; S.tab='rec'; savePref(); render(); window.scrollTo(0,0); return }
+  const g=ev.target.closest('[data-fcgo]'); if(g){ const p=parsePk(g.dataset.fcgo); if(!p||!settingsPrepareNavigation()) return; S.fam=p[0]; S.oth=p[1]; S.tab='rec'; savePref(); render(); window.scrollTo(0,0); return }
   if(ev.target.id==='fcCopy'){ const {f}=fcCur(); const t=fcTextOne(f); if(!t) return; $('copyText').value=t; const fb=()=>{ $('copyBox').hidden=false; const ta=$('copyText'); ta.focus(); ta.select(); ta.setSelectionRange(0,t.length) };
     try{ navigator.clipboard.writeText(t).then(()=>{ $('copyBox').hidden=true; undo=null; showToast(`${famName(f)}の必要コインをコピーしました`,false) },fb) }catch(e){ fb() } return }
   if(ev.target.id==='fcBGo'){ if(!S.mLoaded) return; const {f}=fcCur(); if(f==null) return; const v0=parseYell($('fcBV').value);
@@ -3696,109 +3984,134 @@ $('fcBody').addEventListener('click',ev=>{
     const only=$('fcBOnly').checked, ks=fcKeys(f).filter(k=>!(only&&ytOf(k)!=null)&&ytOf(k)!==v0); if(!ks.length){ undo=null; showToast(only?'目標が未設定の組み合わせはありません（「未設定だけ」を外すと上書きします）':'変わる組み合わせはありません',false); return }
     const ex={}; S.month.yt=S.month.yt||{}; for(const k of ks){ ex[k]=ytOf(k)??null; S.month.yt[k]=v0 } queueMonth(S.ym,{yt:Object.fromEntries(ks.map(k=>[k,v0]))}); pushUndo({ym:S.ym,items:[],extra:{yt:ex}});
     $('fcBV').value=''; fcAfter(); showToast(`${famName(f)}：${ks.length}組のエール目標を${yfmt(v0)}にしました`) } });
-onSwipe($('fcBody'),dir=>{ const {f,fs}=fcCur(); if(fs.length<2) return; S.fcF=fs[(fs.indexOf(f)+dir+fs.length)%fs.length]; savePref(); renderFcCard(true); undo=null; showToast(`自分垢：${famName(S.fcF)}`,false) });
+onSwipe($('fcBody'),dir=>{ if(!fcPrepareNavigation())return;const {f,fs}=fcCur(); if(fs.length<2) return; S.fcF=fs[(fs.indexOf(f)+dir+fs.length)%fs.length]; savePref(); renderFcCard(true); undo=null; showToast(`自分垢：${famName(S.fcF)}`,false) });
 $(`tYCoin`).addEventListener('click',ev=>{ const b=ev.target.closest('[data-fcpick]'); if(b){ ev.stopPropagation(); fcOpenFor(+b.dataset.fcpick) } },true);
 document.addEventListener('click',ev=>{ const b=ev.target.closest('[data-fcopen]'); if(!b) return; fcOpenFor(+b.dataset.fcopen) });
 /* ---------- 自分垢ごとの月別目標フォーム ---------- */
+const ytFormAxis=()=>S.ytFormAxis==='others'?'others':'family';
+const ytFormAnchor=()=>ytFormAxis()==='others'?S.ytFormOth:S.ytFormFam;
+const ytFormRowKind=()=>ytFormAxis()==='others'?'family':'others';
+const ytFormPair=id=>ytFormAxis()==='others'?pk(id,S.ytFormOth):pk(S.ytFormFam,id);
+const ytFormContext=()=>[S.ym,ytFormAxis(),ytFormAnchor(),S.ytFormUnit].join('|');
+const ytFormRowName=id=>ytFormRowKind()==='family'?famName(id):othName(id);
 function ytFormFormat(v,unit=S.ytFormUnit){return v==null?'':unit==='k'?kn(v):cfmt(v)}
 function ytFormParse(raw,unit,commit){
-  let x=String(raw).normalize('NFKC').replace(/[,，\s]/g,'');
-  if(unit==='k')x=x.replace(/[kK]$/,'');
-  if(!commit&&(x===''||(unit==='k'&&x.endsWith('.'))))return undefined;
-  if(x==='')return null;
+  let x=String(raw).normalize('NFKC').replace(/[,，\s]/g,'');if(unit==='k')x=x.replace(/[kK]$/,'');
+  if(!commit&&(x===''||(unit==='k'&&x.endsWith('.'))))return undefined;if(x==='')return null;
   if(!(unit==='k'?/^\d+(\.\d{0,3})?$/:/^\d+$/).test(x))return NaN;
-  const v=unit==='k'?Math.round(Number(x)*1000):Number(x);
-  return Number.isSafeInteger(v)&&v>=0&&v<=YMAX?(v||null):NaN;
+  const v=unit==='k'?Math.round(Number(x)*1000):Number(x);return Number.isSafeInteger(v)&&v>=0&&v<=YMAX?(v||null):NaN;
+}
+function ytFormCandidates(){
+  const kind=ytFormRowKind(),M=S.month,ids=S.order[kind];let out=S.ytFormAll?ids.slice():ids.filter(id=>{const k=ytFormPair(id);return S.active[kind][id]||!isDefName(kind,id)||ytOf(k)!=null||yellOf(k)!=null||Object.keys((M.records||{})[k]||{}).length});
+  if(!out.length&&!S.ytFormAll)out=ids.slice(0,5);return out;
 }
 function ytFormOthers(){
-  const f=S.ytFormFam,q=dayKana(S.ytFormQ||''),M=S.month;
-  let ids=S.ytFormAll?S.order.others.slice():S.order.others.filter(o=>{const k=pk(f,o);return S.active.others[o]||!isDefName('others',o)||ytOf(k)!=null||yellOf(k)!=null||Object.keys((M.records||{})[k]||{}).length});
-  const fallback=!ids.length&&!S.ytFormAll;if(fallback)ids=S.order.others.slice(0,5);
-  return ids.filter(o=>!q||[othName(o),String(PO(o)+1),pad(PO(o)+1)].some(n=>dayKana(n).includes(q)));
+  const q=dayKana(S.ytFormQ||''),P=ytFormRowKind()==='family'?PF:PO,filter=S.ytFormFilter||'all';return ytFormCandidates().filter(id=>{const v=ytOf(ytFormPair(id));return (filter!=='set'||v!=null)&&(filter!=='empty'||v==null)&&(!q||(/^\d+$/.test(q)?P(id)+1===+q:dayKana(ytFormRowName(id)).includes(q)))});
 }
+function ytFormFieldContext(t){const p=t&&t.dataset&&parsePk(t.dataset.ytfk);if(!p||!S.mLoaded||t.dataset.ytfym!==S.ym||t.dataset.ytfunit!==S.ytFormUnit||t.dataset.ytfctx!==ytFormContext())return null;return (ytFormAxis()==='others'?p[1]===S.ytFormOth:p[0]===S.ytFormFam)?p:null}
 function ytFormRowPreview(t,message,error=false){
-  const row=t.closest('.ytf-row');if(!row)return;
-  const out=row.querySelector('.ytf-preview');if(out){out.textContent=message;out.classList.toggle('error',error)}
-  row.classList.toggle('has-target',ytOf(t.dataset.ytfk)!=null);
+  const row=t.closest('.ytf-row');if(!row)return;const out=row.querySelector('.ytf-preview');if(out){out.textContent=message;out.classList.toggle('error',error)}row.classList.toggle('has-target',ytOf(t.dataset.ytfk)!=null);const clear=row.querySelector('[data-ytf-clear]');if(clear)clear.hidden=ytOf(t.dataset.ytfk)==null;
 }
-function ytFormValueLabel(v){return v==null?'個別目標なし · 達成条件で計算':cfmt(v)+'エール = '+kn(v)+'k'}
+function ytFormValueLabel(v){return v==null?'個別目標なし（達成条件を使用）':cfmt(v)+'エール = '+kn(v)+'k'}
+let ytFormArm=null;
+function ytFormResetArm(){ytFormArm=null;const b=$('ytFormApply');b.classList.remove('arm')}
+function ytFormSaveMirror(){const v=daySaveState();for(const n of document.querySelectorAll('.ytf-save')){n.dataset.state=v.state;n.textContent=v.txt}}
 function ytFormSyncInput(t,commit,quiet=false){
-  if(!t||!t.dataset||!parsePk(t.dataset.ytfk)||!S.mLoaded||t.dataset.ytfym!==S.ym||t.dataset.numComp==='1')return;
-  const k=t.dataset.ytfk,v=ytFormParse(t.value,t.dataset.ytfunit,commit);
-  if(v===undefined){if(!quiet)ytFormRowPreview(t,'入力中 · 欄を離れると確定');return}
-  if(Number.isNaN(v)){
-    t.classList.add('bad');t.setAttribute('aria-invalid','true');if(commit)fcFinalizeInputUndo(t,'yt',k,ytOf(k));
-    if(!quiet)ytFormRowPreview(t,t.dataset.ytfunit==='k'?'数字で入力（例：20 / 小数3桁まで）':'エール数を整数で入力（例：20000）',true);
-    return;
-  }
-  t.classList.remove('bad');t.removeAttribute('aria-invalid');const old=ytOf(k);if(t.dataset.numStart===undefined)t.dataset.numStart=old==null?'':String(old);
-  if(old!==v)fcSetYt(k,v);
-  if(commit){
-    const changed=fcFinalizeInputUndo(t,'yt',k,v);t.value=ytFormFormat(v,t.dataset.ytfunit);
-    if(changed&&!quiet){const p=parsePk(k);$('ytFormStatus').textContent=famName(p[0])+' → '+othName(p[1])+'：'+ytFormValueLabel(v);showToast('目標を'+(v==null?'個別設定なし':cfmt(v)+'エール')+'にしました')}
-  }
-  if(!quiet){ytFormRowPreview(t,ytFormValueLabel(v));ytFormUpdateMeta();updFamYell();if(typeof updFamBadges==='function')updFamBadges();renderListSum()}
+  const p=ytFormFieldContext(t);if(!p||t.dataset.numComp==='1')return false;const k=t.dataset.ytfk,v=ytFormParse(t.value,t.dataset.ytfunit,commit);
+  if(v===undefined){ytFormRowPreview(t,'入力中 · 欄を離れると確定');return true}
+  if(Number.isNaN(v)){t.classList.add('bad');t.setAttribute('aria-invalid','true');if(commit)fcFinalizeInputUndo(t,'yt',k,ytOf(k));ytFormRowPreview(t,(t.dataset.ytfunit==='k'?'例：20 / 小数3桁まで':'例：20000 / 整数のみ')+'。保存値：'+ytFormValueLabel(ytOf(k)),true);return false}
+  t.classList.remove('bad');t.removeAttribute('aria-invalid');const old=ytOf(k);if(old!==v){if(t.dataset.numStart===undefined)t.dataset.numStart=old==null?'':String(old);fcSetYt(k,v);ytFormResetArm()}
+  if(commit){const changed=fcFinalizeInputUndo(t,'yt',k,v);t.value=ytFormFormat(v,t.dataset.ytfunit);if(changed&&!quiet)$('ytFormStatus').textContent=famName(p[0])+' → '+othName(p[1])+'：'+ytFormValueLabel(v)}
+  S.ytFormLastKey=k;ytFormRowPreview(t,ytFormValueLabel(v));ytFormUpdateMeta();updFamYell();if(typeof updFamBadges==='function')updFamBadges();renderListSum();return true;
 }
-function ytFormCommitFocused(){const t=document.activeElement;if(t&&t.dataset&&t.dataset.ytfk)ytFormSyncInput(t,true,true)}
-function ytFormUndoFields(extra){if(!extra||!extra.yt)return;for(const t of ytFormFields()){if(!Object.prototype.hasOwnProperty.call(extra.yt,t.dataset.ytfk))continue;delete t.dataset.numStart;t.classList.remove('bad');t.removeAttribute('aria-invalid');t.value=ytFormFormat(ytOf(t.dataset.ytfk),t.dataset.ytfunit);ytFormRowPreview(t,ytFormValueLabel(ytOf(t.dataset.ytfk)))}ytFormUpdateMeta();updFamYell();if(typeof updFamBadges==='function')updFamBadges();renderListSum()}
-function ytFormFields(){return [...$('ytFormRows').querySelectorAll('input[data-ytfk]')].filter(t=>t.dataset.ytfym===S.ym&&parsePk(t.dataset.ytfk)?.[0]===S.ytFormFam)}
+function ytFormCommitFocused(){const t=document.activeElement;return t&&t.dataset&&t.dataset.ytfk?ytFormSyncInput(t,true,true):true}
+function ytFormFields(){return [...$('ytFormRows').querySelectorAll('input[data-ytfk]')].filter(t=>ytFormFieldContext(t))}
+function ytFormPrepareNavigation(){
+  const fields=[...$('ytFormRows').querySelectorAll('input[data-ytfk]')],comp=fields.some(t=>t.dataset.numComp==='1')||$('ytFormBulk').dataset.numComp==='1'||$('ytFormQuery').dataset.numComp==='1';
+  if(comp){$('ytFormStatus').textContent='入力中の文字を確定してから操作してください。';return false}
+  const bad=fields.find(t=>ytFormFieldContext(t)&&t.classList.contains('bad'));if(bad){$('ytFormStatus').textContent='赤い目標欄を直すか、Escで入力を戻してください。';bad.focus({preventScroll:true});return false}
+  if(!ytFormCommitFocused())return false;const a=document.activeElement;if(a&&a.dataset&&a.dataset.ytfk)a.blur();return true;
+}
+function settingsPrepareNavigation(){if($('nbTx').dataset.nbComposing==='1'){showToast('名前の文字変換を確定してから操作してください。',false);return false}if(typeof fcPrepareNavigation==='function'&&!fcPrepareNavigation())return false;
+  if([...document.querySelectorAll('#lstFam input[data-k],#lstOth input[data-k]')].some(t=>t.dataset.nameComposing==='1')){showToast('名前の文字を確定してから操作してください',false);return false}return ytFormPrepareNavigation();
+}
+function ytFormCancel(t){
+  if(!ytFormFieldContext(t)||t.dataset.numComp==='1')return false;const k=t.dataset.ytfk,v=t.dataset.numStart===undefined?ytOf(k):t.dataset.numStart===''?null:+t.dataset.numStart;delete t.dataset.numStart;if(ytOf(k)!==v)fcSetYt(k,v);t.value=ytFormFormat(v,t.dataset.ytfunit);t.classList.remove('bad');t.removeAttribute('aria-invalid');ytFormRowPreview(t,ytFormValueLabel(v));ytFormResetArm();ytFormUpdateMeta();updFamYell();if(typeof updFamBadges==='function')updFamBadges();renderListSum();$('ytFormStatus').textContent='未確定の入力を戻しました。';return true;
+}
+function ytFormUndoFields(extra){if(!extra||!extra.yt)return;for(const t of ytFormFields()){if(!Object.prototype.hasOwnProperty.call(extra.yt,t.dataset.ytfk))continue;delete t.dataset.numStart;t.classList.remove('bad');t.removeAttribute('aria-invalid');t.value=ytFormFormat(ytOf(t.dataset.ytfk),t.dataset.ytfunit);ytFormRowPreview(t,ytFormValueLabel(ytOf(t.dataset.ytfk)))}ytFormResetArm();ytFormUpdateMeta();updFamYell();if(typeof updFamBadges==='function')updFamBadges();renderListSum()}
+function ytFormBulkPlan(){
+  const v=ytFormParse($('ytFormBulk').value,S.ytFormUnit,true),only=$('ytFormEmpty').checked,visible=ytFormFields().map(t=>t.dataset.ytfk),keys=visible.filter(k=>(!only||ytOf(k)==null)&&ytOf(k)!==v);
+  return {v,only,keys,sig:JSON.stringify([ytFormContext(),S.ytFormQ||'',S.ytFormFilter||'all',!!S.ytFormAll,visible,visible.map(k=>ytOf(k)),v,only])};
+}
 function ytFormUpdateMeta(){
-  const ids=ytFormFields(),set=S.order.others.filter(o=>ytOf(pk(S.ytFormFam,o))!=null).length;
-  $('ytFormMeta').innerHTML='<b>'+esc(famName(S.ytFormFam))+'</b> → 表示 '+ids.length+'人 · 目標あり '+set+'人';
-  const only=$('ytFormEmpty').checked,affected=ids.filter(t=>!only||ytOf(t.dataset.ytfk)==null).length,v=ytFormParse($('ytFormBulk').value,S.ytFormUnit,true);
-  $('ytFormScope').textContent='対象：'+famName(S.ytFormFam)+' → 表示中の他人垢 '+affected+'人'+(only?'（未設定だけ）':'（設定済みの目標も変更）');
-  const b=$('ytFormApply');b.textContent=affected?(only?'未設定 ':'表示中 ')+affected+'人へ反映':'反映する他人垢がいません';b.disabled=!S.mLoaded||!affected||v==null||Number.isNaN(v);
+  const fields=ytFormFields(),all=ytFormCandidates(),set=all.filter(id=>ytOf(ytFormPair(id))!=null).length,total=all.reduce((n,id)=>n+(ytOf(ytFormPair(id))||0),0),rowKind=ytFormRowKind()==='family'?'自分垢':'他人垢';
+  $('ytFormMeta').innerHTML='<span>表示 <b>'+fields.length+'人</b></span><span>目標あり <b>'+set+' / '+all.length+'人</b></span><span>個別目標の合計 <b>'+cfmt(total)+'エール</b></span>';
+  const p=ytFormBulkPlan(),b=$('ytFormApply');if(ytFormArm&&ytFormArm.sig!==p.sig)ytFormResetArm();
+  $('ytFormScope').textContent=(ytFormAxis()==='others'?othName(S.ytFormOth)+'で取る目標':famName(S.ytFormFam)+'の目標')+'：表示中の'+rowKind+' '+p.keys.length+'人を変更'+(p.only?'（未設定だけ）':'（設定済みも上書き）')+(p.v?'・'+cfmt(p.v)+'エール':'');
+  b.textContent=ytFormArm?'この'+p.keys.length+'人へ確定':p.keys.length?p.keys.length+'人へ反映':'変更対象なし';b.disabled=!S.mLoaded||!p.keys.length||p.v==null||Number.isNaN(p.v)||$('ytFormBulk').dataset.numComp==='1';
+  $('ytFormQueryClear').hidden=!(S.ytFormQ||'');ytFormSaveMirror();
 }
 function ytFormRefreshNames(){
-  const sel=$('ytFormFam');if(!sel)return;fillSelect(sel,famName,S.ytFormFam);
-  for(const t of $('ytFormRows').querySelectorAll('input[data-ytfk]')){const p=parsePk(t.dataset.ytfk);if(!p)continue;const row=t.closest('.ytf-row'),n=row&&row.querySelector('.ytf-name');if(n)n.textContent=othName(p[1]);t.setAttribute('aria-label',famName(p[0])+'から'+othName(p[1])+'への目標（'+(t.dataset.ytfunit==='k'?'k単位':'エール数')+'）')}
+  fillSelect($('ytFormFam'),famName,S.ytFormFam);fillSelect($('ytFormOth'),othName,S.ytFormOth);const other=ytFormAxis()==='others';
+  $('ytFormContext').innerHTML=other?'<strong>'+esc(othName(S.ytFormOth))+'</strong>で、各自分垢が取る目標。':'<strong>'+esc(famName(S.ytFormFam))+'</strong>が、各他人垢で取る目標。';
+  for(const t of $('ytFormRows').querySelectorAll('input[data-ytfk]')){const p=parsePk(t.dataset.ytfk);if(!p)continue;const row=t.closest('.ytf-row'),n=row&&row.querySelector('.ytf-name');if(n)n.textContent=other?famName(p[0]):othName(p[1]);t.setAttribute('aria-label',S.ym+' '+famName(p[0])+' → '+othName(p[1])+'の目標（'+(t.dataset.ytfunit==='k'?'k単位':'エール数')+'）')}
   ytFormUpdateMeta();
 }
+function ytFormFocusPair(k){const t=ytFormFields().find(t=>t.dataset.ytfk===k);if(t){t.focus({preventScroll:true});t.select();t.closest('.ytf-row').scrollIntoView({block:'nearest'})}}
+function ytFormSetAxis(axis){
+  if(!['family','others'].includes(axis)||axis===ytFormAxis())return false;const a=document.activeElement,k=a&&a.dataset&&a.dataset.ytfk||S.ytFormLastKey,p=parsePk(k);if(!ytFormPrepareNavigation())return false;
+  S.ytFormAxis=axis;if(p){S.ytFormFam=p[0];S.ytFormOth=p[1]}S.ytFormQ='';S.ytFormFilter='all';ytFormResetArm();savePref();renderYtForm(true);if(p)ytFormFocusPair(k);return true;
+}
 function renderYtForm(force=false){
-  const card=$('ytFormCard');if(!card)return;const a=document.activeElement,ctx=S.ym+'|'+S.ytFormFam+'|'+S.ytFormUnit;
-  if(!force&&card.dataset.ctx===ctx&&a&&$('ytFormRows').contains(a)&&a.dataset&&a.dataset.ytfk){ytFormRefreshNames();return}
-  card.dataset.ctx=ctx;const {y,m}=ymParts(S.ym),unit=S.ytFormUnit;
-  $('ytFormMonth').textContent=y+'年'+m+'月度の目標';fillSelect($('ytFormFam'),famName,S.ytFormFam);$('ytFormFam').disabled=!S.mLoaded;
-  for(const b of card.querySelectorAll('[data-ytf-unit]'))b.setAttribute('aria-pressed',String(b.dataset.ytfUnit===unit));
-  $('ytFormExample').textContent=unit==='k'?'20,000エールなら「20」と入力。小数も入力できます（例：5.25＝5,250エール）。':'20,000エールなら「20000」と入力。カンマ・全角数字にも対応。1k＝1,000エール。';
+  const card=$('ytFormCard');if(!card)return;const a=document.activeElement,ctx=ytFormContext();if(card.dataset.ctx===ctx&&a&&$('ytFormRows').contains(a)&&a.dataset&&a.dataset.ytfk){ytFormRefreshNames();return}
+  card.dataset.ctx=ctx;const {y,m}=ymParts(S.ym),unit=S.ytFormUnit,other=ytFormAxis()==='others',rowKind=other?'自分垢':'他人垢';
+  $('ytFormMonth').textContent=y+'年'+m+'月度';$('ytFormOthPanel').hidden=!other;$('ytFormFamPanel').hidden=other;fillSelect($('ytFormFam'),famName,S.ytFormFam);fillSelect($('ytFormOth'),othName,S.ytFormOth);$('ytFormFam').disabled=!S.mLoaded;$('ytFormOth').disabled=!S.mLoaded;
+  $('ytFormHeading').textContent='2 '+rowKind+'ごとの目標を入力';for(const b of card.querySelectorAll('[data-ytf-unit]'))b.setAttribute('aria-pressed',String(b.dataset.ytfUnit===unit));for(const b of card.querySelectorAll('[data-ytf-axis]'))b.setAttribute('aria-pressed',String(b.dataset.ytfAxis===ytFormAxis()));
+  $('ytFormExample').textContent=unit==='k'?'20k＝20,000エール（例：5.25＝5,250）。空欄・0で個別目標を解除。':'20,000エール＝20k。整数・カンマ・全角数字に対応。空欄・0で個別目標を解除。';
   const bulk=$('ytFormBulk');bulk.inputMode=unit==='k'?'decimal':'numeric';bulk.placeholder=unit==='k'?'例：20':'例：20000';bulk.disabled=!S.mLoaded;$('ytFormBulkUnit').textContent=unit==='k'?'k':'エール';
-  $('ytFormQuery').value=S.ytFormQ||'';const all=$('ytFormAll');all.textContent=S.ytFormAll?'名前・目標ありだけ':'全50人を表示';all.setAttribute('aria-pressed',String(S.ytFormAll));
-  const choices=[2000,5000,10000,15000,20000,30000,40000];$('ytFormSuggestions').innerHTML=choices.map(v=>'<option value="'+ytFormFormat(v,unit)+'">'+cfmt(v)+'エール</option>').join('');
-  for(const b of card.querySelectorAll('[data-ytf-preset]'))b.textContent=ytFormFormat(+b.dataset.ytfPreset,unit)+(unit==='k'?'k':'');
-  const ids=ytFormOthers(),f=S.ytFormFam;
-  $('ytFormRows').innerHTML=ids.map(o=>{const k=pk(f,o),v=ytOf(k),id='ytf-'+f+'-'+o;return '<div class="ytf-row'+(v!=null?' has-target':'')+'"><label for="'+id+'"><span class="ytf-name">'+esc(othName(o))+'</span><span class="ytf-caption">この他人垢で取る目標</span></label><div><div class="ytf-number"><input type="text" id="'+id+'" data-ytfk="'+k+'" data-ytfym="'+S.ym+'" data-ytfunit="'+unit+'" value="'+ytFormFormat(v,unit)+'" inputmode="'+(unit==='k'?'decimal':'numeric')+'" enterkeyhint="next" list="ytFormSuggestions" autocomplete="off" maxlength="15" placeholder="'+(unit==='k'?'例：20':'例：20000')+'" aria-describedby="'+id+'-hint"'+(!S.mLoaded?' disabled':'')+'><span>'+ (unit==='k'?'k':'エール')+'</span></div><span class="ytf-preview" id="'+id+'-hint">'+ytFormValueLabel(v)+'</span></div></div>'}).join('')||'<div class="ytf-empty">該当する他人垢がありません。<br>検索を消すか「全50人を表示」で選べます。</div>';
+  const q=$('ytFormQuery');if(document.activeElement!==q)q.value=S.ytFormQ||'';q.placeholder=rowKind+'を名前・番号で探す';q.setAttribute('aria-label','目標を設定する'+rowKind+'を検索');$('ytFormFilter').value=S.ytFormFilter||'all';
+  const all=$('ytFormAll');all.textContent=S.ytFormAll?'登録・目標ありだけ':'全50人を表示';all.setAttribute('aria-pressed',String(!!S.ytFormAll));const choices=[2000,5000,10000,15000,20000,30000,40000];$('ytFormSuggestions').innerHTML=choices.map(v=>'<option value="'+ytFormFormat(v,unit)+'">'+cfmt(v)+'エール</option>').join('');for(const b of card.querySelectorAll('[data-ytf-preset]'))b.textContent=ytFormFormat(+b.dataset.ytfPreset,unit)+(unit==='k'?'k':'');
+  $('ytFormRows').innerHTML=ytFormOthers().map(n=>{const k=ytFormPair(n),[f,o]=parsePk(k),v=ytOf(k),id='ytf-'+f+'-'+o;return '<div class="ytf-row'+(v!=null?' has-target':'')+'"><label for="'+id+'"><span class="ytf-name">'+esc(ytFormRowName(n))+'</span></label><div><div class="ytf-number"><input type="text" id="'+id+'" data-ytfk="'+k+'" data-ytfym="'+S.ym+'" data-ytfunit="'+unit+'" data-ytfctx="'+ctx+'" value="'+ytFormFormat(v,unit)+'" inputmode="'+(unit==='k'?'decimal':'numeric')+'" enterkeyhint="next" list="ytFormSuggestions" autocomplete="off" maxlength="15" placeholder="'+(unit==='k'?'例：20':'例：20000')+'" aria-describedby="'+id+'-hint"'+(!S.mLoaded?' disabled':'')+'><span>'+(unit==='k'?'k':'エール')+'</span><button type="button" class="btn sm2" data-ytf-clear="'+k+'" aria-label="'+esc(famName(f)+' → '+othName(o)+'の個別目標を解除')+'"'+(v==null?' hidden':'')+'>解除</button></div><span class="ytf-preview" id="'+id+'-hint">'+ytFormValueLabel(v)+'</span></div></div>'}).join('')||'<div class="ytf-empty">該当する'+rowKind+'がありません。検索や表示を戻すか「全50人を表示」を選んでください。</div>';
   ytFormRefreshNames();
 }
 function ytFormBulkApply(){
-  if(!S.mLoaded)return;ytFormCommitFocused();const v=ytFormParse($('ytFormBulk').value,S.ytFormUnit,true);
-  if(v==null||Number.isNaN(v)){$('ytFormStatus').textContent='まとめて入れる目標を数字で入力してください（0・空欄は反映しません）。';return}
-  const only=$('ytFormEmpty').checked,keys=[...new Set(ytFormFields().map(t=>t.dataset.ytfk))].filter(k=>(!only||ytOf(k)==null)&&ytOf(k)!==v);
-  if(!keys.length){$('ytFormStatus').textContent='変更する目標がありません。';return}
-  const old={},patch={};S.month.yt=S.month.yt||{};for(const k of keys){old[k]=ytOf(k);S.month.yt[k]=v;patch[k]=v}
-  queueMonth(S.ym,{yt:patch});pushUndo({ym:S.ym,items:[],extra:{yt:old}});renderYtForm(true);updFamYell();if(typeof updFamBadges==='function')updFamBadges();renderListSum();
-  const msg=famName(S.ytFormFam)+' → '+keys.length+'人の目標を'+cfmt(v)+'エールにしました';$('ytFormStatus').textContent=msg;showToast(msg);
+  if(!S.mLoaded||!ytFormPrepareNavigation())return false;const p=ytFormBulkPlan();if(p.v==null||Number.isNaN(p.v)){$('ytFormStatus').textContent='目標を入力してください。0・空欄はまとめて反映しません。';ytFormResetArm();return false}if(!p.keys.length){$('ytFormStatus').textContent='変更する目標がありません。';ytFormResetArm();return false}
+  if(!ytFormArm||ytFormArm.sig!==p.sig||Date.now()-ytFormArm.at>=8000){const arm={sig:p.sig,at:Date.now()};ytFormArm=arm;ytFormUpdateMeta();$('ytFormApply').classList.add('arm');$('ytFormStatus').textContent='対象と目標を確認し、もう一度「確定」を押してください。';setTimeout(()=>{if(ytFormArm===arm){ytFormResetArm();ytFormUpdateMeta()}},8000);return false}
+  const old={},patch={};S.month.yt=S.month.yt||{};for(const k of p.keys){old[k]=ytOf(k);S.month.yt[k]=p.v;patch[k]=p.v}ytFormResetArm();queueMonth(S.ym,{yt:patch});pushUndo({ym:S.ym,items:[],extra:{yt:old}});renderYtForm(true);updFamYell();if(typeof updFamBadges==='function')updFamBadges();renderListSum();$('ytFormStatus').textContent=p.keys.length+'人の目標を'+cfmt(p.v)+'エールにしました。元に戻せます。';return true;
 }
+function ytFormClear(k){const t=ytFormFields().find(t=>t.dataset.ytfk===k);if(!t||[...$('ytFormRows').querySelectorAll('input')].some(n=>n.dataset.numComp==='1'))return false;if(document.activeElement!==t&&!ytFormPrepareNavigation())return false;t.value='';if(!ytFormSyncInput(t,true))return false;t.blur();renderYtForm(true);ytFormFocusPair(k);return true}
+function ytFormChangeAnchor(kind,value){if(!vIdx(value)||!ytFormPrepareNavigation())return false;if(kind==='others')S.ytFormOth=value;else S.ytFormFam=value;S.ytFormLastKey=null;ytFormResetArm();$('ytFormStatus').textContent='';savePref();renderYtForm(true);return true}
 $('ytFormRows').addEventListener('input',ev=>{if(!ev.isComposing)ytFormSyncInput(ev.target,false)});
 $('ytFormRows').addEventListener('change',ev=>ytFormSyncInput(ev.target,true));
 $('ytFormRows').addEventListener('focusout',ev=>ytFormSyncInput(ev.target,true));
+$('ytFormRows').addEventListener('focusin',ev=>{if(ytFormFieldContext(ev.target)){S.ytFormLastKey=ev.target.dataset.ytfk;savePref()}});
 $('ytFormRows').addEventListener('compositionstart',ev=>{if(ev.target.dataset.ytfk)ev.target.dataset.numComp='1'});
 $('ytFormRows').addEventListener('compositionend',ev=>{delete ev.target.dataset.numComp;ytFormSyncInput(ev.target,false)});
-$('ytFormRows').addEventListener('keydown',ev=>{const t=ev.target;if(!t.dataset.ytfk||ev.key!=='Enter'||ev.isComposing||ev.keyCode===229||t.dataset.numComp==='1')return;ev.preventDefault();ytFormSyncInput(t,true);if(t.classList.contains('bad'))return;const rows=ytFormFields(),i=rows.indexOf(t);if(rows[i+1])rows[i+1].focus();else t.blur()});
-$('ytFormFam').addEventListener('change',ev=>{ytFormCommitFocused();const f=+ev.target.value;if(!vIdx(f))return;S.ytFormFam=f;$('ytFormStatus').textContent='';savePref();renderYtForm(true)});
+$('ytFormRows').addEventListener('keydown',ev=>{const t=ev.target;if(!t.dataset.ytfk||ev.isComposing||ev.keyCode===229||t.dataset.numComp==='1')return;if(ev.key==='Escape'){ev.preventDefault();ytFormCancel(t);return}if(ev.key!=='Enter')return;ev.preventDefault();if(!ytFormSyncInput(t,true))return;const rows=ytFormFields(),i=rows.indexOf(t),next=rows[i+(ev.shiftKey?-1:1)];if(next){next.focus();next.select()}else t.blur()});
+for(const [id,kind] of [['ytFormFam','family'],['ytFormOth','others']])$(id).addEventListener('change',ev=>{if(!ytFormChangeAnchor(kind,+ev.target.value))ev.target.value=String(kind==='family'?S.ytFormFam:S.ytFormOth)});
 $('ytFormCard').addEventListener('click',ev=>{
-  const step=ev.target.closest('[data-ytf-step]');if(step){ytFormCommitFocused();const ids=[...$('ytFormFam').options].map(o=>+o.value),i=ids.indexOf(S.ytFormFam);if(!ids.length)return;S.ytFormFam=ids[(i+ +step.dataset.ytfStep+ids.length)%ids.length];$('ytFormStatus').textContent='';savePref();renderYtForm(true);return}
-  const ub=ev.target.closest('[data-ytf-unit]');if(ub&&ub.dataset.ytfUnit!==S.ytFormUnit){
-    if($('ytFormRows').querySelector('input.bad')){$('ytFormStatus').textContent='赤い入力欄を数字に直してから単位を切り替えてください。';return}
-    ytFormCommitFocused();const v=ytFormParse($('ytFormBulk').value,S.ytFormUnit,true);if(Number.isNaN(v)){$('ytFormStatus').textContent='まとめ入力の数字を直してから単位を切り替えてください。';return}
-    S.ytFormUnit=ub.dataset.ytfUnit;$('ytFormBulk').value=ytFormFormat(v);savePref();renderYtForm(true);return;
-  }
-  const preset=ev.target.closest('[data-ytf-preset]');if(preset){$('ytFormBulk').value=ytFormFormat(+preset.dataset.ytfPreset);ytFormUpdateMeta()}
+  const axis=ev.target.closest('[data-ytf-axis]');if(axis){ytFormSetAxis(axis.dataset.ytfAxis);return}const clear=ev.target.closest('[data-ytf-clear]');if(clear){ytFormClear(clear.dataset.ytfClear);return}
+  const step=ev.target.closest('[data-ytf-step]');if(step){const kind=ytFormAxis(),ids=S.order[kind],i=ids.indexOf(ytFormAnchor());ytFormChangeAnchor(kind,ids[(i+ +step.dataset.ytfStep+ids.length)%ids.length]);return}
+  const ub=ev.target.closest('[data-ytf-unit]');if(ub&&ub.dataset.ytfUnit!==S.ytFormUnit){if(!ytFormPrepareNavigation())return;const v=ytFormParse($('ytFormBulk').value,S.ytFormUnit,true);if(Number.isNaN(v)){$('ytFormStatus').textContent='まとめ入力の数字を直してから単位を切り替えてください。';return}S.ytFormUnit=ub.dataset.ytfUnit;$('ytFormBulk').value=ytFormFormat(v);ytFormResetArm();savePref();renderYtForm(true);return}
+  const preset=ev.target.closest('[data-ytf-preset]');if(preset){if(!ytFormPrepareNavigation())return;$('ytFormBulk').value=ytFormFormat(+preset.dataset.ytfPreset);ytFormResetArm();ytFormUpdateMeta()}
 });
-$('ytFormQuery').addEventListener('input',ev=>{if(ev.isComposing)return;S.ytFormQ=ev.target.value;renderYtForm(true)});
-$('ytFormQuery').addEventListener('compositionend',ev=>{S.ytFormQ=ev.target.value;renderYtForm(true)});
-$('ytFormAll').onclick=()=>{ytFormCommitFocused();S.ytFormAll=!S.ytFormAll;renderYtForm(true)};
-$('ytFormBulk').addEventListener('input',ytFormUpdateMeta);$('ytFormEmpty').addEventListener('change',ytFormUpdateMeta);$('ytFormApply').onclick=ytFormBulkApply;
+function ytFormApplyQuery(){if($('ytFormQuery').dataset.numComp==='1')return false;if(!ytFormPrepareNavigation()){$('ytFormQuery').value=S.ytFormQ||'';return false}S.ytFormQ=$('ytFormQuery').value;ytFormResetArm();renderYtForm(true);return true}
+$('ytFormQuery').addEventListener('input',ev=>{if(!ev.isComposing)ytFormApplyQuery()});
+$('ytFormQuery').addEventListener('compositionstart',ev=>ev.target.dataset.numComp='1');
+$('ytFormQuery').addEventListener('compositionend',ev=>{delete ev.target.dataset.numComp;ytFormApplyQuery()});
+$('ytFormQuery').addEventListener('search',ytFormApplyQuery);
+$('ytFormQuery').addEventListener('keydown',ev=>{if(ev.isComposing||ev.keyCode===229)return;if(ev.key==='Enter'){ev.preventDefault();if(ytFormApplyQuery()){const t=ytFormFields()[0];if(t){t.focus();t.select()}}}if(ev.key==='Escape'){ev.preventDefault();if(!ytFormPrepareNavigation())return;ev.target.value='';ytFormApplyQuery()}});
+$('ytFormQueryClear').onclick=()=>{if(!ytFormPrepareNavigation())return;$('ytFormQuery').value='';ytFormApplyQuery();$('ytFormQuery').focus()};
+$('ytFormAll').onclick=()=>{if(!ytFormPrepareNavigation())return;S.ytFormAll=!S.ytFormAll;ytFormResetArm();savePref();renderYtForm(true)};
+$('ytFormFilter').addEventListener('change',ev=>{if(!ytFormPrepareNavigation()){ev.target.value=S.ytFormFilter||'all';return}S.ytFormFilter=ev.target.value;ytFormResetArm();savePref();renderYtForm(true)});
+$('ytFormBulk').addEventListener('input',ev=>{ytFormResetArm();if(!ev.isComposing)ytFormUpdateMeta()});
+$('ytFormBulk').addEventListener('compositionstart',ev=>{ev.target.dataset.numComp='1';ytFormResetArm();ytFormUpdateMeta()});
+$('ytFormBulk').addEventListener('compositionend',ev=>{delete ev.target.dataset.numComp;ytFormUpdateMeta()});
+$('ytFormEmpty').addEventListener('change',()=>{ytFormResetArm();ytFormUpdateMeta()});$('ytFormApply').onclick=ytFormBulkApply;
+function ytFormOpenFor(k,f){const p=k?parsePk(k):null;if(k&&!p||!k&&!vIdx(f)||!settingsPrepareNavigation()||!dayPrepareNavigation())return false;S.tab='list';S.ytFormQ='';S.ytFormFilter='all';S.ytFormAll=true;S.ytFormLastKey=k||null;if(p){S.ytFormAxis='others';S.ytFormFam=p[0];S.ytFormOth=p[1]}else{S.ytFormAxis='family';S.ytFormFam=f}ytFormResetArm();savePref();render();const card=$('ytFormCard');if(card.classList.contains('col'))toggleCard(card,false);jumpTo(card);if(k)ytFormFocusPair(k);return true}
 /* ---------- 月別目標フォームここまで ---------- */
+$('settingsAdvanced').querySelector(':scope > summary').addEventListener('click',ev=>{if(!settingsPrepareNavigation())ev.preventDefault()});
+
 function renderYellCheck(){
   const R=S.month.records, keys=new Set([...Object.keys(R),...Object.keys(S.month.yell||{}),...Object.keys(S.month.yt||{})]), rows=[];
   for(const k of keys){const p=parsePk(k);if(!p)continue;if(S.sumFam!=='all'&&p[0]!==+S.sumFam)continue;if(S.sumOth!=='all'&&p[1]!==+S.sumOth)continue;
@@ -3828,7 +4141,7 @@ $('yCopy').addEventListener('click',ev=>{
   queueMonth(S.ym,{yt:patch}); pushUndo({ym:S.ym,items:[],extra:{yt:Object.fromEntries(Object.keys(patch).map(kk=>[kk,null]))}});
   renderSum(); showToast(`先月の目標を${n}組に入れました`);
 });
-$('tYell').addEventListener('click',ev=>{if(ev.target.id==='yMore'){S.yAll=true;renderYellCheck();return}const tr=ev.target.closest('tr.go');if(!tr)return;S.fam=+tr.dataset.f;S.oth=+tr.dataset.o;S.tab='rec';savePref();render();window.scrollTo(0,0)});
+$('tYell').addEventListener('click',ev=>{if(ev.target.id==='yMore'){S.yAll=true;renderYellCheck();return}const tr=ev.target.closest('tr.go');if(!tr||!settingsPrepareNavigation())return;S.fam=+tr.dataset.f;S.oth=+tr.dataset.o;S.tab='rec';savePref();render();window.scrollTo(0,0)});
 function renderSumFilt(){ const el=$('sumFilt'); const f=[];
   { const n=(S.sumFam!=='all')+(S.sumOth!=='all')+(!!S.sumNotAch)+(!!S.sumQ)+(S.sumSort!=='num'); const b=$('sumCtlB'); b.hidden=!n; b.textContent=n+'件'; }
   if(S.sumFam!=='all') f.push(famName(+S.sumFam)); if(S.sumOth!=='all') f.push(othName(+S.sumOth)); if(S.sumQ) f.push(`「${S.sumQ}」`); if(S.sumNotAch) f.push('未達成のみ');
@@ -3891,10 +4204,10 @@ function renderLists(){
       el.querySelectorAll('.gsx').forEach(b=>{const h=gsxTxt(+b.dataset.gx); if(b.innerHTML!==h) b.innerHTML=h});
       return}
     const lbl=kind==='family'?'自分垢':'他人垢';
-    el.innerHTML=S.order[kind].map(i=>[arr[i],i]).map(([n,i],p)=>`<div class="lrow${kind==='family'?' fam':''}${isDefName(kind,i)?' off':''}" data-id="${i}"><button type="button" class="drag" data-drag="${kind}" aria-label="${esc(lbl+(p+1))}の並べ替え（上下の矢印キーでも移動）" title="長押ししたまま上下に動かして並べ替え"><svg viewBox="0 0 12 18" aria-hidden="true"><circle cx="3" cy="3" r="1.6"/><circle cx="9" cy="3" r="1.6"/><circle cx="3" cy="9" r="1.6"/><circle cx="9" cy="9" r="1.6"/><circle cx="3" cy="15" r="1.6"/><circle cx="9" cy="15" r="1.6"/></svg></button><span>${pad(p+1)}</span><i class="ndot" data-nd="${i}" aria-hidden="true"></i><input type="text" id="${kind}-${i}" data-k="${kind}" data-i="${i}" value="${esc(n)}" maxlength="30" autocomplete="off" aria-label="${lbl}${p+1}の名前">${kind==='family'?`<button type="button" class="gsx" data-gx="${i}" aria-expanded="${!!(S.gxAll||S.gxOpen.has(i))}" aria-label="${esc(lbl+(p+1))}の達成条件を開く">${gsxTxt(i)}</button><div class="gset">${goalSelects(i,'lg','def')}</div><div class="gcp"><span>この条件を</span><button type="button" class="btn sm2" data-gcp="named">名前ありの全員にコピー</button><button type="button" class="btn sm2" data-gcp="all">全員にコピー</button></div><div class="fbdg" data-fb="${i}" hidden></div><div class="fpats" data-fp="${i}"></div><div class="fyell" data-fy="${i}" hidden></div>`:'<div class="obdg" data-ob="'+i+'" hidden></div>'}</div>`).join('');
+    el.innerHTML=S.order[kind].map(i=>[arr[i],i]).map(([n,i],p)=>`<div class="lrow${kind==='family'?' fam':''}${isDefName(kind,i)?' off':''}" data-id="${i}"><button type="button" class="drag" data-drag="${kind}" aria-label="${esc(lbl+(p+1))}の並べ替え（上下の矢印キーでも移動）" title="長押ししたまま上下に動かして並べ替え"><svg viewBox="0 0 12 18" aria-hidden="true"><circle cx="3" cy="3" r="1.6"/><circle cx="9" cy="3" r="1.6"/><circle cx="3" cy="9" r="1.6"/><circle cx="9" cy="9" r="1.6"/><circle cx="3" cy="15" r="1.6"/><circle cx="9" cy="15" r="1.6"/></svg></button><span>${pad(p+1)}</span><i class="ndot" data-nd="${i}" aria-hidden="true"></i><input type="text" id="${kind}-${i}" data-k="${kind}" data-i="${i}" value="${esc(n)}" maxlength="30" autocomplete="off" enterkeyhint="next" aria-label="${lbl}${p+1}の名前" aria-describedby="name-help-${kind}-${i}"><span class="name-help" id="name-help-${kind}-${i}" hidden></span>${kind==='family'?`<button type="button" class="gsx" data-gx="${i}" aria-expanded="${!!(S.gxAll||S.gxOpen.has(i))}" aria-label="${esc(lbl+(p+1))}の達成条件を開く">${gsxTxt(i)}</button><div class="gset">${goalSelects(i,'lg','def')}</div><div class="gcp"><span>この条件を</span><button type="button" class="btn sm2" data-gcp="named">名前ありの全員にコピー</button><button type="button" class="btn sm2" data-gcp="all">全員にコピー</button></div><div class="fbdg" data-fb="${i}" hidden></div><div class="fpats" data-fp="${i}"></div><div class="fyell" data-fy="${i}" hidden></div>`:'<div class="obdg" data-ob="'+i+'" hidden></div>'}</div>`).join('');
     el.dataset.built='1'; el.dataset.ord=S.order[kind].join();
   };
-  mk($('lstFam'),S.lists.family,'family'); mk($('lstOth'),S.lists.others,'others'); updFamPats(); updOthBadges(); updFamBadges(); updNdot(); updDup(); updGx(); renderListSum(); renderGuide(); renderBkInfo(); applyListQ();
+  mk($('lstFam'),S.lists.family,'family'); mk($('lstOth'),S.lists.others,'others'); updFamPats(); updOthBadges(); updFamBadges(); updNdot(); updDup(); updGx(); renderListSum(); renderGuide(); renderBkInfo(); applyListQ(); accountNameHelpAll();
   if(!document.activeElement||!document.activeElement.closest||!document.activeElement.closest('#patCard')) renderPats();
   if(!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#oiCard'))) renderOi();
   if(!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#rytCard'))) renderRyt();
@@ -4013,7 +4326,7 @@ function render(){
   renderMonth(); renderTabs(); renderEom(); updHist();
   if(S.tab==='list') renderLists(); else rerender();
 }
-function savePref(){ls.set('pk:pref',{fam:S.fam,oth:S.oth,tab:S.tab,compact:S.compact,panelMin:S.panelMin,cal:S.cal,dayTodo:S.dayTodo,swiped:S.swiped,wake:S.wake,goalMin:S.goalMin,big:S.big,priv:S.priv,seenHelp:S.seenHelp,col:S.col,sf:S.sumFam,so:S.sumOth,ss:S.sumSort,sna:S.sumNotAch,pins:S.pins,dsort:S.daySort,theme:S.theme,df:S.dayFam,do:S.dayOth,yg:S.ygOpen,td:S.todoOpen,dv:S.dayView,ddt:S.dayDet,bso:S.bsOnly,dfold:S.dayFold,ycs:S.ycSort,fcf:S.fcF,fcs:S.fcSort,fcfl:S.fcFl,nmo:!!S.namedOnly,gxa:!!S.gxAll,ro:!!S.recOnly,ts:S.tsort,ytf:S.ytFormFam,ytu:S.ytFormUnit,daily:{ym:S.ym,d:S.dday,k:S.dpk},dayMonths:daySnapshotHistory(),dayFocus:!!S.dayFocus,dayClock:!!S.dayClock,dayLastMinutes:S.dayLastMinutes})}
+function savePref(){ls.set('pk:pref',{fam:S.fam,oth:S.oth,tab:S.tab,compact:S.compact,panelMin:S.panelMin,cal:S.cal,dayTodo:S.dayTodo,swiped:S.swiped,wake:S.wake,goalMin:S.goalMin,big:S.big,priv:S.priv,seenHelp:S.seenHelp,col:S.col,sf:S.sumFam,so:S.sumOth,ss:S.sumSort,sna:S.sumNotAch,pins:S.pins,dsort:S.daySort,theme:S.theme,df:S.dayFam,do:S.dayOth,yg:S.ygOpen,td:S.todoOpen,dv:S.dayView,ddt:S.dayDet,bso:S.bsOnly,dfold:S.dayFold,ycs:S.ycSort,fcf:S.fcF,fcs:S.fcSort,fcfl:S.fcFl,nmo:!!S.namedOnly,gxa:!!S.gxAll,ro:!!S.recOnly,ts:S.tsort,ytf:S.ytFormFam,ytu:S.ytFormUnit,ytax:S.ytFormAxis,yto:S.ytFormOth,ytfl:S.ytFormFilter,yta:S.ytFormAll,ytl:S.ytFormLastKey,daily:{ym:S.ym,d:S.dday,k:S.dpk},dayMonths:daySnapshotHistory(),dayFocus:!!S.dayFocus,dayClock:!!S.dayClock,dayLastMinutes:S.dayLastMinutes})}
 
 /* ---------- 操作 ---------- */
 $('days').addEventListener('click',ev=>{
@@ -4163,16 +4476,39 @@ document.addEventListener('change',ev=>{
   if(S.tab==='list'){updFamYell();const row=t.closest('.gset');if(row){const n=document.createElement('div');n.innerHTML=goalSelects(f,'lg','def');row.innerHTML=n.innerHTML; const gb=row.parentElement.querySelector('.gsx'); if(gb) gb.innerHTML=gsxTxt(f)}}
   rerender();
 });
-$('tPairs').addEventListener('click',ev=>{const tr=ev.target.closest('tr.go');if(!tr)return;S.fam=+tr.dataset.f;S.oth=+tr.dataset.o;S.tab='rec';savePref();render();window.scrollTo(0,0)});
+$('tPairs').addEventListener('click',ev=>{const tr=ev.target.closest('tr.go');if(!tr||!settingsPrepareNavigation())return;S.fam=+tr.dataset.f;S.oth=+tr.dataset.o;S.tab='rec';savePref();render();window.scrollTo(0,0)});
 document.querySelector('nav.tabs').addEventListener('click',ev=>{const b=ev.target.closest('[data-tab]');if(!b)return;const to=b.dataset.tab;if(to===S.tab)return;
-  if(!dayPrepareNavigation())return;
+  if(!settingsPrepareNavigation()||!dayPrepareNavigation())return;
   S.scrollPos[S.tab]=window.scrollY; S.tab=to; savePref(); render();
   window.scrollTo(0,to==='rec'?0:(S.scrollPos[to]||0));});
-function goMonth(ym){if(!dayPrepareNavigation()){$('monthPick').value=S.ym;return false}if(typeof ytFormCommitFocused==='function')ytFormCommitFocused();flush();if(!db&&Object.keys(pend).length){$('monthPick').value=S.ym;return false}S.ym=ym;scrollToday=true;subscribeMonth();return true}
+function goMonth(ym){if(!settingsPrepareNavigation()||!dayPrepareNavigation()){$('monthPick').value=S.ym;return false}flush();if(!db&&Object.keys(pend).length){$('monthPick').value=S.ym;return false}S.ym=ym;scrollToday=true;subscribeMonth();return true}
 $('prevM').onclick=()=>goMonth(shiftYM(S.ym,-1));
 $('nextM').onclick=()=>goMonth(shiftYM(S.ym,1));
 $('thisM').onclick=()=>goMonth(curYM());
 // 名前欄だけを扱い、確定時には名前を参照する表示も更新する。
+/* ---------- 名前入力の案内・移動 ---------- */
+function accountNameHelp(t){
+  const p=accountNameField(t);if(!p)return;
+  const row=t.closest('.lrow'),hint=row&&row.querySelector('.name-help');if(!hint)return;
+  const value=String(t.value||''),key=value.normalize('NFKC').trim().toLowerCase(),P=p.kind==='family'?PF:PO;
+  const dup=key&&!isDefName(p.kind,p.i)?S.lists[p.kind].map((n,i)=>i!==p.i&&!isDefName(p.kind,i)&&String(n||'').normalize('NFKC').trim().toLowerCase()===key?P(i)+1:null).filter(x=>x!==null):[];
+  const editing=document.activeElement===t;
+  hint.hidden=!editing&&!dup.length&&value.length<25;
+  hint.classList.toggle('warn',!!dup.length);
+  hint.textContent=dup.length?`同じ名前：${dup.map(pad).join('・')}番。番号ごとに別の垢として保存されます。`:`${value.length}/30字${editing?' ・ Enterで次へ／Shift＋Enterで前へ':''}`;
+  t.removeAttribute('aria-invalid');
+}
+function accountNameHelpAll(){document.querySelectorAll('#lstFam input[data-k],#lstOth input[data-k]').forEach(accountNameHelp)}
+function accountNameStart(kind){
+  if(kind!=='family'&&kind!=='others')return false;
+  const id=S.order[kind].find(i=>isDefName(kind,i)),list=$(kind==='family'?'lstFam':'lstOth');
+  if(id===undefined){showToast('50人すべて登録済みです。変更したい名前の欄を選んでください',false);return false}
+  $('listQ').value='';applyListQ();const card=list.closest('.card');if(card.classList.contains('col'))toggleCard(card,false);
+  const t=$(`${kind}-${id}`);if(!t)return false;t.focus({preventScroll:true});t.select();t.closest('.lrow').scrollIntoView({block:'nearest'});return true;
+}
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-name-start]');if(b)accountNameStart(b.dataset.nameStart)});
+document.addEventListener('focusin',ev=>{if(accountNameField(ev.target))accountNameHelp(ev.target)});
+/* ---------- 名前入力の案内・移動ここまで ---------- */
 function accountNameField(t){
   if(!t||!t.dataset||!t.matches||!t.matches('input[type=text]'))return null;
   const kind=t.dataset.k,i=Number(t.dataset.i);
@@ -4186,7 +4522,7 @@ function syncAccountName(t,commit){
   S.lists[kind][i]=value;let changed=prev!==value;
   const now=isDefName(kind,i),a0=t.dataset.a0===undefined?S.active[kind][i]:t.dataset.a0==='1',active=was!==now?!now:a0;
   if(S.active[kind][i]!==active){S.active[kind][i]=active;changed=true}
-  if(changed)queueWrite('config/lists',listsDoc());return changed;
+  if(changed)queueWrite('config/lists',listsDoc());accountNameHelpAll();return changed;
 }
 function refreshNamedLabels(){
   for(const [id,label] of [['selFam',famName],['selOth',othName],['dayFam',famName],['dayOth',othName],['sumFam',famName],['sumOth',othName],['addFam',famName],['addOth',othName],['patOth',othName],['oiOth',othName],['rytOth',othName]]){
@@ -4325,18 +4661,20 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 $('nbStart').innerHTML=Array.from({length:N},(_,i)=>`<option value="${i+1}">${i+1}番から</option>`).join('');
 let nbPrev=null;
 $('nbGo').onclick=()=>{
-  const kind=$('nbKind').value, start=+$('nbStart').value-1, lines=$('nbTx').value.split(/\r?\n/);
-  nbPrev={kind,names:S.lists[kind].slice(),active:S.active[kind].slice()}; let n=0;
-  lines.forEach((ln,i)=>{const pos=start+i; if(pos>=N) return; const nm=ln.trim().slice(0,30); if(!nm) return; const id=S.order[kind][pos]; S.lists[kind][id]=nm; S.active[kind][id]=true; n++});
-  if(!n){$('nbMsg').textContent='入れる名前がありません';nbPrev=null;return}
+  if($('nbTx').dataset.nbComposing==='1')return;
+  const plan=nameBulkPlan($('nbTx').value,$('nbKind').value,+$('nbStart').value-1,$('nbFormat').value);
+  if(plan.errors.length||!plan.changes.length){nbPreview();$('nbMsg').textContent=plan.errors.length?'入力内容を確認してください':'変更する名前がありません';return}
+  const kind=plan.kind,names=S.lists[kind].slice(),active=S.active[kind].slice();
+  for(const r of plan.changes){const was=isDefName(kind,r.id);S.lists[kind][r.id]=r.name;const now=isDefName(kind,r.id);if(was!==now)S.active[kind][r.id]=!now}
   queueWrite('config/lists',listsDoc()); delete $('lstFam').dataset.built; delete $('lstOth').dataset.built; renderLists();
-  $('nbMsg').innerHTML=`${kind==='family'?'自分垢':'他人垢'}${n}人に反映しました <button class="btn sm2" id="nbUndo">元に戻す</button>`; $('nbTx').value=''; nbPreview();
+  const ids=plan.changes.map(r=>r.id),u={ym:S.ym,items:[],fn:()=>nameBulkRestore(kind,names,active,ids)};pushUndo(u);nbPrev={u,kind};
+  const msg=`${kind==='family'?'自分垢':'他人垢'}${plan.changes.length}人の名前を変更しました`;
+  $('nbMsg').innerHTML=`${msg} <button class="btn sm2" id="nbUndo">元に戻す</button>`; $('nbTx').value=''; nbPreview();showToast(msg,true);
 };
-$('nbMsg').addEventListener('click',ev=>{if(ev.target.id!=='nbUndo'||!nbPrev) return; S.lists[nbPrev.kind]=nbPrev.names; S.active[nbPrev.kind]=nbPrev.active; nbPrev=null;
-  queueWrite('config/lists',listsDoc()); delete $('lstFam').dataset.built; delete $('lstOth').dataset.built; renderLists(); $('nbMsg').textContent='元に戻しました'});
+$('nbMsg').addEventListener('click',ev=>{if(ev.target.id!=='nbUndo'||!nbPrev)return;const current=undoStack.filter(u=>u.ym===S.ym);if(current[current.length-1]!==nbPrev.u){$('nbMsg').textContent='後の変更があります。上の「↶ 戻す」から順番に戻せます';return}doUndo()});
 $('namedOnly').addEventListener('change',e=>{S.namedOnly=e.target.checked; savePref(); applyListQ(); renderListSum()});
 for(const id of ['lstFam','lstOth']) $(id).addEventListener('keydown',ev=>{const t=ev.target; if(ev.key!=='Enter'||!accountNameField(t)||ev.isComposing||ev.keyCode===229||t.dataset.nameComposing==='1') return; ev.preventDefault();
-  const rows=[...$(id).querySelectorAll('.lrow:not([hidden]) input[type=text]')], i=rows.indexOf(t); if(rows[i+1]) rows[i+1].focus(); else { t.blur(); const nx=$(id).querySelector('.lrow.nextnew:not([hidden]) input[type=text]'); if(nx&&nx!==t){ nx.focus({preventScroll:true}); nx.closest('.lrow').scrollIntoView({block:'nearest'}) } } });
+  const rows=[...$(id).querySelectorAll('.lrow:not([hidden]) input[type=text]')], i=rows.indexOf(t),next=rows[i+(ev.shiftKey?-1:1)];if(next){next.focus({preventScroll:true});next.closest('.lrow').scrollIntoView({block:'nearest'})}else if(!ev.shiftKey){t.blur();const nx=$(id).querySelector('.lrow.nextnew:not([hidden]) input[type=text]');if(nx&&nx!==t){nx.focus({preventScroll:true});nx.closest('.lrow').scrollIntoView({block:'nearest'})}} });
 
 /* ---------- v3：便利機能 ---------- */
 // 機能1：締めまでの残り時間
@@ -4428,7 +4766,7 @@ function renderSched(){const box=$('schedBox'); if(!box) return; const o=S.oth, 
     if(x.img){ const oo=o; IMG.get(oo).then(d=>{const im=$('schedImg'); if(im&&S.oth===oo&&d) im.src=d}) } }
 }
 $('schedBody').addEventListener('click',ev=>{
-  if(ev.target.closest('#schedEdit')){ S.oiO=S.oth; S.tab='list'; savePref(); render(); requestAnimationFrame(()=>{const c=$('oiCard'); if(c.classList.contains('col')) toggleCard(c,false); c.scrollIntoView({block:'start',behavior:'smooth'})}); return }
+  if(ev.target.closest('#schedEdit')){ if(!settingsPrepareNavigation()||!dayPrepareNavigation())return;S.oiO=S.oth; S.tab='list'; savePref(); render(); requestAnimationFrame(()=>{const c=$('oiCard'); if(c.classList.contains('col')) toggleCard(c,false); jumpTo(c)}); return }
   if(ev.target.closest('#schedImgBtn')){ const im=$('schedImg'); if(im&&im.src){ $('imgBig').src=im.src; $('imgTitle').textContent=othName(S.oth)+'の配信スケジュール'; $('imgSheet').hidden=false; $('imgClose').focus() } }
 });
 $('imgClose').onclick=()=>{$('imgSheet').hidden=true}; $('imgSheet').addEventListener('click',ev=>{if(ev.target.id==='imgSheet')$('imgSheet').hidden=true});
@@ -4483,13 +4821,13 @@ function renderYgAll(){ const el=$('ygAll'); if(!el) return; const {days}=ymPart
   for(const k of keys){const p=parsePk(k); if(!p) continue; if(S.sumFam!=='all'&&p[0]!==+S.sumFam) continue; if(S.sumOth!=='all'&&p[1]!==+S.sumOth) continue; const g=miniGraph(k,days); if(g) rows.push([p,k,g])}
   rows.sort((a,b)=>PF(a[0][0])-PF(b[0][0])||PO(a[0][1])-PO(b[0][1]));
   $('ygAllCard').hidden=!rows.length; el.innerHTML=rows.map(([[f,o],k,g])=>`<button type="button" class="ygi" data-f="${f}" data-o="${o}"><span class="yn">${esc(famName(f))} → ${esc(othName(o))}</span>${g}<span class="yv">現在 ${yfmt(yellOf(k)??0)}${ytOf(k)!=null?' / 目標 '+yfmt(ytOf(k)):''}</span></button>`).join(''); updJump() }
-$('ygAll').addEventListener('click',ev=>{const b=ev.target.closest('.ygi'); if(!b) return; S.fam=+b.dataset.f; S.oth=+b.dataset.o; S.tab='rec'; S.ygOpen=true; savePref(); render(); window.scrollTo(0,0)});
+$('ygAll').addEventListener('click',ev=>{const b=ev.target.closest('.ygi'); if(!b||!settingsPrepareNavigation()) return; S.fam=+b.dataset.f; S.oth=+b.dataset.o; S.tab='rec'; S.ygOpen=true; savePref(); render(); window.scrollTo(0,0)});
 // 便利機能5：月が変わったら先月分のバックアップを案内
 { const _ck=checkBk; checkBk=function(){ _ck(); const el=$('bkTip'); if(!el||!dl) return; const last=ls.get('pk:lastBk'), sn=ls.get('pk:bkSnooze')||0;
   if(Date.now()<=sn||!S.prevKeys.length||!last) return; const d=new Date(last), lym=d.getFullYear()+'-'+pad(d.getMonth()+1);
   if(lym<curYM()&&S.ym===curYM()){ el.hidden=false; $('bkTx').innerHTML=`新しい月になりました。<b>先月分</b>をバックアップしましょう` } } }
 
-$('dline').addEventListener('click',()=>{if(!dayPrepareNavigation())return;const o=S.tab==='day'&&S.dpk&&parsePk(S.dpk)?parsePk(S.dpk)[1]:S.oth; S.oiO=o; S.tab='list'; savePref(); render(); requestAnimationFrame(()=>{const c=$('oiCard'); if(c.classList.contains('col')) toggleCard(c,false); c.scrollIntoView({block:'start',behavior:'smooth'})})});
+$('dline').addEventListener('click',()=>{if(!settingsPrepareNavigation()||!dayPrepareNavigation())return;const o=S.tab==='day'&&S.dpk&&parsePk(S.dpk)?parsePk(S.dpk)[1]:S.oth; S.oiO=o; S.tab='list'; savePref(); render(); requestAnimationFrame(()=>{const c=$('oiCard'); if(c.classList.contains('col')) toggleCard(c,false); jumpTo(c)})});
 $('dline').addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();$('dline').click()}});
 /* ---------- v5：他人垢ごとの当月ミニカレンダー ---------- */
 const schOf=o=>((S.month.sch||{})['o'+o]||{});
@@ -4516,7 +4854,7 @@ function setSch(o,d,v){ return schApply(o,{[d]:v},null) }
 function timeChips(o){ const used=[...new Set(Object.values(schOf(o)).map(v=>v.t).filter(Boolean))]; return [...new Set([...TIME_BASE,...used])].slice(0,8) }
 function chipsHTML(o,t,c){ const cl=clList();
   return `<div class="mchips" role="group" aria-label="配信時間の候補"><button type="button" class="mchip${!t?' on':''}" data-tc="">未定</button>${timeChips(o).map(x=>`<button type="button" class="mchip${x===t?' on':''}" data-tc="${esc(x)}">${esc(x)}</button>`).join('')}</div>`
-   +`<div class="mchips" role="group" aria-label="配信内容の候補">${cl.length?cl.map((x,i)=>`<button type="button" class="mchip cc${x===c?' on':''}" data-cc="${esc(x)}" style="--cc:${CL_COL[i]}">${esc(x)}</button>`).join(''):'<span class="hint">配信内容リストは「名前・条件設定」で登録できます</span>'}</div>` }
+   +`<div class="mchips" role="group" aria-label="配信内容の候補">${cl.length?cl.map((x,i)=>`<button type="button" class="mchip cc${x===c?' on':''}" data-cc="${esc(x)}" style="--cc:${CL_COL[i]}">${esc(x)}</button>`).join(''):'<span class="hint">配信内容リストは「名前・目標設定」の詳細設定で登録できます</span>'}</div>` }
 function schText(o){const {m}=ymParts(S.ym), sc=schOf(o), ks=Object.keys(sc).map(Number).sort((a,b)=>a-b);
   return `【${plainOth(o)} ${m}月の配信予定】\n`+ks.map(d=>`${m}/${d}(${dowOf(d)}) ${sc[d].t||'時間未定'}${sc[d].c?' '+sc[d].c:''}`).join('\n')}
 function miniCal(o,ctx){
@@ -4767,6 +5105,7 @@ function commitOrder(kind,lst,movedId){
 var drag=null;
 document.addEventListener('pointerdown',ev=>{
   const h=ev.target.closest('.drag'); if(!h||ev.button>0) return;
+  if(!settingsPrepareNavigation())return;
   const row=h.closest('.lrow'), lst=row.parentElement; ev.preventDefault();
   try{h.setPointerCapture(ev.pointerId)}catch(e){}
   drag={h,row,lst,kind:h.dataset.drag,id:+row.dataset.id,y:ev.clientY,start:ev.clientY,moved:false,raf:0,pid:ev.pointerId};
@@ -4795,6 +5134,7 @@ function endDrag(){
 document.addEventListener('pointerup',endDrag); document.addEventListener('pointercancel',endDrag);
 document.addEventListener('keydown',ev=>{
   const h=ev.target.closest&&ev.target.closest('.drag'); if(!h||(ev.key!=='ArrowUp'&&ev.key!=='ArrowDown')) return; ev.preventDefault();
+  if(!settingsPrepareNavigation())return;
   const row=h.closest('.lrow'), lst=row.parentElement;
   if(ev.key==='ArrowUp'){const pv=row.previousElementSibling; if(!pv) return; lst.insertBefore(row,pv)} else {const nx=row.nextElementSibling; if(!nx) return; lst.insertBefore(nx,row)}
   commitOrder(h.dataset.drag,lst,+row.dataset.id); h.focus();
@@ -4946,7 +5286,7 @@ $('histBtn').onclick=()=>doUndo();
 function applyBig(){document.documentElement.classList.toggle('big',S.big);$('bigBtn').setAttribute('aria-pressed',S.big)}
 $('bigBtn').onclick=()=>{S.big=!S.big;savePref();applyBig()}; applyBig();
 // 月末リマインド
-$('eom').addEventListener('click',ev=>{if(ev.target.id!=='eomGo')return;const yOnly=$('eom').dataset.y==='1';S.tab='sum';S.sumNotAch=true;S.sumSort='need';savePref();render();if(yOnly)requestAnimationFrame(()=>$('yChkCard').scrollIntoView({block:'start'}));else window.scrollTo(0,0)});
+$('eom').addEventListener('click',ev=>{if(ev.target.id!=='eomGo'||!settingsPrepareNavigation()||!dayPrepareNavigation())return;const yOnly=$('eom').dataset.y==='1';S.tab='sum';S.sumNotAch=true;S.sumSort='need';savePref();render();if(yOnly)requestAnimationFrame(()=>$('yChkCard').scrollIntoView({block:'start'}));else window.scrollTo(0,0)});
 // 集計：他人垢で絞り込み
 $('sumOth').addEventListener('change',e=>{S.sumOth=e.target.value;savePref();renderSum()});
 // 当月一覧：上部バーを左右スワイプで他人垢を切り替え
@@ -4960,7 +5300,7 @@ function openSheet(){
 }
 function closeSheet(){$('sheet').hidden=true;$('setBtn').focus()}
 $('setBtn').onclick=openSheet; $('sheetClose').onclick=closeSheet;
-$('backupQuick').onclick=()=>{if(S.tab!=='list')$('tab-list').click();else renderLists();requestAnimationFrame(()=>{const card=$('bkCard');card.scrollIntoView({block:'start'});card.focus({preventScroll:true})})};
+$('backupQuick').onclick=()=>{if(!settingsPrepareNavigation()||!dayPrepareNavigation())return;if(S.tab!=='list')$('tab-list').click();else renderLists();requestAnimationFrame(()=>{const card=$('bkCard');jumpTo(card);card.focus({preventScroll:true})})};
 $('sheet').addEventListener('click',ev=>{if(ev.target.id==='sheet')closeSheet()});
 document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&!$('sheet').hidden)closeSheet()});
 // キーボード表示中はタブバーと入力パネルを隠す
@@ -5007,7 +5347,7 @@ function updFamPats(){ updFamYell(); listSideUpd();
     const h=arr.length?`<span class="fpl">条件パターン</span>`+arr.map(([o,i,pt])=>`<button type="button" data-fpo="${o}" title="この他人垢のパターン設定を開く"><span class="ptag">${PL[i]}</span><span class="fpn">${esc(othName(o))}</span><small>${esc(patDesc(pt))}</small></button>`).join(''):'';
     if(el.innerHTML!==h) el.innerHTML=h; el.hidden=!arr.length});
 }
-$('lstFam').addEventListener('click',ev=>{const b=ev.target.closest('[data-fpo]'); if(!b) return; S.patO=+b.dataset.fpo; renderPats(); const c=$('patCard'); if(c.classList.contains('col')) toggleCard(c,false); c.scrollIntoView({block:'start',behavior:'smooth'})});
+$('lstFam').addEventListener('click',ev=>{const b=ev.target.closest('[data-fpo]'); if(!b||!settingsPrepareNavigation()) return; S.patO=+b.dataset.fpo; renderPats(); const c=$('patCard'); if(c.classList.contains('col')) toggleCard(c,false); jumpTo(c)});
 function renderPats(){
   if(!$('patOth')) return;
   fillSelect($('patOth'),othName,S.patO);
@@ -5091,7 +5431,7 @@ function renderPatSum(){
   }
   card.hidden=true; $('tPat').innerHTML=any?'<tr><th>自分垢</th><th class="r">日数・時間</th><th>状態</th></tr>'+h:'';
 }
-$('tPat').addEventListener('click',ev=>{const tr=ev.target.closest('tr.go');if(!tr)return;S.fam=+tr.dataset.f;S.oth=+tr.dataset.o;S.tab='rec';savePref();render();window.scrollTo(0,0)});
+$('tPat').addEventListener('click',ev=>{const tr=ev.target.closest('tr.go');if(!tr||!settingsPrepareNavigation())return;S.fam=+tr.dataset.f;S.oth=+tr.dataset.o;S.tab='rec';savePref();render();window.scrollTo(0,0)});
 /* ---------- 見出しへ移動・カードの開閉（集計・名前・条件・エール数入力） ---------- */
 function setupCards(panelId,navId){
   const cards=[...document.querySelectorAll(`#${panelId} .card`)].filter(c=>c.querySelector(':scope > h2')&&c.id!=='copyBox');
@@ -5105,14 +5445,14 @@ function setupCards(panelId,navId){
     h+=`<button type="button" data-jump="${c.id}">${esc(short)}</button>`;
   });
   nav.innerHTML='<span>移動：</span>'+h;
-  nav.addEventListener('click',ev=>{const b=ev.target.closest('[data-jump]'); if(!b) return; const c=$(b.dataset.jump); if(!c||c.hidden) return;
+  nav.addEventListener('click',ev=>{const b=ev.target.closest('[data-jump]'); if(!b||!settingsPrepareNavigation()) return; const c=$(b.dataset.jump); if(!c||c.hidden) return;
     if(c.classList.contains('col')) toggleCard(c,false); jumpTo(c)});
 }
 // 見出しへ移動（途中で上の表示が変わっても、最後に位置を合わせ直す）
-function jumpTo(c){ c.scrollIntoView({block:'start',behavior:'smooth'}); clearTimeout(jumpTo.t); jumpTo.t=setTimeout(()=>{ const m=parseFloat(getComputedStyle(c).scrollMarginTop)||0, t=c.getBoundingClientRect().top; if(Math.abs(t-m)>30) c.scrollIntoView({block:'start'}) },1000) }
-function toggleCard(c,col){ const cid=c.dataset.cid; col=col??!c.classList.contains('col'); c.classList.toggle('col',col);
+function jumpTo(c){ for(let d=c.closest('details');d;d=d.parentElement&&d.parentElement.closest('details'))d.open=true;c.scrollIntoView({block:'start',behavior:'smooth'}); clearTimeout(jumpTo.t); jumpTo.t=setTimeout(()=>{ const m=parseFloat(getComputedStyle(c).scrollMarginTop)||0, t=c.getBoundingClientRect().top; if(Math.abs(t-m)>30) c.scrollIntoView({block:'start'}) },1000) }
+function toggleCard(c,col){ const cid=c.dataset.cid; col=col??!c.classList.contains('col'); if(col&&!settingsPrepareNavigation())return false;c.classList.toggle('col',col);
   const b=c.querySelector('.ctog'); if(b) b.setAttribute('aria-expanded',String(!col));
-  S.col=S.col.filter(x=>x!==cid); if(col) S.col.push(cid); savePref(); }
+  S.col=S.col.filter(x=>x!==cid); if(col) S.col.push(cid); savePref();return true; }
 document.addEventListener('click',ev=>{const h=ev.target.closest('h2.ch'); if(!h||ev.target.closest('a,select,input')) return; toggleCard(h.closest('.card'))});
 function updJump(){ for(const nid of ['jumpSum','jumpList']){ const nav=$(nid); if(!nav) continue; nav.querySelectorAll('[data-jump]').forEach(b=>{const c=$(b.dataset.jump); b.hidden=!c||c.hidden}) } }
 setupCards('p-sum','jumpSum'); setupCards('p-list','jumpList');
@@ -5213,9 +5553,9 @@ const nkey=v=>String(v||'').normalize('NFKC').trim().toLowerCase();
 function updDup(){ for(const kind of ['family','others']){ const el=$('dup-'+kind), L=$(kind==='family'?'lstFam':'lstOth'); if(!el||!L) continue; const by=Object.create(null);
     S.lists[kind].forEach((n,i)=>{ if(isDefName(kind,i)) return; const k=nkey(n); if(k) (by[k]=by[k]||[]).push(i) });
     const d=Object.values(by).filter(a=>a.length>1), ds=new Set(d.flat()), P=kind==='family'?PF:PO;
-    L.querySelectorAll('input[data-k]').forEach(inp=>{const on=ds.has(+inp.dataset.i); inp.classList.toggle('dup',on); if(on) inp.setAttribute('aria-invalid','true'); else inp.removeAttribute('aria-invalid')});
+    L.querySelectorAll('input[data-k]').forEach(inp=>{const on=ds.has(+inp.dataset.i); inp.classList.toggle('dup',on); inp.removeAttribute('aria-invalid')});
     const h=d.length?`⚠ 同じ名前が${d.length}組あります：`+d.map(a=>`${S.priv?'':esc(S.lists[kind][a[0]])}（${a.map(i=>pad(P(i)+1)).sort().join('・')}番）`).join('、')+'。記録は番号ごとに別々になります。':'';
-    el.hidden=!d.length; if(el.innerHTML!==h) el.innerHTML=h } }
+    el.hidden=!d.length; if(el.innerHTML!==h) el.innerHTML=h } accountNameHelpAll() }
 document.addEventListener('input',ev=>{const t=ev.target; if(t.dataset&&t.dataset.k&&S.lists[t.dataset.k]) updDup()});
 // 名前を変えたら「元に戻す」
 document.addEventListener('focusin',ev=>{const t=ev.target; if(t.dataset&&t.dataset.k&&S.lists[t.dataset.k]){ t.dataset.v0=S.lists[t.dataset.k][+t.dataset.i]||''; t.dataset.a0=S.active[t.dataset.k][+t.dataset.i]?'1':'' }});
@@ -5225,7 +5565,7 @@ document.addEventListener('focusout',ev=>{const t=ev.target; if(!t.dataset||!t.d
   pushUndo({ym:S.ym,items:[],fn:()=>{ S.lists[kind][i]=v0; S.active[kind][i]=a0; queueWrite('config/lists',listsDoc()); const inp=$(`${kind}-${i}`); if(inp) inp.value=v0; updDup();updNdot();if(S.namedOnly)applyListQ();refreshNamedLabels() }});
   showToast(S.priv?`${lbl}${no}の名前を変えました`:`${lbl}${no}：「${v0}」→「${v1}」`,true); updDup(); renderListSum(); updOthBadges() });
 // あいうえお順・最初の番号順
-document.addEventListener('click',ev=>{const b=ev.target.closest('[data-sort]'); if(!b) return; const kind=b.closest('.sorttools').dataset.kind, prev=S.order[kind].slice();
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-sort]'); if(!b||!settingsPrepareNavigation()) return; const kind=b.closest('.sorttools').dataset.kind, prev=S.order[kind].slice();
   let ord; if(b.dataset.sort==='id') ord=Array.from({length:N},(_,i)=>i);
   else if(b.dataset.sort==='use'){ const u=useCount(kind); ord=prev.slice().sort((a,c)=>(u[c]||0)-(u[a]||0)||prev.indexOf(a)-prev.indexOf(c)) }
   else { const col=new Intl.Collator('ja',{numeric:true,sensitivity:'base'}); ord=[...prev.filter(i=>!isDefName(kind,i)).sort((a,c)=>col.compare(nkey(S.lists[kind][a]),nkey(S.lists[kind][c]))||a-c),...prev.filter(i=>isDefName(kind,i)).sort((a,c)=>a-c)] }
@@ -5241,22 +5581,62 @@ function updOthBadges(){ const R=S.month.records, cnt={}; for(const k in R){cons
     const h=a.join(''); if(el.innerHTML!==h) el.innerHTML=h; el.hidden=!a.length}) }
 // 設定の状況（押すとその項目へ）
 function renderListSum(){ const el=$('listSum'); if(!el) return; const named=kind=>S.lists[kind].filter((_,i)=>!isDefName(kind,i)).length;
-  const pc=Object.values(S.pats.p).reduce((a,x)=>a+x.length,0), pa=Object.keys(S.pats.a).filter(k=>patOf(...(parsePk(k)||[0,null]))).length, cc=Array.from({length:N},(_,o)=>o).filter(o=>oi(o).c).length,
-    sd=Object.values(S.month.sch||{}).reduce((a,x)=>a+Object.keys(x).length,0), ry=Object.keys(S.ryt||{}).length, cl=clList().length,yt=Object.keys(S.month.yt||{}).filter(k=>parsePk(k)&&ytOf(k)!=null).length;
-  const it=[['famCard','自分垢',named('family'),'/50人','名前あり'],['othCard','他人垢',named('others'),'/50人','名前あり'],['ytFormCard','目標エール',yt,'組',ymParts(S.ym).m+'月・自分垢→他人垢'],['patCard','条件パターン',pc,'個',pa?`${pa}組に割り当て`:'割り当てなし'],['oiCard','締め時間',cc,'人','22:00以外'],['oiCard','配信予定',sd,'日',`${ymParts(S.ym).m}月・全他人垢`],['rytCard','相手エール目標',ry,'件','自分垢×他人垢'],['clCard','配信内容リスト',cl,'/10','全アカウント共通']];
-  const h=it.map(([id,l,v,u,s])=>`<button type="button" class="lsi${v?'':' z'}" data-lj="${id}"><span>${l}</span><b>${v}<small>${u}</small></b><em>${s}</em></button>`).join('');
-  if(el.innerHTML!==h) el.innerHTML=h }
-$('listSum').addEventListener('click',ev=>{const b=ev.target.closest('[data-lj]'); if(!b) return; const c=$(b.dataset.lj); if(!c) return; if(c.classList.contains('col')) toggleCard(c,false); jumpTo(c)});
+  const yt=Object.keys(S.month.yt||{}).filter(k=>parsePk(k)&&ytOf(k)!=null).length;
+  const it=[['famCard','自分垢',named('family'),'/50人','名前あり'],['othCard','他人垢',named('others'),'/50人','名前あり'],['ytFormCard','目標エール',yt,'組',ymParts(S.ym).m+'月']];
+  const h=it.map(([id,l,v,u,label])=>`<button type="button" class="lsi${v?'':' z'}" data-lj="${id}"><span>${l}</span><b>${v}<small>${u}</small></b><em>${label}</em></button>`).join('');if(el.innerHTML!==h)el.innerHTML=h }
+$('listSum').addEventListener('click',ev=>{const b=ev.target.closest('[data-lj]'); if(!b||!settingsPrepareNavigation()) return; const c=$(b.dataset.lj); if(!c) return; if(c.classList.contains('col')) toggleCard(c,false); jumpTo(c)});
 document.addEventListener('click',ev=>{ if(!ev.target.closest('[data-showall]')) return; S.namedOnly=false; $('namedOnly').checked=false; savePref(); applyListQ(); renderListSum() });
-// 名前をまとめて入力：プレビュー・今の名前を読み込む・一覧をコピー
-function nbPreview(){ const kind=$('nbKind').value, start=+$('nbStart').value-1, tx=$('nbTx').value, el=$('nbPrev'); if(!tx.trim()){el.innerHTML='';return}
-  const ch=[]; let over=0; tx.split(/\r?\n/).forEach((ln,i)=>{const pos=start+i, nm=ln.trim().slice(0,30); if(!nm) return; if(pos>=N){over++;return} const id=S.order[kind][pos], cur=S.lists[kind][id]; if(cur!==nm) ch.push([pos,cur,nm])});
-  el.innerHTML=`<div>反映すると <b>${ch.length}人</b>の名前が変わります${over?`<span class="w">（${over}行は50番を超えるので入りません）</span>`:''}</div>`+(ch.length?'<ul>'+ch.slice(0,6).map(([p,a,b])=>`<li>${pad(p+1)}番：${S.priv?'（非表示）':esc(a)} → <b>${esc(b)}</b></li>`).join('')+(ch.length>6?`<li>ほか${ch.length-6}人</li>`:'')+'</ul>':'') }
-['input','change'].forEach(t=>$('nbTx').addEventListener(t,nbPreview)); $('nbKind').addEventListener('change',nbPreview); $('nbStart').addEventListener('change',nbPreview);
-$('nbLoad').onclick=()=>{ const kind=$('nbKind').value, start=+$('nbStart').value-1;
-  $('nbTx').value=S.order[kind].slice(start).map(id=>isDefName(kind,id)?'':S.lists[kind][id]).join('\n').replace(/\n+$/,''); nbPreview();
+/* ---------- 名前一括入力：番号対応・検証・共通Undo ---------- */
+function nameBulkPlan(text,kind,start,format){
+  const plan={kind,rows:[],changes:[],errors:[],skipped:0,duplicates:[]};
+  if(!['family','others'].includes(kind)||!['plain','numbered'].includes(format)||!Number.isInteger(start)||start<0||start>=N){plan.errors.push('入力先を選び直してください');return plan}
+  const seen=new Set(),lines=String(text||'').replace(/\r\n?/g,'\n').split('\n');
+  lines.forEach((line,index)=>{
+    let raw=line,pos=start+index;
+    if(format==='numbered'){
+      if(!line.trim()){plan.skipped++;return}
+      const header=line.trim().match(/^【(自分垢|他人垢)の名前一覧】$/);
+      if(header){if(header[1]!== (kind==='family'?'自分垢':'他人垢'))plan.errors.push(`${index+1}行目：名簿の種類と入力先が違います`);return}
+      const m=line.match(/^\s*([0-9０-９]{1,3})(?:番[ \t:：]*|[ \t:：]+)(.*)$/);
+      if(!m){plan.errors.push(`${index+1}行目：「01 名前」の形式にしてください`);return}
+      pos=Number(m[1].normalize('NFKC'))-1;raw=m[2];
+      if(pos<0||pos>=N){plan.errors.push(`${index+1}行目：番号は1〜${N}番にしてください`);return}
+      if(seen.has(pos)){plan.errors.push(`${index+1}行目：${pos+1}番が重複しています`);return}seen.add(pos);
+    }
+    const name=raw.replace(/[\s\u3000]+/g,' ').trim();
+    if(!name){plan.skipped++;return}
+    if(pos<0||pos>=N){plan.errors.push(`${index+1}行目：番号は1〜${N}番にしてください`);return}
+    if(name.length>30){plan.errors.push(`${index+1}行目：${name.length}字あります（上限30字）。短くしてから反映してください`);return}
+    const id=S.order[kind][pos],before=S.lists[kind][id],row={line:index+1,pos,id,before,name};plan.rows.push(row);if(before!==name)plan.changes.push(row);
+  });
+  const after=S.lists[kind].slice();plan.rows.forEach(r=>{after[r.id]=r.name});
+  const by=Object.create(null);after.forEach((name,id)=>{const key=String(name||'').normalize('NFKC').trim().toLowerCase();if(key&&String(name||'').trim()!==(kind==='family'?'自分':'他人')+(id+1))(by[key]||=[]).push(S.order[kind].indexOf(id)+1)});
+  const touched=new Set(plan.rows.map(r=>r.pos+1));plan.duplicates=Object.values(by).filter(a=>a.length>1&&a.some(n=>touched.has(n)));
+  return plan;
+}
+function nameBulkRestore(kind,names,active,ids){
+  for(const i of ids){S.lists[kind][i]=names[i];S.active[kind][i]=active[i]}queueWrite('config/lists',listsDoc());delete $(kind==='family'?'lstFam':'lstOth').dataset.built;nbPrev=null;renderLists();$('nbMsg').textContent='名前の一括変更を元に戻しました';nbPreview();
+}
+function nbPreview(){
+  const kind=$('nbKind').value,format=$('nbFormat').value,tx=$('nbTx').value,el=$('nbPrev');
+  const composing=$('nbTx').dataset.nbComposing==='1';for(const id of ['nbKind','nbFormat','nbLoad','nbCopy'])$(id).disabled=composing;
+  $('nbStart').disabled=composing||format==='numbered';$('nbStartWrap').hidden=format==='numbered';
+  $('nbTx').placeholder=format==='numbered'?'01 名前（名前一覧のコピーもそのまま貼れます）':'1行に1人ずつ。空の行は変更しません';
+  const plan=nameBulkPlan(tx,kind,+$('nbStart').value-1,format);$('nbGo').disabled=!plan.changes.length||!!plan.errors.length||$('nbTx').dataset.nbComposing==='1';
+  if(!tx.trim()){el.innerHTML='';return}
+  const lbl=kind==='family'?'自分垢':'他人垢';
+  const list=rows=>'<ul>'+rows.map(r=>`<li>${pad(r.pos+1)}番：${S.priv?'（非表示）':esc(r.before)} → <b>${S.priv?'（非表示）':esc(r.name)}</b></li>`).join('')+'</ul>';
+  el.innerHTML=`<div class="nb-scope">${lbl}：変更 ${plan.changes.length}人${plan.skipped?` ／ 空行 ${plan.skipped}行はそのまま`:''}</div>`+
+    (plan.errors.length?'<div class="nb-errors">反映前に確認してください<ul>'+plan.errors.map(e=>`<li>${esc(e)}</li>`).join('')+'</ul></div>':'')+
+    (plan.duplicates.length?`<div class="w">同じ名前になる番号：${plan.duplicates.map(a=>a.map(pad).join('・')).join('／')}。番号ごとの記録は別のままです。</div>`:'')+
+    (plan.changes.length?list(plan.changes.slice(0,6))+(plan.changes.length>6?`<details><summary>残り${plan.changes.length-6}人の変更先を確認</summary>${list(plan.changes.slice(6))}</details>`:''):'');
+}
+/* ---------- 名前一括入力ここまで ---------- */
+['input','change'].forEach(t=>$('nbTx').addEventListener(t,nbPreview));$('nbTx').addEventListener('compositionstart',()=>{$('nbTx').dataset.nbComposing='1';nbPreview()});$('nbTx').addEventListener('compositionend',()=>{delete $('nbTx').dataset.nbComposing;nbPreview()});$('nbKind').addEventListener('change',nbPreview);$('nbStart').addEventListener('change',nbPreview);$('nbFormat').addEventListener('change',nbPreview);nbPreview();
+$('nbLoad').onclick=()=>{ if($('nbTx').dataset.nbComposing==='1')return;const kind=$('nbKind').value, start=+$('nbStart').value-1;
+  $('nbFormat').value='plain';$('nbTx').value=S.order[kind].slice(start).map(id=>isDefName(kind,id)?'':S.lists[kind][id]).join('\n').replace(/\n+$/,''); nbPreview();
   $('nbMsg').textContent=`${kind==='family'?'自分垢':'他人垢'}の${start+1}番からの名前を読み込みました。書き換えて「反映する」を押してください` };
-$('nbCopy').onclick=()=>{ const kind=$('nbKind').value, lbl=kind==='family'?'自分垢':'他人垢';
+$('nbCopy').onclick=()=>{ if($('nbTx').dataset.nbComposing==='1')return;const kind=$('nbKind').value, lbl=kind==='family'?'自分垢':'他人垢';
   const rows=S.order[kind].map((id,p)=>isDefName(kind,id)?null:`${pad(p+1)} ${S.priv?lbl+(p+1):S.lists[kind][id]}`).filter(Boolean);
   if(!rows.length){$('nbMsg').textContent=`名前を付けた${lbl}はまだありません`;return}
   const t=`【${lbl}の名前一覧】\n`+rows.join('\n');
@@ -5310,7 +5690,7 @@ function renderDayChart(fr){ const el=$('dayChart'); if(!el) return; const {y,m,
   const xt=[1,...[5,10,15,20,25].filter(d=>d<days-2),days].map(d=>`<text class="gx" x="${f1(X(d)+bw/2)}" y="${H-6}" text-anchor="middle">${d}</text>`).join('');
   const rd=v.map((x,i)=>[x,i]).slice(1).filter(a=>a[0]).length, best=v.indexOf(mx);
   el.innerHTML=`<div class="dcs"><span>記録した日 <b>${rd}</b>日</span><span>最多 <b>${m}/${best}</b> ${clock(mx)}</span><span>1日平均 <b>${clock(Math.round(tot/Math.max(1,rd)))}</b></span></div><svg viewBox="0 0 ${W} ${H}" class="ysvg dsvg" role="group" aria-label="${m}月の日ごとの合計時間">${wk}${gl}${tdL}${bars}${avgL}${xt}<line class="gb" x1="${L}" x2="${W-Rr}" y1="${H-B}" y2="${H-B}"/></svg>` }
-function goDayFromChart(g){if(!dayPrepareNavigation())return; S.dday=+g.dataset.cd2; S.tab='day'; savePref(); render(); window.scrollTo(0,0) }
+function goDayFromChart(g){if(!settingsPrepareNavigation()||!dayPrepareNavigation())return; S.dday=+g.dataset.cd2; S.tab='day'; savePref(); render(); window.scrollTo(0,0) }
 $('dayChart').addEventListener('click',ev=>{ const g=ev.target.closest('[data-cd2]'); if(g) goDayFromChart(g) });
 $('dayChart').addEventListener('keydown',ev=>{ const g=ev.target.closest('[data-cd2]'); if(g&&(ev.key==='Enter'||ev.key===' ')){ev.preventDefault();goDayFromChart(g)} });
 
@@ -5355,15 +5735,11 @@ function renderBkInfo(){ const el=$('bkInfo'); if(!el) return; const last=ls.get
   el.innerHTML=`最後に書き出した日：<b>${d.getMonth()+1}/${d.getDate()} ${pad(d.getHours())}:${pad(d.getMinutes())}</b>（${days?days+'日前':'今日'}）${days>=7?' <b class="w">そろそろ書き出しましょう</b>':''}` }
 // 9 条件パターンに保存していない変更があるまま、ほかのタブへ移ったら知らせる
 document.querySelector('nav.tabs').addEventListener('click',ev=>{ const b=ev.target.closest('[data-tab]'); if(!b||S.tab!=='list'||b.dataset.tab==='list') return;
-  const n=Object.keys(S.pdraft||{}).length; if(n) setTimeout(()=>{ undo=null; showToast(`条件パターンに保存していない変更が${n}件あります（名前・条件設定の「保存」で確定）`,false) },0) },true);
+  const n=Object.keys(S.pdraft||{}).length; if(n) setTimeout(()=>{ undo=null; showToast(`条件パターンに保存していない変更が${n}件あります（名前・目標設定の詳細設定にある「保存」で確定）`,false) },0) },true);
 // 10 はじめの設定ガイド
-function renderGuide(){ const el=$('lGuide'); if(!el) return; const pr=ls.get('pk:pref')||{}; if(pr.lgx){el.hidden=true;return}
-  const nf=S.lists.family.some((_,i)=>!isDefName('family',i)), no=S.lists.others.some((_,i)=>!isDefName('others',i)), bk=!!ls.get('pk:lastBk');
-  const it=[[nf,'自分垢に名前を付ける','famCard'],[no,'他人垢（稼ぎ先）に名前を付ける','othCard'],[bk,'バックアップを書き出す','bkCard']];
-  const done=it.filter(x=>x[0]).length; el.hidden=done===it.length; if(el.hidden) return;
-  el.innerHTML=`<div class="lgh"><b>はじめの設定</b><span>${done} / ${it.length} 完了</span><button type="button" class="btn sm2" id="lGuideX" aria-label="はじめの設定を閉じる">×</button></div><ol>${it.map(([ok,l,id])=>`<li class="${ok?'ok':''}"><button type="button" data-lj="${id}">${ok?'✓ ':''}${l}</button></li>`).join('')}</ol>` }
+function renderGuide(){const el=$('lGuide');if(el){el.hidden=true;el.innerHTML=''}}
 $('lGuide').addEventListener('click',ev=>{ if(ev.target.id==='lGuideX'){ ls.set('pk:pref',Object.assign(ls.get('pk:pref')||{},{lgx:true})); renderGuide(); return }
-  const b=ev.target.closest('[data-lj]'); if(!b) return; const c=$(b.dataset.lj); if(!c) return; if(c.classList.contains('col')) toggleCard(c,false); jumpTo(c) });
+  const b=ev.target.closest('[data-lj]'); if(!b||!settingsPrepareNavigation()) return; const c=$(b.dataset.lj); if(!c) return; if(c.classList.contains('col')) toggleCard(c,false); jumpTo(c) });
 
 /* ---------- v13：名前・条件設定の整理と追加 ---------- */
 // 今月の記録日数（垢ごと）
@@ -5399,6 +5775,7 @@ for(const id of ['lstFam','lstOth']) $(id).addEventListener('keydown',ev=>{const
 document.addEventListener('focusin',ev=>{const t=ev.target; if(t.matches&&t.matches('#lstFam input[type=text],#lstOth input[type=text]')&&isDefName(t.dataset.k,+t.dataset.i)) setTimeout(()=>{ if(document.activeElement===t) t.select() },0)});
 // バッジから関連する画面へ
 document.addEventListener('click',ev=>{ const b=ev.target.closest('[data-oj],[data-fj]'); if(!b) return;
+  if(!settingsPrepareNavigation())return;
   if(b.dataset.fj){ const f=+b.closest('.lrow').dataset.id; S.fam=f; savePref(); $('tab-rec').click(); return }
   const o=+b.closest('.lrow').dataset.id, k=b.dataset.oj, c=$(k==='pat'?'patCard':'oiCard');
   if(k==='pat'){S.patO=o; renderPats()} else {S.oiO=o; renderOi()} if(c.classList.contains('col')) toggleCard(c,false); jumpTo(c) });
@@ -5406,7 +5783,7 @@ document.addEventListener('click',ev=>{ const b=ev.target.closest('[data-oj],[da
 { const nav=$('jumpList'), b=document.createElement('button'); b.type='button'; b.id='colAll'; b.className='colall'; nav.appendChild(b);
   const cards=()=>[...document.querySelectorAll('#p-list .card[data-cid]')];
   const upd=()=>{ const anyOpen=cards().some(c=>!c.hidden&&!c.classList.contains('col')); b.textContent=anyOpen?'全部たたむ':'全部開く'; b.dataset.m=anyOpen?'c':'o' };
-  b.onclick=()=>{ const col=b.dataset.m==='c'; cards().forEach(c=>toggleCard(c,col)); upd(); if(!col) scrollTo({top:$('p-list').getBoundingClientRect().top+scrollY-8}) };
+  b.onclick=()=>{ if(!settingsPrepareNavigation())return;const col=b.dataset.m==='c'; cards().forEach(c=>toggleCard(c,col)); upd(); if(!col) scrollTo({top:$('p-list').getBoundingClientRect().top+scrollY-8}) };
   document.addEventListener('click',ev=>{ if(ev.target.closest('#p-list h2.ch,#jumpList [data-jump],#listSum [data-lj]')) setTimeout(upd,0) }); upd(); }
 /* ---------- 当月一覧：名前で探して切り替え ---------- */
 function recQRender(){ const inp=$('recQ'), el=$('recQRes'), q=dayKana(inp.value||''); if(!q){ el.hidden=true; el.innerHTML=''; return }

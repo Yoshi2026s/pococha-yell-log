@@ -21,7 +21,7 @@ function setup(){
  const ytOf=k=>Number.isInteger(S.month.yt?.[k])?S.month.yt[k]:null,yellOf=k=>Number.isInteger(S.month.yell?.[k])?S.month.yell[k]:null,ryellOf=k=>Number.isInteger(S.month.ryell?.[k])?S.month.ryell[k]:null,rytOf=k=>Number.isInteger(S.ryt?.[k])?S.ryt[k]:null;
  const yTarget=()=>null,yCtx=()=>({f:S.fam,o:S.oth}),yellHtml=()=>'',condYellTag=()=>'',ryTag=()=>'',rowCoinHtml=()=>'',ryStatus=()=>'';
  function showToast(m){toasts.push(m)}function pushUndo(u){undos.push(u)}function renderFcCard(){renders.push('fc')}function renderYCoin(){}function renderSoon(){}function fitW(){}function fitAll(){}function savePref(){}function updFamYell(){}function updDayCoin(){}function renderYProg(){}function celebrate(){}function fillSelect(){}function renderDay(){}function renderOi(){}function renderCl(){}function listSideUpd(){}
- function daySaveMirror(){}
+ function daySaveMirror(){}function ytFormSaveMirror(){}
  const saveRyt=()=>queueWrite('config/ryt',JSON.parse(JSON.stringify(S.ryt))),saveOinfo=()=>queueWrite('config/oinfo',JSON.parse(JSON.stringify(S.oinfo)));
  function dispatch(id,e,t,extra={}){for(const fn of $(id).listeners[e]||[])fn({target:t,...extra})}
  function field(id,dataset,value,owner){const t=$(id);t.dataset=dataset;t.value=value;t.owner=owner;t.row={querySelector:s=>s==='[data-ry="yell"]'?$('nextYell'):({innerHTML:'',textContent:''})};return t}

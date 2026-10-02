@@ -2983,7 +2983,7 @@ function fcRowsSorted(b){ const rs=r=>Math.max(0,r.need-r.used); return b.rows.s
 { const pr=ls.get('pk:pref')||{}; S.fcFl=['all','todo','na'].includes(pr.fcfl)?pr.fcfl:'all'; }
 const fcBud=f=>{const v=(S.month.fcb||{})['f'+f]; return Number.isInteger(v)&&v>0?v:null};
 function fcBudgetHtml(f,b){ const bd=fcBud(f), d=bd!=null?bd-b.need:0, pb=S.prevMonth&&S.prevMonth.fcb?S.prevMonth.fcb['f'+f]:null;
-  return `<div class="fcbud"><label>今月の予算<input type="text" id="fcBud" inputmode="numeric" enterkeyhint="done" autocomplete="off" maxlength="11" value="${bd!=null?cfmt(bd):''}" placeholder="なし" aria-label="${esc(famName(f))}の今月のコイン予算"><span class="yu">コイン</span></label>${bd!=null?(d>=0?`<span class="fcok">予算内（あと ${cfmt(d)} 余裕）</span>`:`<span class="fcng">予算を ${cfmt(-d)} 超えています</span>`):(pb?`<button type="button" class="btn sm2" data-fcbprev="${pb}">先月と同じ ${cfmt(pb)}</button>`:'<span class="fcnote">入れると必要コインと比べます</span>')}</div>` }
+  return `<div class="fcbud"><label>今月の予算<input type="text" id="fcBud" data-fcbf="${f}" data-fcym="${S.ym}" inputmode="numeric" enterkeyhint="done" autocomplete="off" maxlength="11" value="${bd!=null?cfmt(bd):''}" placeholder="なし" aria-label="${esc(famName(f))}の今月のコイン予算"><span class="yu">コイン</span></label>${bd!=null?(d>=0?`<span class="fcok">予算内（あと ${cfmt(d)} 余裕）</span>`:`<span class="fcng">予算を ${cfmt(-d)} 超えています</span>`):(pb?`<button type="button" class="btn sm2" data-fcbprev="${pb}">先月と同じ ${cfmt(pb)}</button>`:'<span class="fcnote">入れると必要コインと比べます</span>')}</div>` }
 function fcProj(b){ if(S.ym!==curYM()||!b.used) return null; const {days}=ymParts(S.ym), t=new Date().getDate(), p=Math.round(b.used/t*days); return {p,ok:p>=b.need} }
 function fcSeries(f,b){ const {days}=ymParts(S.ym), cur=S.ym===curYM(), fut=S.ym>curYM(), td=fut?0:cur?new Date().getDate():days, L=S.month.ylog||{};
   const logs=b.rows.map(r=>{const lg=L[r.k]||{}; return {r,lg,ds:Object.keys(lg).map(Number).sort((a,c)=>a-c)}}); if(!logs.some(x=>x.ds.length)||!td) return null;
@@ -3017,7 +3017,7 @@ function renderFcCard(force){
   const shown=fcRowsSorted(b).filter(fcRowPass);
   h+=`<div class="fcrows">`+(shown.length?'':`<p class="empty">この表示に当てはまる組み合わせはありません（「すべて」で全部表示）</p>`)+shown.map(r=>{ const rs=Math.max(0,r.need-r.used), ya=r.v!=null&&r.v<r.tv?r.tv-r.v:0, p=pvo[r.o];
     return `<div class="fcr${r.ok?' ok':''}"><button type="button" class="fcn2" data-fcgo="${r.k}" title="当月一覧表示で見る">${esc(othName(r.o))} ›</button>
-      <span class="fcin"><button type="button" class="fcsb" data-fcstep="-1" data-fck="${r.k}" aria-label="${esc(othName(r.o))}の目標を1段階下げる"${fcStepTier(r.tv,-1)==null?' disabled':''}>▼</button><label>目標<input type="text" inputmode="decimal" enterkeyhint="done" list="ytList" data-fct="${r.k}" value="${r.src==='y'?kn(r.tv):''}" placeholder="${r.src==='c'?kn(r.tv):''}" autocomplete="off" maxlength="12" aria-label="${esc(othName(r.o))}へのエール目標（k）。空にすると達成条件の段階"><span class="yu">k</span></label><button type="button" class="fcsb" data-fcstep="1" data-fck="${r.k}" aria-label="${esc(othName(r.o))}の目標を1段階上げる"${fcStepTier(r.tv,1)==null?' disabled':''}>▲</button></span>
+      <span class="fcin"><button type="button" class="fcsb" data-fcstep="-1" data-fck="${r.k}" aria-label="${esc(othName(r.o))}の目標を1段階下げる"${fcStepTier(r.tv,-1)==null?' disabled':''}>▼</button><label>目標<input type="text" inputmode="decimal" enterkeyhint="done" list="ytList" data-fct="${r.k}" data-fcym="${S.ym}" value="${r.src==='y'?kn(r.tv):''}" placeholder="${r.src==='c'?kn(r.tv):''}" autocomplete="off" maxlength="12" aria-label="${esc(othName(r.o))}へのエール目標（k）。空にすると達成条件の段階"><span class="yu">k</span></label><button type="button" class="fcsb" data-fcstep="1" data-fck="${r.k}" aria-label="${esc(othName(r.o))}の目標を1段階上げる"${fcStepTier(r.tv,1)==null?' disabled':''}>▲</button></span>
       <span class="fcsrc">${r.src==='y'?'エール目標で計算':`達成条件（${esc(fcTgt(r))}）で計算`}${r.t?`<i>条件${r.c===1?2:1}なら ${cfmt(r.c===1?r.t.c2:r.t.c1)}</i>`:''}</span>
       <span class="fcv">必要 <b>${cfmt(r.need)}</b>${p?`<i>先月 ${cfmt(p.need)}</i>`:''}</span>
       <span class="fcu">${!r.t?'最初の段階（0.01k）より下のため0コイン':r.v==null?'エール未入力':`今 ${yfmt(r.v)}（${cfmt(r.used)}）・${r.ok?'届いています ✓':`残り ${cfmt(rs)}・エールあと${yfmt(ya)}`}`}</span></div>` }).join('')+'</div>';
@@ -3036,21 +3036,48 @@ function fcSetBud(f,v){ const key='f'+f, old=fcBud(f); if(old===v) { renderFcCar
   queueMonth(S.ym,{fcb:{[key]:v}}); pushUndo({ym:S.ym,items:[],extra:{fcb:{[key]:old??null}}}); renderFcCard(true); showToast(`${famName(f)}：今月の予算を${v==null?'なし':cfmt(v)+'コイン'}にしました`) }
 function fcSetYt(k,v){ S.month.yt=S.month.yt||{}; if(v==null) delete S.month.yt[k]; else S.month.yt[k]=v; debMonth('yt',k,v,0) }
 function fcAfter(focusKey){ fcCache.clear(); renderFcCard(true); renderYCoin(); if(focusKey){ const n=$('fcBody').querySelector(`[data-fct="${focusKey}"]`); if(n){ n.focus({preventScroll:true}); try{n.select()}catch(e){} } } }
+function fcRefreshAfterInput(){setTimeout(()=>{const a=document.activeElement;if(a&&$('fcBody').contains(a)&&a.matches('input[type=text]')){renderYCoin();return}fcAfter()},0)}
+function numericYellDraft(t,commit){
+  if(t.dataset.numComp==='1') return undefined;
+  const raw=String(t.value).normalize('NFKC').replace(/[,，\s]/g,'').replace(/[kK]$/,'');
+  if(!commit&&(raw===''||raw.endsWith('.'))) return undefined;
+  return parseYell(t.value);
+}
+function fcFinalizeInputUndo(t,field,key,value){if(t.dataset.numStart===undefined)return false;const prev=t.dataset.numStart===''?null:+t.dataset.numStart;delete t.dataset.numStart;if(prev===value)return false;pushUndo({ym:S.ym,items:[],extra:{[field]:{[key]:prev}}});return true}
+function fcSyncNumber(t,commit,quiet=false){
+  if(!S.mLoaded||t.dataset.numComp==='1'||t.dataset.fcym!==S.ym) return;
+  if(t.id==='fcBud'){
+    const f=+t.dataset.fcbf; if(!vIdx(f)) return;
+    const raw=String(t.value).normalize('NFKC').replace(/[,，\s]|コイン/g,'');
+    if(!commit&&raw==='') return;
+    if(raw!==''&&!/^\d+$/.test(raw)){t.classList.add('bad');if(commit)fcFinalizeInputUndo(t,'fcb','f'+f,fcBud(f));if(commit&&!quiet)showToast('予算はコインの数（例：5000）で入れてください',false);return}
+    t.classList.remove('bad'); const v=raw===''?null:Math.min(YMAX,+raw)||null, old=fcBud(f);
+    if(t.dataset.numStart===undefined)t.dataset.numStart=old==null?'':String(old);
+    if(old!==v){S.month.fcb=S.month.fcb||{};if(v==null)delete S.month.fcb['f'+f];else S.month.fcb['f'+f]=v;queueMonth(S.ym,{fcb:{['f'+f]:v}})}
+    if(commit){if(fcFinalizeInputUndo(t,'fcb','f'+f,v)&&!quiet)showToast(`${famName(f)}：今月の予算を${v==null?'なし':cfmt(v)+'コイン'}にしました`);if(!quiet)fcRefreshAfterInput()}
+    return;
+  }
+  const k=t.dataset.fct,p=parsePk(k);if(!p)return;const v0=numericYellDraft(t,commit);if(v0===undefined)return;
+  if(Number.isNaN(v0)){t.classList.add('bad');if(commit)fcFinalizeInputUndo(t,'yt',k,ytOf(k));if(commit&&!quiet)showToast('k単位の数字で入れてください（例：5 → 5,000エール）',false);return}
+  t.classList.remove('bad');const v=v0===0?null:v0,old=ytOf(k);
+  if(t.dataset.numStart===undefined)t.dataset.numStart=old==null?'':String(old);
+  if(old!==v)fcSetYt(k,v);
+  if(commit){if(fcFinalizeInputUndo(t,'yt',k,v)&&!quiet)showToast(`${othName(p[1])}：エール目標を${v==null?'なし（達成条件の段階で計算）':yfmt(v)}にしました`);if(!quiet)fcRefreshAfterInput()}
+}
+$('fcBody').addEventListener('input',ev=>{if(!ev.isComposing)fcSyncNumber(ev.target,false)});
+$('fcBody').addEventListener('compositionstart',ev=>{if(ev.target.id==='fcBud'||ev.target.dataset.fct)ev.target.dataset.numComp='1'});
+$('fcBody').addEventListener('compositionend',ev=>{delete ev.target.dataset.numComp;fcSyncNumber(ev.target,false)});
 $('fcBody').addEventListener('change',ev=>{ const t=ev.target;
   if(t.id==='fcSel'){ S.fcF=+t.value; savePref(); renderFcCard(true); return }
   if(t.id==='fcSort'){ S.fcSort=t.value; savePref(); renderFcCard(true); return }
   if(t.id==='fcBOnly'){ S.fcBAll=!t.checked; return }
-  if(t.id==='fcBud'){ if(!S.mLoaded) return; const {f}=fcCur(); if(f==null) return; const raw=String(t.value).normalize('NFKC').replace(/[,，\s]|コイン/g,''); if(raw!==''&&!/^\d+$/.test(raw)){ t.classList.add('bad'); undo=null; showToast('予算はコインの数（例：5000）で入れてください',false); return }
-    fcSetBud(f,raw===''?null:Math.min(YMAX,+raw)||null); return }
-  if(t.dataset&&t.dataset.fct){ if(!S.mLoaded) return; const k=t.dataset.fct, v0=parseYell(t.value); if(Number.isNaN(v0)){ t.classList.add('bad'); undo=null; showToast('k単位の数字で入れてください（例：5 → 5,000エール）',false); return }
-    const v=v0===0?null:v0, old=ytOf(k); if(old===v) return; fcSetYt(k,v); pushUndo({ym:S.ym,items:[],extra:{yt:{[k]:old??null}}});
-    const p=parsePk(k); setTimeout(()=>{ const a=document.activeElement, fk=a&&a.dataset&&$('fcBody').contains(a)?a.dataset.fct:null; fcAfter(fk||null) },0); showToast(`${othName(p[1])}：エール目標を${v==null?'なし（達成条件の段階で計算）':yfmt(v)}にしました`) } });
-$('fcBody').addEventListener('keydown',ev=>{ const t=ev.target; if(ev.key!=='Enter'||ev.isComposing) return;
+  if(t.id==='fcBud'||(t.dataset&&t.dataset.fct))fcSyncNumber(t,true); });
+$('fcBody').addEventListener('keydown',ev=>{ const t=ev.target; if(ev.key!=='Enter'||ev.isComposing||ev.keyCode===229||t.dataset.numComp==='1') return;
   if(t.dataset&&t.dataset.fct){ ev.preventDefault(); const ins=[...$('fcBody').querySelectorAll('[data-fct]')], i=ins.indexOf(t); if(ins[i+1]) ins[i+1].focus(); else t.blur(); return }
   if(t.id==='fcBV'){ ev.preventDefault(); $('fcBGo').click() }
   if(t.id==='fcBud'){ ev.preventDefault(); t.blur() }
   if(t.id==='fcAddV'){ ev.preventDefault(); $('fcAddGo').click() } });
-$('fcBody').addEventListener('focusout',ev=>{ if(ev.target.dataset&&ev.target.dataset.fct) setTimeout(()=>{ if(!$('fcBody').contains(document.activeElement)) renderFcCard() },0) });
+$('fcBody').addEventListener('focusout',ev=>{ if(ev.target.id==='fcBud'||(ev.target.dataset&&ev.target.dataset.fct)) setTimeout(()=>{ if(!$('fcBody').contains(document.activeElement)) renderFcCard() },0) });
 $('fcBody').addEventListener('click',ev=>{
   const st=ev.target.closest('[data-fcs]'); if(st){ const {f,fs}=fcCur(); if(!fs.length) return; const i=(fs.indexOf(f)+ +st.dataset.fcs+fs.length)%fs.length; S.fcF=fs[i]; savePref(); renderFcCard(true); return }
   const fl=ev.target.closest('[data-fcfl]'); if(fl){ S.fcFl=fl.dataset.fcfl; savePref(); renderFcCard(true); return }
@@ -3172,7 +3199,7 @@ function renderLists(){
   if(!document.activeElement||!document.activeElement.closest||!document.activeElement.closest('#patCard')) renderPats();
   if(!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#oiCard'))) renderOi();
   if(!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#rytCard'))) renderRyt();
-  $('namedOnly').checked=!!S.namedOnly;
+  $('namedOnly').checked=!!S.namedOnly;refreshNamedLabels();
 }
 /* ---------- 月別推移 ---------- */
 const monthCache={};
@@ -3441,24 +3468,42 @@ function goMonth(ym){flush();if(!db&&Object.keys(pend).length){$('monthPick').va
 $('prevM').onclick=()=>goMonth(shiftYM(S.ym,-1));
 $('nextM').onclick=()=>goMonth(shiftYM(S.ym,1));
 $('thisM').onclick=()=>goMonth(curYM());
-document.addEventListener('input',ev=>{
-  const t=ev.target; if(!t.dataset||!t.dataset.k) return;
-  S.lists[t.dataset.k][+t.dataset.i]=t.value;
-  queueWrite('config/lists',listsDoc());
-});
+// 名前欄だけを扱い、確定時には名前を参照する表示も更新する。
+function accountNameField(t){
+  if(!t||!t.dataset||!t.matches||!t.matches('input[type=text]'))return null;
+  const kind=t.dataset.k,i=Number(t.dataset.i);
+  return (kind==='family'||kind==='others')&&t.dataset.i!==undefined&&vIdx(i)?{kind,i}:null;
+}
+function syncAccountName(t,commit){
+  const p=accountNameField(t);if(!p)return false;
+  const {kind,i}=p,prev=S.lists[kind][i],was=t.dataset.wasDef===undefined?isDefName(kind,i):t.dataset.wasDef==='1';
+  let value=String(t.value||'').slice(0,30);
+  if(commit){value=value.replace(/[\s\u3000]+/g,' ').trim();if(!value)value=(kind==='family'?'自分':'他人')+(i+1);t.value=value}
+  S.lists[kind][i]=value;let changed=prev!==value;
+  const now=isDefName(kind,i),a0=t.dataset.a0===undefined?S.active[kind][i]:t.dataset.a0==='1',active=was!==now?!now:a0;
+  if(S.active[kind][i]!==active){S.active[kind][i]=active;changed=true}
+  if(changed)queueWrite('config/lists',listsDoc());return changed;
+}
+function refreshNamedLabels(){
+  for(const [id,label] of [['selFam',famName],['selOth',othName],['dayFam',famName],['dayOth',othName],['sumFam',famName],['sumOth',othName],['addFam',famName],['addOth',othName],['patOth',othName],['oiOth',othName],['rytOth',othName]]){
+    const el=$(id);if(el)fillSelect(el,label,el.value||'0',/^(day|sum)/.test(id));
+    if(id==='patOth'&&el){for(const opt of el.options){const n=(S.pats.p['o'+opt.value]||[]).length;if(n)opt.textContent+='（パターン'+n+'）'}el.dataset.h=''}
+  }
+  for(const el of document.querySelectorAll('#oiList select[data-oc]')){const o=+el.dataset.oc,row=el.closest('.oirow'),name=row&&row.querySelector('.pan');if(name)name.textContent=othName(o);el.setAttribute('aria-label',othName(o)+'の締め時間')}
+  for(const el of document.querySelectorAll('#patAssign select[data-pa]')){const f=+el.dataset.pa,row=el.closest('.parow'),name=row&&row.querySelector('.pan');if(name)name.textContent=famName(f);el.setAttribute('aria-label',famName(f)+'の条件')}
+  for(const el of document.querySelectorAll('#rytList input[data-rt]')){const f=+el.dataset.rt,o=vIdx(+el.dataset.rto)?+el.dataset.rto:S.rytO,row=el.closest('.rytrow'),name=row&&row.querySelector('.pan');if(name)name.textContent=famName(f);el.setAttribute('aria-label',famName(f)+'で'+othName(o)+'が取るエールの目標（k）')}
+  updFamPats();renderPatSum();updDline();
+}
+document.addEventListener('compositionstart',ev=>{const t=ev.target;if(accountNameField(t))t.dataset.nameComposing='1'});
+document.addEventListener('compositionend',ev=>{const t=ev.target;if(!accountNameField(t))return;delete t.dataset.nameComposing;syncAccountName(t,false);refreshNamedLabels()});
+document.addEventListener('input',ev=>{const t=ev.target;if(!accountNameField(t)||ev.isComposing||t.dataset.nameComposing==='1')return;syncAccountName(t,false);refreshNamedLabels()});
+document.addEventListener('change',ev=>{const t=ev.target;if(!accountNameField(t)||t.dataset.nameComposing==='1')return;syncAccountName(t,true);refreshNamedLabels()});
 document.addEventListener('focusin',ev=>{const t=ev.target; if(t.dataset&&t.dataset.k&&S.lists[t.dataset.k]) t.dataset.wasDef=isDefName(t.dataset.k,+t.dataset.i)?'1':''});
 document.addEventListener('focusout',ev=>{
-  const t=ev.target; if(!t.dataset||!t.dataset.k) return;
-  const kind=t.dataset.k, i=+t.dataset.i;
-  if(!t.value.trim()){const p=kind==='family'?'自分':'他人';t.value=p+(i+1);S.lists[kind][i]=t.value;queueWrite('config/lists',listsDoc())}
-  else { const nv=t.value.replace(/[\s\u3000]+/g,' ').trim(); if(nv!==t.value){t.value=nv;S.lists[kind][i]=nv;queueWrite('config/lists',listsDoc())} }
-  if(typeof updNdot==='function') updNdot(); if(S.namedOnly) applyListQ();
-  // 初期の名前→名前を付けた：チェックを入れる／名前を初期に戻した：チェックを外す
-  const was=t.dataset.wasDef==='1', now=isDefName(kind,i);
-  if(t.dataset.wasDef!==undefined&&was!==now&&S.active[kind][i]!==!now){
-    S.active[kind][i]=!now; queueWrite('config/lists',listsDoc());
-  }
-  delete t.dataset.wasDef;
+  const t=ev.target;if(!accountNameField(t))return;
+  delete t.dataset.nameComposing;syncAccountName(t,true);
+  if(typeof updNdot==='function')updNdot();if(S.namedOnly)applyListQ();
+  refreshNamedLabels();delete t.dataset.wasDef;
 });
 $('csvBtn').onclick=async()=>{
   const R=S.month.records, {y,m}=ymParts(S.ym);
@@ -3501,7 +3546,7 @@ function ryInput(inp,fromBlur){
 }
 $('dayList').addEventListener('input',ev=>{const t=ev.target;if(t.dataset&&t.dataset.ry)ryInput(t,false)});
 $('dayList').addEventListener('change',ev=>{const t=ev.target;if(t.dataset&&t.dataset.ry)ryInput(t,true)});
-$('dayList').addEventListener('keydown',ev=>{const t=ev.target;if(!t.dataset||!t.dataset.ry||ev.key!=='Enter')return;ev.preventDefault();
+$('dayList').addEventListener('keydown',ev=>{const t=ev.target;if(!t.dataset||!t.dataset.ry||ev.key!=='Enter'||ev.isComposing||ev.keyCode===229)return;ev.preventDefault();
   if(t.dataset.ry==='yt'){const n=t.closest('.ryell').querySelector('[data-ry="yell"]');if(n)n.focus()} else t.blur()});
 $('dayList').addEventListener('focusout',ev=>{if(!ev.target.dataset||!ev.target.dataset.ry)return;setTimeout(()=>{if(!ryFocus()&&S.tab==='day'){S.dayDirty=false;renderDay()}},0)});
 
@@ -3512,21 +3557,31 @@ function renderRyt(){
   const o=S.rytO, act=S.active.family, R=S.month.records;
   const rel=f=>act[f]||!isDefName('family',f)||rytOf(pk(f,o))!=null||pairStats(R[pk(f,o)]).days>0||ryellOf(pk(f,o))!=null;
   let fams=S.order.family.filter(rel); if(!fams.length) fams=S.order.family.slice(0,10); const narrowed=!S.rytAll&&fams.length<N; if(!narrowed) fams=S.order.family.slice();
-  $('rytList').innerHTML=fams.map(f=>{const k=pk(f,o);return `<label class="rytrow"><span class="pan">${esc(famName(f))}</span><input type="text" data-rt="${f}" value="${ryVal(rytOf(k))}" inputmode="decimal" enterkeyhint="next" autocomplete="off" maxlength="12" aria-label="${esc(famName(f))}で${esc(othName(o))}が取るエールの目標（k）"><span class="yu">k</span><span class="rytst">${ryTag(k)}</span></label>`}).join('')
+  $('rytList').innerHTML=fams.map(f=>{const k=pk(f,o);return `<label class="rytrow"><span class="pan">${esc(famName(f))}</span><input type="text" data-rt="${f}" data-rto="${o}" value="${ryVal(rytOf(k))}" inputmode="decimal" enterkeyhint="next" autocomplete="off" maxlength="12" aria-label="${esc(famName(f))}で${esc(othName(o))}が取るエールの目標（k）"><span class="yu">k</span><span class="rytst">${ryTag(k)}</span></label>`}).join('')
     +(setTimeout(()=>fitAll($('rytList')),0),'')+(narrowed?`<button class="btn sm2" id="rytAllBtn">ほかの自分垢も表示（全${N}人）</button>`:(S.rytAll?'<button class="btn sm2" id="rytAllBtn">使う・名前あり・記録ありの自分垢だけにする</button>':''));
 }
 function setRyt(f,o,v){const k=pk(f,o); if(v==null||v===0) delete S.ryt[k]; else S.ryt[k]=v}
+function rytSyncInput(t,commit,quiet=false){
+  if(!t.dataset||t.dataset.rt===undefined)return;const f=+t.dataset.rt,o=+t.dataset.rto;if(!vIdx(f)||!vIdx(o))return;
+  const v=numericYellDraft(t,commit);if(v===undefined)return;
+  if(Number.isNaN(v)){t.classList.add('bad');if(commit&&!quiet)showToast('k単位の数字で入れてください（例：5）',false);return}t.classList.remove('bad');
+  const k=pk(f,o),old=rytOf(k),nv=v===0?null:v;if(old!==nv){setRyt(f,o,nv);saveRyt()}
+  if(quiet)return;if(commit)t.value=ryVal(rytOf(k));const st=t.closest('.rytrow').querySelector('.rytst');if(st)st.innerHTML=ryTag(k);updFamYell();
+}
+$('rytList').addEventListener('input',ev=>{if(!ev.isComposing)rytSyncInput(ev.target,false)});
+$('rytList').addEventListener('compositionstart',ev=>{if(ev.target.dataset.rt!==undefined)ev.target.dataset.numComp='1'});
+$('rytList').addEventListener('compositionend',ev=>{delete ev.target.dataset.numComp;rytSyncInput(ev.target,false)});
 $('rytOth').addEventListener('change',e=>{S.rytO=+e.target.value;renderRyt()});
 $('rytList').addEventListener('click',ev=>{if(ev.target.id==='rytAllBtn'){S.rytAll=!S.rytAll;renderRyt()}});
-$('rytList').addEventListener('change',ev=>{const t=ev.target; if(!t.dataset||t.dataset.rt===undefined) return;
-  const v=parseYell(t.value); if(Number.isNaN(v)){t.classList.add('bad');showToast('k単位の数字で入れてください（例：5）',false);return} t.classList.remove('bad');
-  const f=+t.dataset.rt; setRyt(f,S.rytO,v); t.value=ryVal(rytOf(pk(f,S.rytO))); saveRyt();
-  const st=t.closest('.rytrow').querySelector('.rytst'); if(st) st.innerHTML=ryTag(pk(f,S.rytO)); updFamYell();});
-$('rytList').addEventListener('keydown',ev=>{const t=ev.target; if(ev.key!=='Enter'||!t.dataset||t.dataset.rt===undefined) return; ev.preventDefault();
+$('rytList').addEventListener('change',ev=>rytSyncInput(ev.target,true));
+$('rytList').addEventListener('keydown',ev=>{const t=ev.target; if(ev.key!=='Enter'||ev.isComposing||ev.keyCode===229||!t.dataset||t.dataset.numComp==='1'||t.dataset.rt===undefined) return; ev.preventDefault();
   const all=[...$('rytList').querySelectorAll('input[data-rt]')], i=all.indexOf(t); if(all[i+1]) all[i+1].focus(); else t.blur()});
 $('rytAllGo').onclick=()=>{const v=parseYell($('rytAllV').value); if(Number.isNaN(v)){showToast('k単位の数字で入れてください（例：5）',false);return}
   const ins=[...$('rytList').querySelectorAll('input[data-rt]')]; ins.forEach(i=>setRyt(+i.dataset.rt,S.rytO,v)); saveRyt(); renderRyt(); updFamYell();
   showToast(`${othName(S.rytO)}：表示中の${ins.length}人に相手エール目標 ${v?yfmt(v):'0（なし）'} を入れました`,false)};
+function flushNumericInputs(){const t=document.activeElement;if(!t||!t.dataset||t.dataset.numComp==='1')return;if($('fcBody').contains(t)&&(t.id==='fcBud'||t.dataset.fct))fcSyncNumber(t,true,true);else if($('rytList').contains(t)&&t.dataset.rt!==undefined)rytSyncInput(t,true,true)}
+window.addEventListener("pagehide",flushNumericInputs);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushNumericInputs()});
 /* ---------- 名前・条件設定：名前をまとめて入力・名前ありだけ表示・Enterで次へ ---------- */
 $('nbStart').innerHTML=Array.from({length:N},(_,i)=>`<option value="${i+1}">${i+1}番から</option>`).join('');
 let nbPrev=null;
@@ -3541,7 +3596,7 @@ $('nbGo').onclick=()=>{
 $('nbMsg').addEventListener('click',ev=>{if(ev.target.id!=='nbUndo'||!nbPrev) return; S.lists[nbPrev.kind]=nbPrev.names; S.active[nbPrev.kind]=nbPrev.active; nbPrev=null;
   queueWrite('config/lists',listsDoc()); delete $('lstFam').dataset.built; delete $('lstOth').dataset.built; renderLists(); $('nbMsg').textContent='元に戻しました'});
 $('namedOnly').addEventListener('change',e=>{S.namedOnly=e.target.checked; savePref(); applyListQ(); renderListSum()});
-for(const id of ['lstFam','lstOth']) $(id).addEventListener('keydown',ev=>{const t=ev.target; if(ev.key!=='Enter'||!t.dataset||!t.dataset.k) return; ev.preventDefault();
+for(const id of ['lstFam','lstOth']) $(id).addEventListener('keydown',ev=>{const t=ev.target; if(ev.key!=='Enter'||!accountNameField(t)||ev.isComposing||ev.keyCode===229||t.dataset.nameComposing==='1') return; ev.preventDefault();
   const rows=[...$(id).querySelectorAll('.lrow:not([hidden]) input[type=text]')], i=rows.indexOf(t); if(rows[i+1]) rows[i+1].focus(); else { t.blur(); const nx=$(id).querySelector('.lrow.nextnew:not([hidden]) input[type=text]'); if(nx&&nx!==t){ nx.focus({preventScroll:true}); nx.closest('.lrow').scrollIntoView({block:'nearest'}) } } });
 
 /* ---------- v3：便利機能 ---------- */
@@ -3874,7 +3929,7 @@ document.addEventListener('click',ev=>{ if(!ev.target.closest('[data-qn]')) retu
 let dayQT=null;
 $('dayQ').addEventListener('input',e=>{ clearTimeout(dayQT); dayQT=setTimeout(()=>{ S.dayQ=e.target.value; renderDay() },150) });
 $('dayQ').addEventListener('search',e=>{ clearTimeout(dayQT); S.dayQ=e.target.value; renderDay() });
-$('dayQ').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); e.target.blur() } if(e.key==='Escape'&&e.target.value){ e.preventDefault(); e.target.value=''; S.dayQ=''; renderDay() } });
+$('dayQ').addEventListener('keydown',e=>{ if(e.isComposing||e.keyCode===229) return; if(e.key==='Enter'){ e.preventDefault(); e.target.blur() } if(e.key==='Escape'&&e.target.value){ e.preventDefault(); e.target.value=''; S.dayQ=''; renderDay() } });
 $('bsOnly').addEventListener('change',e=>{ S.bsOnly=e.target.checked; savePref(); bsArm=0; $('bsGo').textContent='まとめて入れる'; $('bsGo').classList.remove('arm') });
 $('bsT').addEventListener('change',()=>{ bsArm=0; $('bsGo').textContent='まとめて入れる'; $('bsGo').classList.remove('arm') });
 $('bsChk').onclick=()=>bulk('chk');
@@ -4112,7 +4167,7 @@ document.addEventListener('focusin',ev=>{const t=ev.target;if(!isYIn(t))return;i
 document.addEventListener('focusout',ev=>{const t=ev.target;if(isYIn(t)&&t.value.trim()==='')t.value='0'});
 $('ytIn').addEventListener('input',()=>saveYt(false));
 $('ytIn').addEventListener('change',()=>saveYt(true));
-$('ytIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();const y=$('yellIn');if(!y.disabled)y.focus();else e.target.blur()}});
+$('ytIn').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing&&e.keyCode!==229){e.preventDefault();const y=$('yellIn');if(!y.disabled)y.focus();else e.target.blur()}});
 $('yellIn').addEventListener('focus',e=>{const yc=yCtx();if(!yc)return;const v=yellOf(pk(yc.f,yc.o));e.target.dataset.y0=v==null?'':String(v)});
 
 $('ytIn').addEventListener('blur',()=>renderSoon());
@@ -4136,7 +4191,7 @@ function saveYell(fromBlur){
 }
 $('yellIn').addEventListener('input',()=>saveYell(false));
 $('yellIn').addEventListener('change',()=>saveYell(true));
-$('yellIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();e.target.blur()}});
+$('yellIn').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing&&e.keyCode!==229){e.preventDefault();e.target.blur()}});
 $('yellIn').addEventListener('blur',()=>renderSoon());
 // 戻す・文字大
 $('histBtn').onclick=()=>doUndo();
@@ -4343,7 +4398,7 @@ $('rstClose').onclick=closeRst; $('rstCancel').onclick=closeRst;
 $('rstSheet').addEventListener('click',ev=>{if(ev.target.id==='rstSheet')closeRst(); if(ev.target.id==='rstBackup')$('expBtn').onclick()});
 $('rstOpts').addEventListener('change',ev=>{if(ev.target.name==='rstS'){rstScope=ev.target.value;updRst()}});
 $('rstTx').addEventListener('input',updRst);
-$('rstTx').addEventListener('keydown',ev=>{if(ev.key==='Enter'){ev.preventDefault();if(!$('rstGo').disabled)$('rstGo').click()}});
+$('rstTx').addEventListener('keydown',ev=>{if(ev.isComposing||ev.keyCode===229)return;if(ev.key==='Enter'){ev.preventDefault();if(!$('rstGo').disabled)$('rstGo').click()}});
 document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&!$('rstSheet').hidden)closeRst()});
 function resetKeys(keys){
   const R=S.month.records, items=[], extra={yell:{},notes:{},yt:{},box:{},ryell:{},ylog:{},rylog:{}}, patch={records:{},yell:{},notes:{},yt:{},box:{},ryell:{},ylog:{},rylog:{}};
@@ -4419,7 +4474,7 @@ document.addEventListener('focusin',ev=>{const t=ev.target; if(t.dataset&&t.data
 document.addEventListener('focusout',ev=>{const t=ev.target; if(!t.dataset||!t.dataset.k||t.dataset.v0===undefined||!S.lists[t.dataset.k]) return;
   const kind=t.dataset.k, i=+t.dataset.i, v0=t.dataset.v0, a0=t.dataset.a0==='1', v1=S.lists[kind][i]; delete t.dataset.v0; delete t.dataset.a0; if(v0===v1) return;
   const lbl=kind==='family'?'自分垢':'他人垢', no=(kind==='family'?PF:PO)(i)+1;
-  pushUndo({ym:S.ym,items:[],fn:()=>{ S.lists[kind][i]=v0; S.active[kind][i]=a0; queueWrite('config/lists',listsDoc()); const inp=$(`${kind}-${i}`); if(inp) inp.value=v0; updDup(); if(S.tab==='list') renderLists() }});
+  pushUndo({ym:S.ym,items:[],fn:()=>{ S.lists[kind][i]=v0; S.active[kind][i]=a0; queueWrite('config/lists',listsDoc()); const inp=$(`${kind}-${i}`); if(inp) inp.value=v0; updDup();updNdot();if(S.namedOnly)applyListQ();refreshNamedLabels() }});
   showToast(S.priv?`${lbl}${no}の名前を変えました`:`${lbl}${no}：「${v0}」→「${v1}」`,true); updDup(); renderListSum(); updOthBadges() });
 // あいうえお順・最初の番号順
 document.addEventListener('click',ev=>{const b=ev.target.closest('[data-sort]'); if(!b) return; const kind=b.closest('.sorttools').dataset.kind, prev=S.order[kind].slice();
@@ -4478,7 +4533,7 @@ $('recCopyX').onclick=()=>{$('recCopyBox').hidden=true};
 let sumQT=null;
 $('sumQ').addEventListener('input',e=>{ clearTimeout(sumQT); sumQT=setTimeout(()=>{ S.sumQ=e.target.value.trim(); renderSum() },180) });
 $('sumQ').addEventListener('search',e=>{ clearTimeout(sumQT); S.sumQ=e.target.value.trim(); renderSum() });
-$('sumQ').addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();e.target.blur()} });
+$('sumQ').addEventListener('keydown',e=>{ if(e.isComposing||e.keyCode===229) return; if(e.key==='Enter'){e.preventDefault();e.target.blur()} });
 // 集計結果：表の見出しで並べ替え・行で絞り込み
 document.addEventListener('click',ev=>{ const b=ev.target.closest('.thb'); if(!b) return; const tk=b.dataset.tk, k=b.dataset.sk, cur=S.tsort[tk];
   S.tsort[tk]={k,d:cur.k===k?-cur.d:(k==='name'?1:-1)}; ls.set('pk:pref',Object.assign(ls.get('pk:pref')||{},{ts:S.tsort})); renderSum() });
@@ -4591,7 +4646,7 @@ renderChg();
 // 検索の×
 $('listQX').onclick=()=>{ $('listQ').value=''; applyListQ(); $('listQ').focus() };
 // Escで入力前の名前に戻す／初期の名前はフォーカスで全選択
-for(const id of ['lstFam','lstOth']) $(id).addEventListener('keydown',ev=>{const t=ev.target; if(ev.key!=='Escape'||!t.dataset||!t.dataset.k||t.dataset.v0===undefined) return; ev.preventDefault();
+for(const id of ['lstFam','lstOth']) $(id).addEventListener('keydown',ev=>{const t=ev.target; if(ev.key!=='Escape'||!accountNameField(t)||t.dataset.v0===undefined||ev.isComposing||ev.keyCode===229||t.dataset.nameComposing==='1') return; ev.preventDefault();
   t.value=t.dataset.v0; S.lists[t.dataset.k][+t.dataset.i]=t.value; queueWrite('config/lists',listsDoc()); updDup(); t.blur(); undo=null; showToast('入力前の名前に戻しました',false)});
 document.addEventListener('focusin',ev=>{const t=ev.target; if(t.matches&&t.matches('#lstFam input[type=text],#lstOth input[type=text]')&&isDefName(t.dataset.k,+t.dataset.i)) setTimeout(()=>{ if(document.activeElement===t) t.select() },0)});
 // バッジから関連する画面へ
@@ -4617,7 +4672,7 @@ function recQRender(){ const inp=$('recQ'), el=$('recQRes'), q=dayKana(inp.value
   el.innerHTML=h||'<span class="qn">見つかりません。名前の一部か番号で探してください。</span>'; el.hidden=false }
 let recQT=null; $('recQ').addEventListener('input',()=>{ clearTimeout(recQT); recQT=setTimeout(recQRender,120) });
 $('recQ').addEventListener('search',recQRender);
-$('recQ').addEventListener('keydown',ev=>{ if(ev.key==='Enter'){ ev.preventDefault(); const b=$('recQRes').querySelector('button'); if(b) b.click() } if(ev.key==='Escape'){ $('recQ').value=''; recQRender() } });
+$('recQ').addEventListener('keydown',ev=>{ if(ev.isComposing||ev.keyCode===229) return; if(ev.key==='Enter'){ ev.preventDefault(); const b=$('recQRes').querySelector('button'); if(b) b.click() } if(ev.key==='Escape'){ $('recQ').value=''; recQRender() } });
 $('recQRes').addEventListener('click',ev=>{ const b=ev.target.closest('button'); if(!b) return; const p=b.dataset.rqk?parsePk(b.dataset.rqk):null;
   if(p){ S.fam=p[0]; S.oth=p[1] } else if(b.dataset.rqf!=null) S.fam=+b.dataset.rqf; else if(b.dataset.rqo!=null) S.oth=+b.dataset.rqo; else return;
   $('recQ').value=''; recQRender(); savePref(); renderRec(); $('recQ').blur(); undo=null; showToast(`${famName(S.fam)} → ${othName(S.oth)} にしました`,false) });
